@@ -210,6 +210,30 @@
             font-weight: 600;
         }
         
+        .icon-telegram {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background-color: #229ED9;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+        
+        .icon-globe {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background-color: #F6A327;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            color: #273369;
+            font-size: 16px;
+        }
+        
         @media only screen and (max-width: 600px) {
             .title {
                 font-size: 24px;
@@ -218,9 +242,14 @@
                 font-size: 32px;
             }
             .button {
-                display: block;
-                width: 100%;
-                margin: 10px 0;
+                display: block !important;
+                width: 90% !important;
+                margin: 8px auto !important;
+                padding: 12px 16px !important;
+                font-size: 13px !important;
+            }
+            .price-card {
+                padding: 16px !important;
             }
         }
     </style>
@@ -238,7 +267,9 @@
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                 <tr>
                                     <td align="center">
-                                        <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" width="150" style="display: block; margin: 0 auto 10px;">
+                                        <a href="https://kgs-ural.ru" style="display: block;">
+                                            <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" width="150" style="display: block; margin: 0 auto 10px;">
+                                        </a>
                                         <p style="color: #ffffff; font-size: 13px; line-height: 1.4; margin: 10px 0;">
                                             Производство и поставка оборудования для<br>строительства свайных фундаментов
                                         </p>
@@ -248,13 +279,23 @@
                                                     <a href="tel:88006007465" style="color: #ffffff; font-weight: 600; font-size: 14px; text-decoration: none; display: block;">8 (800) 600-74-65</a>
                                                     <a href="tel:+73433467475" style="color: #ffffff; font-weight: 600; font-size: 14px; text-decoration: none; display: block; margin-top: 5px;">8 (343) 346-74-75</a>
                                                 </td>
-                                                <td style="padding: 0 10px;">
-                                                    <a href="https://t.me/kgs_ural" style="display: block; margin-bottom: 8px;">
-                                                        <span style="display: inline-block; width: 24px; height: 24px; background-color: #229ED9; border-radius: 4px; text-align: center; line-height: 24px; color: #ffffff; font-size: 14px; font-weight: bold;">✈</span>
-                                                    </a>
-                                                    <a href="https://kgs-ural.ru" style="display: block;">
-                                                        <span style="display: inline-block; width: 24px; height: 24px; background-color: #F6A327; border-radius: 4px; text-align: center; line-height: 24px; color: #273369; font-size: 14px; font-weight: bold;">🌐</span>
-                                                    </a>
+                                                <td style="padding: 0 10px; vertical-align: middle;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                        <tr>
+                                                            <td style="padding-bottom: 8px;">
+                                                                <a href="https://t.me/kgs_ural" style="text-decoration: none;">
+                                                                    <span class="icon-telegram" style="display: inline-block; width: 28px; height: 28px; background-color: #229ED9; border-radius: 50%; text-align: center; line-height: 28px; color: #ffffff; font-size: 16px;">✈</span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <a href="https://kgs-ural.ru" style="text-decoration: none;">
+                                                                    <span class="icon-globe" style="display: inline-block; width: 28px; height: 28px; background-color: #F6A327; border-radius: 50%; text-align: center; line-height: 28px; color: #273369; font-size: 16px;">🌐</span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </td>
                                             </tr>
                                         </table>
@@ -303,18 +344,24 @@
                                             <p class="price" style="font-size: 40px; font-weight: 700; color: #ffffff; margin: 10px 0;">8 150 000 ₽</p>
                                             <p class="price-note" style="color: #999999; font-size: 12px;">с НДС</p>
                                             
+                                            <!--[if mso]>
                                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 20px;">
                                                 <tr>
                                                     <td align="center">
-                                                        <a href="tel:88006007465" class="button button-green" style="display: inline-block; padding: 14px 24px; border-radius: 6px; font-weight: 600; font-size: 14px; text-align: center; text-decoration: none; background-color: #10B981; color: #ffffff; margin: 10px 5px;">
-                                                            📞 Позвонить
-                                                        </a>
-                                                        <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" class="button button-orange" style="display: inline-block; padding: 14px 24px; border-radius: 6px; font-weight: 600; font-size: 14px; text-align: center; text-decoration: none; background-color: #F6A327; color: #273369; margin: 10px 5px;">
-                                                            📝 Оставить заявку
-                                                        </a>
+                                            <![endif]-->
+                                            <div style="margin-top: 20px;">
+                                                <a href="tel:88006007465" class="button button-green" style="display: inline-block; padding: 14px 24px; border-radius: 6px; font-weight: 600; font-size: 14px; text-align: center; text-decoration: none; background-color: #10B981; color: #ffffff; margin: 8px 5px; min-width: 160px;">
+                                                    📞 Позвонить
+                                                </a>
+                                                <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" class="button button-orange" style="display: inline-block; padding: 14px 24px; border-radius: 6px; font-weight: 600; font-size: 14px; text-align: center; text-decoration: none; background-color: #F6A327; color: #273369; margin: 8px 5px; min-width: 160px;">
+                                                    📝 Оставить заявку
+                                                </a>
+                                            </div>
+                                            <!--[if mso]>
                                                     </td>
                                                 </tr>
                                             </table>
+                                            <![endif]-->
                                         </div>
                                         
                                         <!-- Equipment Image -->
@@ -467,31 +514,39 @@
                                 </tr>
                             </table>
                             
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px;">
-                                <tr>
-                                    <td align="center">
-                                        <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" class="button button-orange" style="display: inline-block; padding: 14px 32px; border-radius: 6px; font-weight: 600; font-size: 14px; text-align: center; text-decoration: none; background-color: #F6A327; color: #273369;">
-                                            Подробнее
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div style="text-align: center; margin-top: 30px;">
+                                <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" class="button button-orange" style="display: inline-block; padding: 14px 32px; border-radius: 6px; font-weight: 600; font-size: 14px; text-align: center; text-decoration: none; background-color: #F6A327; color: #273369;">
+                                    Подробнее
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
                         <td class="footer" style="background-color: #272D49; padding: 30px 20px; text-align: center;">
-                            <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" width="120" style="display: block; margin: 0 auto 15px;">
+                            <a href="https://kgs-ural.ru" style="display: block;">
+                                <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" width="120" style="display: block; margin: 0 auto 15px;">
+                            </a>
                             <p class="footer-text" style="color: #999999; font-size: 12px; margin: 10px 0;">© 2016-2026 КоперГруппСервис</p>
                             <p style="margin: 15px 0;">
                                 <a href="tel:88006007465" class="contact-link" style="color: #F6A327; text-decoration: none; font-weight: 600; font-size: 14px;">8 (800) 600-74-65</a><br>
                                 <a href="tel:+73433467475" class="contact-link" style="color: #F6A327; text-decoration: none; font-weight: 600; font-size: 14px;">8 (343) 346-74-75</a>
                             </p>
-                            <p style="margin: 15px 0;">
-                                <a href="https://t.me/kgs_ural" style="color: #229ED9; text-decoration: none; font-size: 14px; margin: 0 10px;">Telegram</a>
-                                <a href="https://kgs-ural.ru" style="color: #F6A327; text-decoration: none; font-size: 14px; margin: 0 10px;">kgs-ural.ru</a>
-                            </p>
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 15px auto;">
+                                <tr>
+                                    <td style="padding: 0 8px;">
+                                        <a href="https://t.me/kgs_ural" style="text-decoration: none;">
+                                            <span class="icon-telegram" style="display: inline-block; width: 28px; height: 28px; background-color: #229ED9; border-radius: 50%; text-align: center; line-height: 28px; color: #ffffff; font-size: 16px;">✈</span>
+                                        </a>
+                                    </td>
+                                    <td style="padding: 0 8px;">
+                                        <a href="https://kgs-ural.ru" style="text-decoration: none;">
+                                            <span class="icon-globe" style="display: inline-block; width: 28px; height: 28px; background-color: #F6A327; border-radius: 50%; text-align: center; line-height: 28px; color: #273369; font-size: 16px;">🌐</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
                             <p class="footer-text" style="color: #999999; font-size: 11px; margin: 20px 0 0; line-height: 1.5;">
                                 Производство и поставка оборудования для строительства свайных фундаментов<br>
                                 г. Екатеринбург
