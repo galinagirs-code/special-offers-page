@@ -175,8 +175,8 @@ Email: ${formData.email || 'не указан'}
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 animate-fade-in">
               <div className="flex justify-center md:justify-start">
-                <div className="inline-flex items-center gap-2 bg-[#F6A327]/10 border border-[#F6A327]/30 rounded-md px-4 py-2">
-                  <span className="text-sm font-semibold text-[#F6A327] uppercase tracking-wide">
+                <div className="inline-flex items-center gap-2 bg-[#F6A327]/15 border-2 border-[#F6A327]/50 rounded-lg px-6 py-3">
+                  <span className="text-base md:text-lg font-bold text-[#F6A327] uppercase tracking-wider">
                     СПЕЦПРЕДЛОЖЕНИЕ
                   </span>
                 </div>
