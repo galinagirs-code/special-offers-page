@@ -59,10 +59,10 @@ def handler(event: dict, context) -> dict:
         }
     
     # Получение SMTP настроек
-    smtp_host = os.environ.get('smtp.yandex.ru')
+    smtp_host = os.environ.get('SMTP_HOST')
     smtp_port = int(os.environ.get('SMTP_PORT', '465'))
-    smtp_user = os.environ.get('marketing@kgs-ural.ru')
-    smtp_password = os.environ.get('Vguizanrlnzdrnlq')
+    smtp_user = os.environ.get('SMTP_USER')
+    smtp_password = os.environ.get('SMTP_PASSWORD')
     
     if not all([smtp_host, smtp_user, smtp_password]):
         return {
