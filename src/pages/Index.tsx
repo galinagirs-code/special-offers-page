@@ -15,6 +15,8 @@ const Index = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMobileCallBtn, setShowMobileCallBtn] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [hideHeader, setHideHeader] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,10 +27,18 @@ const Index = () => {
       
       setShowMobileCallBtn(scrollPosition > 300 && distanceFromBottom > 400);
       setShowScrollTop(scrollPosition > 500);
+      
+      // Hide/show header on mobile based on scroll direction
+      if (scrollPosition > lastScrollY && scrollPosition > 100) {
+        setHideHeader(true);
+      } else {
+        setHideHeader(false);
+      }
+      setLastScrollY(scrollPosition);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   const features = [
     {
@@ -135,7 +145,7 @@ Email: ${formData.email || 'не указан'}
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border/40 bg-[#272D49] md:sticky md:top-0 z-50">
+      <header className={`border-b border-border/40 bg-[#272D49] sticky top-0 z-50 transition-transform duration-300 ${hideHeader ? '-translate-y-full' : 'translate-y-0'}`}>
         <div className="container mx-auto px-4 py-3 md:py-5">
           <div className="flex flex-col items-center gap-3 md:flex-row md:justify-between md:gap-4">
             <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 w-full md:w-auto">
