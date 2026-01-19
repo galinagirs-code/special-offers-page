@@ -24,7 +24,7 @@ const Index = () => {
       const distanceFromBottom = documentHeight - (scrollPosition + windowHeight);
       
       setShowMobileCallBtn(scrollPosition > 300 && distanceFromBottom > 400);
-      setShowScrollTop(scrollPosition > 500);
+      setShowScrollTop(scrollPosition > 500 && distanceFromBottom > 200);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
