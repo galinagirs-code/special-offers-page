@@ -146,6 +146,15 @@ Email: ${formData.email || 'не указан'}
                 <p className="text-sm md:text-base font-medium text-foreground leading-tight">
                   Производство и поставка оборудования для<br />строительства свайных фундаментов
                 </p>
+                <div className="flex gap-3 justify-center md:justify-start mt-2">
+                  <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-[#F6A327] transition-colors">
+                    Политика конфиденциальности
+                  </a>
+                  <span className="text-xs text-muted-foreground">•</span>
+                  <a href="https://kgs-ural.ru/cookie/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-[#F6A327] transition-colors">
+                    Cookie
+                  </a>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-6">
