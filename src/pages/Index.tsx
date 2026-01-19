@@ -100,26 +100,43 @@ const Index = () => {
 
     setIsSubmitting(true);
 
-    const emailBody = `
-Новая заявка с сайта KGS-Ural
-
-Имя: ${formData.name}
-Телефон: ${formData.phone}
-Email: ${formData.email || 'не указан'}
-Предложение: Yongan DZJ-90 - 8 150 000 ₽
-    `.trim();
-
-    const mailtoLink = `mailto:marketing@kgs-ural.ru?subject=Заявка на Yongan DZJ-90&body=${encodeURIComponent(emailBody)}`;
-    window.location.href = mailtoLink;
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: 'Заявка отправлена',
-        description: 'Мы свяжемся с вами в ближайшее время'
+    try {
+      const response = await fetch('https://functions.poehali.dev/858f33e4-bf36-459f-8130-c16cf2b083ca', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email
+        })
       });
-      setFormData({ name: '', phone: '', email: '', consent: false });
-    }, 1000);
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: 'Заявка отправлена',
+          description: 'Мы свяжемся с вами в ближайшее время'
+        });
+        setFormData({ name: '', phone: '', email: '', consent: false });
+      } else {
+        toast({
+          title: 'Ошибка отправки',
+          description: result.error || 'Попробуйте позже',
+          variant: 'destructive'
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Ошибка сети',
+        description: 'Проверьте интернет-соединение',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCall = () => {

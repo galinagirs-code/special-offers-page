@@ -1,0 +1,32 @@
+{
+  "tests": [
+    {
+      "name": "Test successful email submission",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Тестовый клиент",
+        "phone": "+7 (999) 123-45-67",
+        "email": "test@example.com"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test missing required fields",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Иван"
+      },
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
