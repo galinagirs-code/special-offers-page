@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 
 
 def handler(event: dict, context) -> dict:
-    """Отправка email через SMTP с данными формы заявки"""
+    """Отправка email через SMTP Яндекс с данными формы заявки"""
     
     method = event.get('httpMethod', 'POST')
     
