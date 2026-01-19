@@ -109,7 +109,7 @@ Email: ${formData.email || 'не указан'}
 Предложение: Yongan DZJ-90 - 8 150 000 ₽
     `.trim();
 
-    const mailtoLink = `mailto:info@kgs-ural.ru?subject=Заявка на Yongan DZJ-90&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:marketing@kgs-ural.ru?subject=Заявка на Yongan DZJ-90&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
 
     setTimeout(() => {
@@ -118,7 +118,7 @@ Email: ${formData.email || 'не указан'}
         title: 'Заявка отправлена',
         description: 'Мы свяжемся с вами в ближайшее время'
       });
-      setFormData({ name: '', phone: '', email: '' });
+      setFormData({ name: '', phone: '', email: '', consent: false });
     }, 1000);
   };
 
