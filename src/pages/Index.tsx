@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import InputMask from 'react-input-mask';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 
@@ -66,6 +65,26 @@ const Index = () => {
     { label: 'Минимальная грузоподъемность крана, T', value: '50' }
   ];
 
+  const formatPhoneNumber = (value: string) => {
+    const cleaned = value.replace(/\D/g, '');
+    const match = cleaned.match(/^(7|8)?(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})$/);
+    
+    if (match) {
+      const parts = ['+7'];
+      if (match[2]) parts.push(` (${match[2]}`);
+      if (match[3]) parts.push(match[2].length === 3 ? `) ${match[3]}` : match[3]);
+      if (match[4]) parts.push(`-${match[4]}`);
+      if (match[5]) parts.push(`-${match[5]}`);
+      return parts.join('');
+    }
+    return value;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setFormData({ ...formData, phone: formatted });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -117,14 +136,14 @@ Email: ${formData.email || 'не указан'}
   return (
     <div className="min-h-screen">
       <header className="border-b border-border/40 bg-[#272D49] md:sticky md:top-0 z-50">
-        <div className="container mx-auto px-4 py-5">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
+        <div className="container mx-auto px-4 py-3 md:py-5">
+          <div className="flex flex-col items-center gap-3 md:flex-row md:justify-between md:gap-4">
+            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 w-full md:w-auto">
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
-                <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-12 object-contain hover:opacity-80 transition-opacity" style={{minWidth: '120px'}} />
+                <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-10 md:h-12 object-contain hover:opacity-80 transition-opacity" style={{minWidth: '120px'}} />
               </a>
-              <div className="border-l border-border/40 pl-4">
-                <p className="text-base font-medium text-foreground leading-tight">
+              <div className="md:border-l md:border-border/40 md:pl-4 text-center md:text-left">
+                <p className="text-sm md:text-base font-medium text-foreground leading-tight">
                   Производство и поставка оборудования для<br />строительства свайных фундаментов
                 </p>
               </div>
@@ -222,12 +241,12 @@ Email: ${formData.email || 'не указан'}
               Характеристики Yongan DZJ-90
             </h2>
           </a>
-          <Card className="max-w-4xl mx-auto p-8 bg-card/80 backdrop-blur-sm border-[#F6A327]/10">
-            <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
+          <Card className="max-w-4xl mx-auto p-4 md:p-8 bg-card/80 backdrop-blur-sm border-[#F6A327]/10">
+            <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-4">
               {specifications.map((spec, index) => (
-                <div key={index} className="flex justify-between items-center py-3 border-b border-border/40 last:border-0">
-                  <span className="text-muted-foreground text-sm">{spec.label}</span>
-                  <span className="font-semibold text-foreground">{spec.value}</span>
+                <div key={index} className="flex flex-col md:flex-row md:justify-between md:items-center py-2 md:py-3 border-b border-border/40 last:border-0 gap-1">
+                  <span className="text-muted-foreground text-xs md:text-sm">{spec.label}</span>
+                  <span className="font-semibold text-foreground text-sm md:text-base">{spec.value}</span>
                 </div>
               ))}
             </div>
@@ -269,21 +288,14 @@ Email: ${formData.email || 'не указан'}
                   <label className="text-sm font-medium mb-2 block">
                     Телефон <span className="text-[#F6A327]">*</span>
                   </label>
-                  <InputMask
-                    mask="+7 (999) 999-99-99"
+                  <Input 
+                    type="tel" 
+                    placeholder="+7 (___) ___-__-__" 
+                    className="bg-background/50"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  >
-                    {(inputProps: any) => (
-                      <Input 
-                        {...inputProps}
-                        type="tel" 
-                        placeholder="+7 (___) ___-__-__" 
-                        className="bg-background/50"
-                        required
-                      />
-                    )}
-                  </InputMask>
+                    onChange={handlePhoneChange}
+                    required
+                  />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">
@@ -313,12 +325,12 @@ Email: ${formData.email || 'не указан'}
 
       <footer className="border-t border-border/40 bg-[#272D49] py-8">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
+            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4">
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
                 <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-10 object-contain hover:opacity-80 transition-opacity" style={{minWidth: '100px'}} />
               </a>
-              <span className="text-sm text-muted-foreground">© 2016-2026 КоперГруппСервис</span>
+              <span className="text-sm text-muted-foreground text-center md:text-left">© 2016-2026 КоперГруппСервис</span>
             </div>
             <div className="flex items-center gap-6">
               <div className="flex flex-col gap-1">
@@ -354,7 +366,7 @@ Email: ${formData.email || 'не указан'}
         </div>
       )}
 
-      {showScrollTop && (
+      {showScrollTop && !showMobileCallBtn && (
         <button
           onClick={scrollToTop}
           className="fixed bottom-4 right-4 z-50 w-12 h-12 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 animate-fade-in"
