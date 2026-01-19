@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import InputMask from 'react-input-mask';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 
@@ -13,6 +14,15 @@ const Index = () => {
     email: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showMobileCallBtn, setShowMobileCallBtn] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowMobileCallBtn(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const features = [
     {
@@ -121,9 +131,8 @@ Email: ${formData.email || 'не указан'}
                 <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
                   <Icon name="Send" size={24} className="text-[#229ED9]" />
                 </a>
-                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:text-[#F6A327] transition-colors flex items-center gap-1">
-                  <Icon name="Globe" size={16} className="text-[#F6A327]" />
-                  kgs-ural.ru
+                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Перейти на сайт KGS-Ural">
+                  <Icon name="Globe" size={24} className="text-[#F6A327]" />
                 </a>
               </div>
             </div>
@@ -187,7 +196,7 @@ Email: ${formData.email || 'не указан'}
               <div className="absolute inset-0 bg-gradient-to-tr from-[#F6A327]/20 to-transparent rounded-2xl blur-3xl" />
               <img 
                 src="https://cdn.poehali.dev/files/Вибрик без фона.png" 
-                alt="Yongan DZJ-90" 
+                alt="Вибропогружатель электрический крановый Yongan DZJ-90 - оборудование для строительства свайных фундаментов" 
                 className="relative w-full max-w-xl h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300"
               />
             </div>
@@ -252,14 +261,21 @@ Email: ${formData.email || 'не указан'}
                   <label className="text-sm font-medium mb-2 block">
                     Телефон <span className="text-[#F6A327]">*</span>
                   </label>
-                  <Input 
-                    type="tel" 
-                    placeholder="+7 (___) ___-__-__" 
-                    className="bg-background/50"
+                  <InputMask
+                    mask="+7 (999) 999-99-99"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    required
-                  />
+                  >
+                    {(inputProps: any) => (
+                      <Input 
+                        {...inputProps}
+                        type="tel" 
+                        placeholder="+7 (___) ___-__-__" 
+                        className="bg-background/50"
+                        required
+                      />
+                    )}
+                  </InputMask>
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">
@@ -309,15 +325,26 @@ Email: ${formData.email || 'не указан'}
                 <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
                   <Icon name="Send" size={20} className="text-[#229ED9]" />
                 </a>
-                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-[#F6A327] transition-colors flex items-center gap-1">
-                  <Icon name="Globe" size={14} className="text-[#F6A327]" />
-                  kgs-ural.ru
+                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Перейти на сайт KGS-Ural">
+                  <Icon name="Globe" size={20} className="text-[#F6A327]" />
                 </a>
               </div>
             </div>
           </div>
         </div>
       </footer>
+
+      {showMobileCallBtn && (
+        <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 animate-fade-in">
+          <Button 
+            onClick={handleCall} 
+            className="w-full h-14 bg-[#10B981] hover:bg-[#10B981]/90 text-white text-lg font-semibold shadow-2xl"
+          >
+            <Icon name="Phone" size={24} className="mr-2" />
+            Позвонить 8 (800) 600-74-65
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
