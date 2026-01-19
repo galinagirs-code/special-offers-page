@@ -174,10 +174,12 @@ Email: ${formData.email || 'не указан'}
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 animate-fade-in">
-              <div className="inline-flex items-center gap-2 bg-[#F6A327]/10 border border-[#F6A327]/30 rounded-md px-4 py-2">
-                <span className="text-sm font-semibold text-[#F6A327] uppercase tracking-wide">
-                  СПЕЦПРЕДЛОЖЕНИЕ
-                </span>
+              <div className="flex justify-center md:justify-start">
+                <div className="inline-flex items-center gap-2 bg-[#F6A327]/10 border border-[#F6A327]/30 rounded-md px-4 py-2">
+                  <span className="text-sm font-semibold text-[#F6A327] uppercase tracking-wide">
+                    СПЕЦПРЕДЛОЖЕНИЕ
+                  </span>
+                </div>
               </div>
               
               <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-all duration-300">
@@ -206,7 +208,7 @@ Email: ${formData.email || 'не указан'}
                   </span>
                 </div>
                 <div className="mb-4 md:mb-6">
-                  <div className="text-3xl md:text-4xl lg:text-5xl font-bold mb-1">8 150 000 ₽</div>
+                  <div className="text-3xl md:text-4xl lg:text-5xl font-bold mb-1 text-[#F6A327]">8 150 000 ₽</div>
                   <div className="text-xs md:text-sm text-muted-foreground">с НДС</div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
