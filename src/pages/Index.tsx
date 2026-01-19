@@ -199,22 +199,22 @@ Email: ${formData.email || 'не указан'}
                 ))}
               </div>
 
-              <Card className="p-6 bg-card/80 backdrop-blur-sm border-[#F6A327]/20 animate-scale-in">
-                <div className="mb-4">
-                  <span className="text-sm text-muted-foreground uppercase tracking-wide">
+              <Card className="p-4 md:p-6 bg-card/80 backdrop-blur-sm border-[#F6A327]/20 animate-scale-in">
+                <div className="mb-3 md:mb-4">
+                  <span className="text-xs md:text-sm text-muted-foreground uppercase tracking-wide">
                     Специальная цена
                   </span>
                 </div>
-                <div className="mb-6">
-                  <div className="text-4xl md:text-5xl font-bold mb-1">8 150 000 ₽</div>
-                  <div className="text-sm text-muted-foreground">с НДС</div>
+                <div className="mb-4 md:mb-6">
+                  <div className="text-3xl md:text-4xl lg:text-5xl font-bold mb-1">8 150 000 ₽</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">с НДС</div>
                 </div>
-                <div className="flex gap-3">
-                  <Button onClick={handleCall} className="flex-1 bg-[#10B981] hover:bg-[#10B981]/90 text-white">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button onClick={handleCall} className="flex-1 bg-[#10B981] hover:bg-[#10B981]/90 text-white text-sm md:text-base">
                     <Icon name="Phone" size={18} className="mr-2" />
                     Позвонить
                   </Button>
-                  <Button onClick={scrollToForm} className="flex-1 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369]">
+                  <Button onClick={scrollToForm} className="flex-1 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] text-sm md:text-base">
                     <Icon name="Send" size={18} className="mr-2" />
                     Оставить заявку
                   </Button>
@@ -366,10 +366,12 @@ Email: ${formData.email || 'не указан'}
         </div>
       )}
 
-      {showScrollTop && !showMobileCallBtn && (
+      {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-4 right-4 z-50 w-12 h-12 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 animate-fade-in"
+          className={`fixed z-50 w-12 h-12 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 animate-fade-in ${
+            showMobileCallBtn ? 'bottom-20 right-4' : 'bottom-4 right-4'
+          }`}
           aria-label="Прокрутить наверх"
         >
           <Icon name="ArrowUp" size={24} />
