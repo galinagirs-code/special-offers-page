@@ -10,7 +10,8 @@ const Index = () => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    email: ''
+    email: '',
+    consent: false
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMobileCallBtn, setShowMobileCallBtn] = useState(false);
@@ -311,10 +312,31 @@ Email: ${formData.email || 'не указан'}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   />
                 </div>
+                <div className="flex items-start gap-2">
+                  <input
+                    type="checkbox"
+                    id="consent"
+                    checked={formData.consent}
+                    onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
+                    className="mt-1 h-4 w-4 rounded border-border bg-background/50 accent-[#F6A327]"
+                    required
+                  />
+                  <label htmlFor="consent" className="text-xs text-muted-foreground leading-relaxed">
+                    Я согласен на обработку персональных данных в соответствии с{' '}
+                    <a 
+                      href="https://kgs-ural.ru/politika-konfidencialnosti/" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-[#F6A327] hover:underline"
+                    >
+                      политикой конфиденциальности
+                    </a>
+                  </label>
+                </div>
                 <Button 
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold"
+                  disabled={isSubmitting || !formData.consent}
+                  className="w-full bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Icon name="Send" size={18} className="mr-2" />
                   {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
