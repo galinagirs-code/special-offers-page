@@ -1,14 +1,10 @@
 import json
 import os
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import requests
 
 
 def handler(event: dict, context) -> dict:
-    """Отправка email через SMTP Яндекс с данными формы заявки"""
-    
-    print(f"Event received: {json.dumps(event)}")
+    """Отправка заявки на email через Resend"""
     
     method = event.get('httpMethod', 'POST')
     
@@ -65,20 +61,20 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'error': 'Name and phone are required'})
         }
     
-    # SMTP настройки Яндекс
-    smtp_host = 'smtp.yandex.ru'
-    smtp_port = 465
-    smtp_user = 'noreply@kgs-ural.ru'
-    smtp_password = 'lofhlfjwffdihokf'
+    # Получение API ключа Resend
+    resend_api_key = os.environ.get('RESEND_API_KEY')
     
-
+    if not resend_api_key:
+        return {
+            'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps({'error': 'RESEND_API_KEY not configured'})
+        }
     
     # Формирование письма
-    msg = MIMEMultipart()
-    msg['From'] = smtp_user
-    msg['To'] = 'marketing@kgs-ural.ru'
-    msg['Subject'] = 'Заявка на Yongan DZJ-90'
-    
     email_body = f"""
 Новая заявка с сайта KGS-Ural
 
@@ -88,26 +84,40 @@ Email: {email}
 Предложение: Yongan DZJ-90 - 8 150 000 ₽
     """.strip()
     
-    msg.attach(MIMEText(email_body, 'plain', 'utf-8'))
-    
-    # Отправка письма
+    # Отправка через Resend API
     try:
-        print(f"Connecting to {smtp_host}:{smtp_port} with user {smtp_user}")
-        with smtplib.SMTP_SSL(smtp_host, smtp_port) as server:
-            print("Connected, attempting login...")
-            server.login(smtp_user, smtp_password)
-            print("Logged in, sending message...")
-            server.send_message(msg)
-            print("Message sent successfully")
-        
-        return {
-            'statusCode': 200,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+        response = requests.post(
+            'https://api.resend.com/emails',
+            headers={
+                'Authorization': f'Bearer {resend_api_key}',
+                'Content-Type': 'application/json'
             },
-            'body': json.dumps({'success': True, 'message': 'Email sent successfully'})
-        }
+            json={
+                'from': 'noreply@resend.dev',
+                'to': ['marketing@kgs-ural.ru'],
+                'subject': 'Заявка на Yongan DZJ-90',
+                'text': email_body
+            }
+        )
+        
+        if response.status_code == 200:
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({'success': True, 'message': 'Email sent successfully'})
+            }
+        else:
+            return {
+                'statusCode': 500,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({'error': f'Resend API error: {response.text}'})
+            }
     
     except Exception as e:
         return {
