@@ -1,10 +1,11 @@
 import json
-import os
-import requests
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 def handler(event: dict, context) -> dict:
-    """Отправка заявки на email через Resend"""
+    """Отправка заявки через бесплатный Gmail SMTP"""
     
     method = event.get('httpMethod', 'POST')
     
@@ -61,20 +62,18 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'error': 'Name and phone are required'})
         }
     
-    # Получение API ключа Resend
-    resend_api_key = os.environ.get('RESEND_API_KEY')
-    
-    if not resend_api_key:
-        return {
-            'statusCode': 500,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps({'error': 'RESEND_API_KEY not configured'})
-        }
+    # Gmail SMTP настройки (бесплатный аккаунт для тестов)
+    smtp_host = 'smtp.gmail.com'
+    smtp_port = 587
+    smtp_user = 'kgsural.notifications@gmail.com'
+    smtp_password = 'your_app_password_here'  # Нужен пароль приложения Gmail
     
     # Формирование письма
+    msg = MIMEMultipart()
+    msg['From'] = smtp_user
+    msg['To'] = 'marketing@kgs-ural.ru'
+    msg['Subject'] = 'Заявка на Yongan DZJ-90'
+    
     email_body = f"""
 Новая заявка с сайта KGS-Ural
 
@@ -84,40 +83,23 @@ Email: {email}
 Предложение: Yongan DZJ-90 - 8 150 000 ₽
     """.strip()
     
-    # Отправка через Resend API
+    msg.attach(MIMEText(email_body, 'plain', 'utf-8'))
+    
+    # Отправка через Gmail SMTP
     try:
-        response = requests.post(
-            'https://api.resend.com/emails',
-            headers={
-                'Authorization': f'Bearer {resend_api_key}',
-                'Content-Type': 'application/json'
-            },
-            json={
-                'from': 'noreply@resend.dev',
-                'to': ['marketing@kgs-ural.ru'],
-                'subject': 'Заявка на Yongan DZJ-90',
-                'text': email_body
-            }
-        )
+        with smtplib.SMTP(smtp_host, smtp_port) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_password)
+            server.send_message(msg)
         
-        if response.status_code == 200:
-            return {
-                'statusCode': 200,
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                'body': json.dumps({'success': True, 'message': 'Email sent successfully'})
-            }
-        else:
-            return {
-                'statusCode': 500,
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                'body': json.dumps({'error': f'Resend API error: {response.text}'})
-            }
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps({'success': True, 'message': 'Email sent successfully'})
+        }
     
     except Exception as e:
         return {
