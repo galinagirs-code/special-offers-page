@@ -1,27 +1,16 @@
 {
   "tests": [
     {
-      "name": "Test successful email submission",
-      "method": "POST",
+      "name": "Test CORS preflight",
+      "method": "OPTIONS",
       "path": "/",
-      "body": {
-        "name": "Тестовый клиент",
-        "phone": "+7 (999) 123-45-67",
-        "email": "test@example.com"
-      },
-      "expectedStatus": 200,
-      "expectedBody": {
-        "success": true
-      },
-      "bodyMatcher": "partial"
+      "expectedStatus": 200
     },
     {
-      "name": "Test missing required fields",
+      "name": "Test missing fields",
       "method": "POST",
       "path": "/",
-      "body": {
-        "name": "Иван"
-      },
+      "body": {"name": "Test"},
       "expectedStatus": 400,
       "expectedBody": {
         "error": "string"

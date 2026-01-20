@@ -33,20 +33,25 @@ def handler(event: dict, context) -> dict:
         }
     
     # Парсинг данных формы
-    try:
-        body = json.loads(event.get('body', '{}'))
-        name = body.get('name', '')
-        phone = body.get('phone', '')
-        email = body.get('email', 'не указан')
-    except json.JSONDecodeError:
-        return {
-            'statusCode': 400,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps({'error': 'Invalid JSON'})
-        }
+    body_str = event.get('body', '{}')
+    if isinstance(body_str, str):
+        try:
+            body = json.loads(body_str)
+        except json.JSONDecodeError:
+            return {
+                'statusCode': 400,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({'error': 'Invalid JSON'})
+            }
+    else:
+        body = body_str
+    
+    name = body.get('name', '')
+    phone = body.get('phone', '')
+    email = body.get('email', 'не указан')
     
     if not name or not phone:
         return {
