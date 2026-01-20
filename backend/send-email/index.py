@@ -62,8 +62,8 @@ def handler(event: dict, context) -> dict:
         }
     
     # Telegram Bot настройки
-    bot_token = 'YOUR_BOT_TOKEN'  # Получите у @BotFather
-    chat_id = 'YOUR_CHAT_ID'  # Ваш Telegram ID
+    bot_token = '8459653165:AAGtN0j1Yp5pk-RxmJZQsqN-CHw0BVb59TQ'
+    chat_id = '1156073481'
     
     # Формирование сообщения
     message = f"""🚜 Новая заявка с сайта KGS-Ural
