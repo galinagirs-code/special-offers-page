@@ -63,7 +63,7 @@ def handler(event: dict, context) -> dict:
     
     # Telegram Bot настройки
     bot_token = '8459653165:AAGtN0j1Yp5pk-RxmJZQsqN-CHw0BVb59TQ'
-    chat_id = '1156073481'
+    chat_ids = ['1156073481']  # Добавьте сюда ID коллег
     
     # Формирование сообщения
     message = f"""🚜 Новая заявка с сайта KGS-Ural
@@ -73,17 +73,18 @@ def handler(event: dict, context) -> dict:
 📧 Email: {email}
 💰 Предложение: Yongan DZJ-90 - 8 150 000 ₽"""
     
-    # Отправка в Telegram
+    # Отправка в Telegram всем получателям
     try:
-        url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
-        data = urllib.parse.urlencode({
-            'chat_id': chat_id,
-            'text': message
-        }).encode()
-        
-        req = urllib.request.Request(url, data=data)
-        with urllib.request.urlopen(req) as response:
-            result = response.read()
+        for chat_id in chat_ids:
+            url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
+            data = urllib.parse.urlencode({
+                'chat_id': chat_id,
+                'text': message
+            }).encode()
+            
+            req = urllib.request.Request(url, data=data)
+            with urllib.request.urlopen(req) as response:
+                result = response.read()
         
         return {
             'statusCode': 200,
