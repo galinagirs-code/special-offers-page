@@ -1,11 +1,10 @@
 import json
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import urllib.request
+import urllib.parse
 
 
 def handler(event: dict, context) -> dict:
-    """Отправка заявки через бесплатный Gmail SMTP"""
+    """Отправка заявки в Telegram"""
     
     method = event.get('httpMethod', 'POST')
     
@@ -62,35 +61,29 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'error': 'Name and phone are required'})
         }
     
-    # Gmail SMTP настройки (бесплатный аккаунт для тестов)
-    smtp_host = 'smtp.gmail.com'
-    smtp_port = 587
-    smtp_user = 'kgsural.notifications@gmail.com'
-    smtp_password = 'your_app_password_here'  # Нужен пароль приложения Gmail
+    # Telegram Bot настройки
+    bot_token = 'YOUR_BOT_TOKEN'  # Получите у @BotFather
+    chat_id = 'YOUR_CHAT_ID'  # Ваш Telegram ID
     
-    # Формирование письма
-    msg = MIMEMultipart()
-    msg['From'] = smtp_user
-    msg['To'] = 'marketing@kgs-ural.ru'
-    msg['Subject'] = 'Заявка на Yongan DZJ-90'
-    
-    email_body = f"""
-Новая заявка с сайта KGS-Ural
+    # Формирование сообщения
+    message = f"""🚜 Новая заявка с сайта KGS-Ural
 
-Имя: {name}
-Телефон: {phone}
-Email: {email}
-Предложение: Yongan DZJ-90 - 8 150 000 ₽
-    """.strip()
+👤 Имя: {name}
+📞 Телефон: {phone}
+📧 Email: {email}
+💰 Предложение: Yongan DZJ-90 - 8 150 000 ₽"""
     
-    msg.attach(MIMEText(email_body, 'plain', 'utf-8'))
-    
-    # Отправка через Gmail SMTP
+    # Отправка в Telegram
     try:
-        with smtplib.SMTP(smtp_host, smtp_port) as server:
-            server.starttls()
-            server.login(smtp_user, smtp_password)
-            server.send_message(msg)
+        url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
+        data = urllib.parse.urlencode({
+            'chat_id': chat_id,
+            'text': message
+        }).encode()
+        
+        req = urllib.request.Request(url, data=data)
+        with urllib.request.urlopen(req) as response:
+            result = response.read()
         
         return {
             'statusCode': 200,
@@ -98,7 +91,7 @@ Email: {email}
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
-            'body': json.dumps({'success': True, 'message': 'Email sent successfully'})
+            'body': json.dumps({'success': True, 'message': 'Заявка отправлена'})
         }
     
     except Exception as e:
@@ -108,5 +101,5 @@ Email: {email}
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
-            'body': json.dumps({'error': f'Failed to send email: {str(e)}'})
+            'body': json.dumps({'error': f'Ошибка отправки: {str(e)}'})
         }
