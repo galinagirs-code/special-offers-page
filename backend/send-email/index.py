@@ -8,6 +8,8 @@ from email.mime.multipart import MIMEMultipart
 def handler(event: dict, context) -> dict:
     """Отправка email через SMTP Яндекс с данными формы заявки"""
     
+    print(f"Event received: {json.dumps(event)}")
+    
     method = event.get('httpMethod', 'POST')
     
     # CORS preflight
@@ -90,9 +92,13 @@ Email: {email}
     
     # Отправка письма
     try:
+        print(f"Connecting to {smtp_host}:{smtp_port} with user {smtp_user}")
         with smtplib.SMTP_SSL(smtp_host, smtp_port) as server:
+            print("Connected, attempting login...")
             server.login(smtp_user, smtp_password)
+            print("Logged in, sending message...")
             server.send_message(msg)
+            print("Message sent successfully")
         
         return {
             'statusCode': 200,
