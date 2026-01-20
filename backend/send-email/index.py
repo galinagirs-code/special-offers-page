@@ -63,21 +63,13 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'error': 'Name and phone are required'})
         }
     
-    # Получение SMTP настроек
-    smtp_host = os.environ.get('SMTP_HOST')
-    smtp_port = int(os.environ.get('SMTP_PORT', '465'))
-    smtp_user = os.environ.get('SMTP_USER')
-    smtp_password = os.environ.get('SMTP_PASSWORD')
+    # SMTP настройки Яндекс
+    smtp_host = 'smtp.yandex.ru'
+    smtp_port = 465
+    smtp_user = 'noreply@kgs-ural.ru'
+    smtp_password = 'lofhlfjwffdihokf'
     
-    if not all([smtp_host, smtp_user, smtp_password]):
-        return {
-            'statusCode': 500,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps({'error': 'SMTP configuration missing'})
-        }
+
     
     # Формирование письма
     msg = MIMEMultipart()
