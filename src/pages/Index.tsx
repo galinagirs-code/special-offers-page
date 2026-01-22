@@ -235,9 +235,19 @@ const Index = () => {
                     Специальная цена
                   </span>
                 </div>
-                <div>
+                <div className="mb-4 md:mb-6">
                   <div className="text-3xl md:text-4xl lg:text-5xl font-bold mb-1 text-[#F6A327]">8 150 000 ₽</div>
                   <div className="text-xs md:text-sm text-muted-foreground">с НДС</div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button onClick={handleCall} className="flex-1 bg-[#10B981] hover:bg-[#10B981]/90 text-white text-sm md:text-base">
+                    <Icon name="Phone" size={18} className="mr-2" />
+                    Позвонить
+                  </Button>
+                  <Button onClick={scrollToForm} className="flex-1 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] text-sm md:text-base">
+                    <Icon name="Send" size={18} className="mr-2" />
+                    Оставить заявку
+                  </Button>
                 </div>
               </Card>
             </div>
