@@ -324,7 +324,7 @@ const Index = () => {
               </div>
 
               <div>
-                <h3 className="text-xl md:text-2xl font-bold mb-4 text-[#F6A327]">Преимущества вибропогружателей электрических крановых Yongan DZJ-90</h3>
+                <h3 className="text-xl md:text-2xl font-bold mb-4 text-[#F6A327]">Преимущества</h3>
                 <ul className="space-y-3">
                   {advantages.map((advantage, index) => (
                     <li key={index} className="flex items-start gap-3">
