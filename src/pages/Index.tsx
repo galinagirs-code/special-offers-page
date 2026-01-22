@@ -63,10 +63,17 @@ const Index = () => {
     { label: 'Зажим', value: 'одинарный/двойной', category: 'equipment' },
     { label: 'Диапазон применения зажима, мм', value: '530-1500', category: 'equipment' },
     { label: 'Мощность генератора, кВ', value: '250', category: 'technical' },
-    { label: 'Минимальная грузоподъемность крана, T', value: '50', category: 'requirements' },
-    { label: 'Тип применения', value: 'Погружение свай, шпунтов', category: 'application' },
-    { label: 'Совместимость', value: 'Кран, экскаватор', category: 'application' },
-    { label: 'Область применения', value: 'Строительство фундаментов, забивка свай, шпунтовые ограждения', category: 'application' }
+    { label: 'Минимальная грузоподъемность крана, T', value: '50', category: 'requirements' }
+  ];
+
+  const advantages = [
+    'Прочная грузоподъемная рама',
+    'Усиленные пружины для работы в различных грунтовых условиях',
+    'Электродвигатель Siemens с внутренней защитой от замыканий и вибрации рассчитан на долгий срок эксплуатации',
+    'Редуктора устойчивы к огромной вибрации, которую создают эксцентрики и другие механизмы',
+    'Система зажима разработана из литых блоков для предотвращения возможных неприятных проблем',
+    'Шкивы и ремни имеют защитную оболочку во избежание повреждений во время работы',
+    'Цена до 60% ниже гидравлических вибропогружателей, не уступая в качестве'
   ];
 
   const formatPhoneNumber = (value: string) => {
@@ -305,15 +312,27 @@ const Index = () => {
               </div>
 
               <div>
-                <h3 className="text-xl md:text-2xl font-bold mb-4 text-[#F6A327]">Применение и совместимость</h3>
+                <h3 className="text-xl md:text-2xl font-bold mb-4 text-[#F6A327]">Требования</h3>
                 <div className="space-y-2 md:space-y-3">
-                  {specifications.filter(s => s.category === 'application' || s.category === 'requirements').map((spec, index) => (
+                  {specifications.filter(s => s.category === 'requirements').map((spec, index) => (
                     <div key={index} className="flex flex-col md:flex-row md:justify-between md:items-start py-2 border-b border-border/20 last:border-0 gap-1">
                       <span className="text-muted-foreground text-xs md:text-sm">{spec.label}</span>
                       <span className="font-semibold text-foreground text-sm md:text-base md:text-right md:max-w-md">{spec.value}</span>
                     </div>
                   ))}
                 </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold mb-4 text-[#F6A327]">Преимущества вибропогружателей электрических крановых Yongan DZJ-90</h3>
+                <ul className="space-y-3">
+                  {advantages.map((advantage, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <Icon name="CheckCircle2" size={20} className="text-[#10B981] flex-shrink-0 mt-0.5" />
+                      <span className="text-foreground/90 text-sm md:text-base leading-relaxed">{advantage}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </Card>
