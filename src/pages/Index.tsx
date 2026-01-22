@@ -51,19 +51,22 @@ const Index = () => {
   ];
 
   const specifications = [
-    { label: 'Мощность двигателя, кВ', value: '90' },
-    { label: 'Эксцентриковый момент, кг/м', value: '0-58' },
-    { label: 'Центробежная сила, кН', value: '0-579' },
-    { label: 'Частота, об/мин', value: '0-960' },
-    { label: 'Максимальная амплитуда, мм', value: '11.5' },
-    { label: 'Максимальное натяжение троса, кН', value: '254' },
-    { label: 'Габариты, мм', value: '1850х1300х2500' },
-    { label: 'Вес без зажима, кг', value: '5700' },
-    { label: 'Сечение кабеля, мм²', value: '50' },
-    { label: 'Зажим', value: 'одинарный/двойной' },
-    { label: 'Диапазон применения зажима, мм', value: '530-1500' },
-    { label: 'Мощность генератора, кВ', value: '250' },
-    { label: 'Минимальная грузоподъемность крана, T', value: '50' }
+    { label: 'Мощность двигателя, кВ', value: '90', category: 'technical' },
+    { label: 'Эксцентриковый момент, кг/м', value: '0-58', category: 'technical' },
+    { label: 'Центробежная сила, кН', value: '0-579', category: 'technical' },
+    { label: 'Частота, об/мин', value: '0-960', category: 'technical' },
+    { label: 'Максимальная амплитуда, мм', value: '11.5', category: 'technical' },
+    { label: 'Максимальное натяжение троса, кН', value: '254', category: 'technical' },
+    { label: 'Габариты, мм', value: '1850х1300х2500', category: 'dimensions' },
+    { label: 'Вес без зажима, кг', value: '5700', category: 'dimensions' },
+    { label: 'Сечение кабеля, мм²', value: '50', category: 'technical' },
+    { label: 'Зажим', value: 'одинарный/двойной', category: 'equipment' },
+    { label: 'Диапазон применения зажима, мм', value: '530-1500', category: 'equipment' },
+    { label: 'Мощность генератора, кВ', value: '250', category: 'technical' },
+    { label: 'Минимальная грузоподъемность крана, T', value: '50', category: 'requirements' },
+    { label: 'Тип применения', value: 'Погружение свай, шпунтов', category: 'application' },
+    { label: 'Совместимость', value: 'Кран, экскаватор', category: 'application' },
+    { label: 'Область применения', value: 'Строительство фундаментов, забивка свай, шпунтовые ограждения', category: 'application' }
   ];
 
   const formatPhoneNumber = (value: string) => {
@@ -263,14 +266,55 @@ const Index = () => {
               Характеристики Yongan DZJ-90
             </h2>
           </a>
-          <Card className="max-w-4xl mx-auto p-4 md:p-8 bg-card/80 backdrop-blur-sm border-[#F6A327]/10">
-            <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-4">
-              {specifications.map((spec, index) => (
-                <div key={index} className="flex flex-col md:flex-row md:justify-between md:items-center py-2 md:py-3 border-b border-border/40 last:border-0 gap-1">
-                  <span className="text-muted-foreground text-xs md:text-sm">{spec.label}</span>
-                  <span className="font-semibold text-foreground text-sm md:text-base">{spec.value}</span>
+          <Card className="max-w-5xl mx-auto p-4 md:p-8 bg-card/80 backdrop-blur-sm border-[#F6A327]/10">
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold mb-4 text-[#F6A327]">Технические характеристики</h3>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-3">
+                  {specifications.filter(s => s.category === 'technical').map((spec, index) => (
+                    <div key={index} className="flex flex-col md:flex-row md:justify-between md:items-center py-2 border-b border-border/20 last:border-0 gap-1">
+                      <span className="text-muted-foreground text-xs md:text-sm">{spec.label}</span>
+                      <span className="font-semibold text-foreground text-sm md:text-base">{spec.value}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold mb-4 text-[#F6A327]">Габариты и вес</h3>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-3">
+                  {specifications.filter(s => s.category === 'dimensions').map((spec, index) => (
+                    <div key={index} className="flex flex-col md:flex-row md:justify-between md:items-center py-2 border-b border-border/20 last:border-0 gap-1">
+                      <span className="text-muted-foreground text-xs md:text-sm">{spec.label}</span>
+                      <span className="font-semibold text-foreground text-sm md:text-base">{spec.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold mb-4 text-[#F6A327]">Комплектация</h3>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-3">
+                  {specifications.filter(s => s.category === 'equipment').map((spec, index) => (
+                    <div key={index} className="flex flex-col md:flex-row md:justify-between md:items-center py-2 border-b border-border/20 last:border-0 gap-1">
+                      <span className="text-muted-foreground text-xs md:text-sm">{spec.label}</span>
+                      <span className="font-semibold text-foreground text-sm md:text-base">{spec.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold mb-4 text-[#F6A327]">Применение и совместимость</h3>
+                <div className="space-y-2 md:space-y-3">
+                  {specifications.filter(s => s.category === 'application' || s.category === 'requirements').map((spec, index) => (
+                    <div key={index} className="flex flex-col md:flex-row md:justify-between md:items-start py-2 border-b border-border/20 last:border-0 gap-1">
+                      <span className="text-muted-foreground text-xs md:text-sm">{spec.label}</span>
+                      <span className="font-semibold text-foreground text-sm md:text-base md:text-right md:max-w-md">{spec.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </Card>
           <div className="text-center mt-8">
