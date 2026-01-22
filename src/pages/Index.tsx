@@ -243,12 +243,14 @@ const Index = () => {
             </div>
 
             <div className="relative animate-fade-in flex items-center justify-center" style={{ animationDelay: '0.2s' }}>
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#F6A327]/20 to-transparent rounded-2xl blur-3xl" />
-              <img 
-                src="https://cdn.poehali.dev/files/Вибрик без фона.png" 
-                alt="Вибропогружатель электрический крановый Yongan DZJ-90 - оборудование для строительства свайных фундаментов" 
-                className="relative w-full max-w-xl h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300"
-              />
+              <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" target="_blank" rel="noopener noreferrer" className="group cursor-pointer">
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#F6A327]/20 to-transparent rounded-2xl blur-3xl group-hover:blur-2xl transition-all" />
+                <img 
+                  src="https://cdn.poehali.dev/files/Вибрик без фона.png" 
+                  alt="Вибропогружатель электрический крановый Yongan DZJ-90 - оборудование для строительства свайных фундаментов" 
+                  className="relative w-full max-w-xl h-auto drop-shadow-2xl group-hover:scale-105 transition-transform duration-300"
+                />
+              </a>
             </div>
           </div>
         </div>
