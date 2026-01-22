@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://special-offers-page.poehali.dev/</loc>
     <lastmod>2026-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://cdn.poehali.dev/files/Вибрик без фона.png</image:loc>
+      <image:title>Вибропогружатель электрический крановый Yongan DZJ-90</image:title>
+      <image:caption>Вибрик 90 кВт в наличии в Екатеринбурге. Полная комплектация, гарантия 12 месяцев</image:caption>
+    </image:image>
   </url>
 </urlset>
