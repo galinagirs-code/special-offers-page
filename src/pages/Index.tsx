@@ -436,7 +436,7 @@ const Index = () => {
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
                 <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-10 object-contain hover:opacity-80 transition-opacity" style={{minWidth: '100px'}} />
               </a>
-              <span className="text-sm text-muted-foreground text-center md:text-left">© 2016-2026 КоперГруппСервис</span>
+              <span className="text-sm text-muted-foreground text-center md:text-left">© 2016-2026 КоперГруппСервис | <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:text-[#F6A327] transition-colors">Официальный сайт</a></span>
             </div>
             <div className="flex items-center gap-6">
               <div className="flex flex-col gap-1">
