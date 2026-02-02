@@ -441,16 +441,16 @@ const Index = () => {
             
             <div className="flex items-center gap-3">
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Официальный сайт KGS-Ural">
-                <img src="https://cdn.poehali.dev/files/270d4563-81c4-43e7-80a3-257ad6427477.png" alt="Сайт" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/files/ab89b6d0-e482-4e19-b301-0836a2e5c081.png" alt="Сайт" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
               </a>
               <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Telegram">
-                <img src="https://cdn.poehali.dev/files/7b66a583-808d-42be-94a1-68330dcf1952.png" alt="Telegram" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/files/1c40a264-c680-489a-bc74-e3172c5be1e8.png" alt="Telegram" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
               </a>
               <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="ВКонтакте">
-                <img src="https://cdn.poehali.dev/files/7a3b2c9b-32a9-4db8-80ae-84a9cc774438.png" alt="ВКонтакте" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/files/76d43b5b-eb24-4809-b159-4ba105761eac.png" alt="ВКонтакте" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
               </a>
               <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Rutube">
-                <img src="https://cdn.poehali.dev/files/e1701954-b61e-4b78-a429-c0311bb003a9.png" alt="Rutube" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/files/4fdf768a-bf39-4b40-8167-95bea08f096c.png" alt="Rutube" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
               </a>
             </div>
 
