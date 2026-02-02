@@ -212,8 +212,8 @@ const Index = () => {
               
               <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-all duration-300">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-                  Вибропогружатель<br />
-                  электрический крановый<br />
+                  Вибропогружатель в наличии<br />
+                  в Екатеринбурге<br />
                   <span className="text-[#F6A327]">Yongan DZJ-90</span>
                 </h1>
               </a>
@@ -257,7 +257,7 @@ const Index = () => {
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#F6A327]/20 to-transparent rounded-2xl blur-3xl group-hover:blur-2xl transition-all" />
                 <img 
                   src="https://cdn.poehali.dev/files/Вибрик без фона.png" 
-                  alt="Вибропогружатель электрический крановый Yongan DZJ-90 - оборудование для строительства свайных фундаментов" 
+                  alt="Вибропогружатель в наличии в Екатеринбурге - электрический крановый Yongan DZJ-90" 
                   className="relative w-full max-w-xl h-auto drop-shadow-2xl group-hover:scale-105 transition-transform duration-300"
                 />
               </a>
@@ -350,10 +350,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Оставьте заявку
+              Купить вибропогружатель в Екатеринбурге в наличии
             </h2>
             <p className="text-center text-muted-foreground mb-8">
-              Наши специалисты свяжутся с вами в ближайшее время
+              Оставьте заявку — наши специалисты свяжутся с вами в ближайшее время
             </p>
             <Card className="p-8 bg-card/80 backdrop-blur-sm border-[#F6A327]/10">
               <form onSubmit={handleSubmit} className="space-y-4">
