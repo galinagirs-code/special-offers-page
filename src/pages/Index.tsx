@@ -431,7 +431,7 @@ const Index = () => {
 
       <footer className="border-t border-border/40 bg-[#272D49] py-8">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between">
+          <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between lg:items-center">
             <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4">
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
                 <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-10 object-contain hover:opacity-80 transition-opacity" style={{minWidth: '100px'}} />
@@ -439,18 +439,18 @@ const Index = () => {
               <span className="text-sm text-muted-foreground text-center md:text-left">© 2016-2026 КоперГруппСервис</span>
             </div>
             
-            <div className="flex items-center gap-4">
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Официальный сайт KGS-Ural">
-                <img src="https://cdn.poehali.dev/files/270d4563-81c4-43e7-80a3-257ad6427477.png" alt="Сайт" className="w-10 h-10" />
+            <div className="flex items-center gap-3">
+              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Официальный сайт KGS-Ural">
+                <img src="https://cdn.poehali.dev/files/270d4563-81c4-43e7-80a3-257ad6427477.png" alt="Сайт" className="w-9 h-9" />
               </a>
-              <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Telegram">
-                <img src="https://cdn.poehali.dev/files/7b66a583-808d-42be-94a1-68330dcf1952.png" alt="Telegram" className="w-10 h-10" />
+              <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Telegram">
+                <img src="https://cdn.poehali.dev/files/7b66a583-808d-42be-94a1-68330dcf1952.png" alt="Telegram" className="w-9 h-9" />
               </a>
-              <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="ВКонтакте">
-                <img src="https://cdn.poehali.dev/files/7a3b2c9b-32a9-4db8-80ae-84a9cc774438.png" alt="ВКонтакте" className="w-10 h-10" />
+              <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="ВКонтакте">
+                <img src="https://cdn.poehali.dev/files/7a3b2c9b-32a9-4db8-80ae-84a9cc774438.png" alt="ВКонтакте" className="w-9 h-9" />
               </a>
-              <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Rutube">
-                <img src="https://cdn.poehali.dev/files/e1701954-b61e-4b78-a429-c0311bb003a9.png" alt="Rutube" className="w-10 h-10" />
+              <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Rutube">
+                <img src="https://cdn.poehali.dev/files/e1701954-b61e-4b78-a429-c0311bb003a9.png" alt="Rutube" className="w-9 h-9" />
               </a>
             </div>
 
