@@ -441,16 +441,16 @@ const Index = () => {
             
             <div className="flex items-center gap-3">
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Официальный сайт KGS-Ural">
-                <img src="https://cdn.poehali.dev/files/270d4563-81c4-43e7-80a3-257ad6427477.png" alt="Сайт" className="w-12 h-12" />
+                <img src="https://cdn.poehali.dev/files/270d4563-81c4-43e7-80a3-257ad6427477.png" alt="Сайт" className="w-9 h-9" />
               </a>
               <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Telegram">
-                <img src="https://cdn.poehali.dev/files/7b66a583-808d-42be-94a1-68330dcf1952.png" alt="Telegram" className="w-12 h-12" />
+                <img src="https://cdn.poehali.dev/files/7b66a583-808d-42be-94a1-68330dcf1952.png" alt="Telegram" className="w-9 h-9" />
               </a>
               <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="ВКонтакте">
-                <img src="https://cdn.poehali.dev/files/7a3b2c9b-32a9-4db8-80ae-84a9cc774438.png" alt="ВКонтакте" className="w-12 h-12" />
+                <img src="https://cdn.poehali.dev/files/7a3b2c9b-32a9-4db8-80ae-84a9cc774438.png" alt="ВКонтакте" className="w-9 h-9" />
               </a>
               <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Rutube">
-                <img src="https://cdn.poehali.dev/files/e1701954-b61e-4b78-a429-c0311bb003a9.png" alt="Rutube" className="w-12 h-12" />
+                <img src="https://cdn.poehali.dev/files/e1701954-b61e-4b78-a429-c0311bb003a9.png" alt="Rutube" className="w-9 h-9" />
               </a>
             </div>
 
