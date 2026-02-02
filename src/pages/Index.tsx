@@ -436,7 +436,7 @@ const Index = () => {
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
                 <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-10 object-contain hover:opacity-80 transition-opacity" style={{minWidth: '100px'}} />
               </a>
-              <span className="text-sm text-muted-foreground text-center md:text-left">© 2016-2026 КоперГруппСервис | <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:text-[#F6A327] transition-colors">Официальный сайт</a></span>
+              <span className="text-sm text-muted-foreground text-center md:text-left">© 2016-2026 КоперГруппСервис</span>
             </div>
             <div className="flex items-center gap-6">
               <div className="flex flex-col gap-1">
@@ -447,16 +447,24 @@ const Index = () => {
                   8 (343) 346-74-75
                 </a>
               </div>
-              <div className="flex flex-col gap-2">
-                <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
-                  <Icon name="Send" size={20} className="text-[#229ED9]" />
-                </a>
-                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Перейти на сайт KGS-Ural">
-                  <Icon name="Globe" size={20} className="text-[#F6A327]" />
-                </a>
-              </div>
             </div>
           </div>
+          
+          <div className="flex items-center justify-center gap-4 mt-6 pt-6 border-t border-border/40">
+            <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Официальный сайт KGS-Ural">
+              <img src="https://cdn.poehali.dev/files/270d4563-81c4-43e7-80a3-257ad6427477.png" alt="Сайт" className="w-10 h-10" />
+            </a>
+            <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Telegram">
+              <img src="https://cdn.poehali.dev/files/7b66a583-808d-42be-94a1-68330dcf1952.png" alt="Telegram" className="w-10 h-10" />
+            </a>
+            <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="ВКонтакте">
+              <img src="https://cdn.poehali.dev/files/7a3b2c9b-32a9-4db8-80ae-84a9cc774438.png" alt="ВКонтакте" className="w-10 h-10" />
+            </a>
+            <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Rutube">
+              <img src="https://cdn.poehali.dev/files/e1701954-b61e-4b78-a429-c0311bb003a9.png" alt="Rutube" className="w-10 h-10" />
+            </a>
+          </div>
+
           <div className="flex gap-3 justify-center mt-6 pt-4 border-t border-border/40">
             <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-[#F6A327] transition-colors">
               Политика конфиденциальности
