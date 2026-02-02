@@ -447,18 +447,12 @@ const Index = () => {
                   8 (343) 346-74-75
                 </a>
               </div>
-              <div className="flex items-center gap-3">
-                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Официальный сайт KGS-Ural">
-                  <img src="https://cdn.poehali.dev/files/40ff6d7f-1209-461c-b39e-6dd85cf40e10.png" alt="KGS" className="w-10 h-10 object-contain" />
+              <div className="flex flex-col gap-2">
+                <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+                  <Icon name="Send" size={20} className="text-[#229ED9]" />
                 </a>
-                <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Telegram">
-                  <img src="https://cdn.poehali.dev/files/6edd9d0b-03c9-4333-a142-ffd7998b6db6.png" alt="Telegram" className="w-10 h-10 object-contain" />
-                </a>
-                <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="ВКонтакте">
-                  <img src="https://cdn.poehali.dev/files/3d66b3db-f164-4589-8b6f-e9dd09f67bc0.png" alt="ВКонтакте" className="w-10 h-10 object-contain" />
-                </a>
-                <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Rutube">
-                  <img src="https://cdn.poehali.dev/files/7f0271f0-6e51-4b13-8f9e-cffddf21befd.png" alt="Rutube" className="w-10 h-10 object-contain" />
+                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Перейти на сайт KGS-Ural">
+                  <Icon name="Globe" size={20} className="text-[#F6A327]" />
                 </a>
               </div>
             </div>
