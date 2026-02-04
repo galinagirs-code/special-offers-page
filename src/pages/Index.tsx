@@ -212,8 +212,7 @@ const Index = () => {
               
               <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-all duration-300">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-                  Вибропогружатель в наличии<br />
-                  в Екатеринбурге<br />
+                  Вибропогружатель электрический крановый<br />
                   <span className="text-[#F6A327]">Yongan DZJ-90</span>
                 </h1>
               </a>
@@ -353,7 +352,7 @@ const Index = () => {
               Купить вибропогружатель в Екатеринбурге в наличии
             </h2>
             <p className="text-center text-muted-foreground mb-8">
-              Оставьте заявку — наши специалисты свяжутся с вами в ближайшее время
+              Для получения консультации оставьте заявку — наши специалисты свяжутся с вами в ближайшее время
             </p>
             <Card className="p-8 bg-card/80 backdrop-blur-sm border-[#F6A327]/10">
               <form onSubmit={handleSubmit} className="space-y-4">
