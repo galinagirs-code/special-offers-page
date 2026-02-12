@@ -185,14 +185,9 @@ const Index = () => {
                   8 (343) 346-74-75
                 </a>
               </div>
-              <div className="flex flex-col gap-2">
-                <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
-                  <Icon name="Send" size={24} className="text-[#229ED9]" />
-                </a>
-                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Перейти на сайт KGS-Ural">
-                  <Icon name="Globe" size={24} className="text-[#F6A327]" />
-                </a>
-              </div>
+              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Перейти на сайт KGS-Ural">
+                <Icon name="Globe" size={24} className="text-[#F6A327]" />
+              </a>
             </div>
           </div>
         </div>
@@ -438,21 +433,21 @@ const Index = () => {
               <span className="text-sm text-muted-foreground text-center md:text-left">© 2016-2026 КоперГруппСервис</span>
             </div>
             
-            <div className="flex items-center gap-3">
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform flex items-center" aria-label="Официальный сайт KGS-Ural">
-                <img src="https://cdn.poehali.dev/files/17e5a0a3-d28f-4cce-96ae-82d77b4b5623.png" alt="Сайт" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+            <div className="flex items-center gap-4">
+              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="Официальный сайт KGS-Ural">
+                <img src="https://cdn.poehali.dev/files/17e5a0a3-d28f-4cce-96ae-82d77b4b5623.png" alt="Сайт" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
               </a>
-              <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform flex items-center" aria-label="Telegram">
-                <img src="https://cdn.poehali.dev/files/658c51e2-6fad-44fb-9a88-43a6eec83902.png" alt="Telegram" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+              <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="Telegram">
+                <img src="https://cdn.poehali.dev/files/658c51e2-6fad-44fb-9a88-43a6eec83902.png" alt="Telegram" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
               </a>
-              <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform flex items-center" aria-label="ВКонтакте">
-                <img src="https://cdn.poehali.dev/files/e9d00b37-f542-47b6-a913-d92ba39da7a6.png" alt="ВКонтакте" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+              <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="ВКонтакте">
+                <img src="https://cdn.poehali.dev/files/e9d00b37-f542-47b6-a913-d92ba39da7a6.png" alt="ВКонтакте" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
               </a>
-              <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform flex items-center" aria-label="Rutube">
-                <img src="https://cdn.poehali.dev/files/783bca98-e36a-4f27-8044-f3ca10947daf.png" alt="Rutube" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+              <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="Rutube">
+                <img src="https://cdn.poehali.dev/files/783bca98-e36a-4f27-8044-f3ca10947daf.png" alt="Rutube" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
               </a>
-              <a href="https://max.ru/id6670440671_biz" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform flex items-center" aria-label="Макс Мессенджер">
-                <img src="https://cdn.poehali.dev/files/e5d8407a-4eee-4370-a7ab-4d93483302c2.png" alt="Макс" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+              <a href="https://max.ru/id6670440671_biz" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="Макс Мессенджер">
+                <img src="https://cdn.poehali.dev/files/e5d8407a-4eee-4370-a7ab-4d93483302c2.png" alt="Макс" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
               </a>
             </div>
 
