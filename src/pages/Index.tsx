@@ -435,19 +435,19 @@ const Index = () => {
             
             <div className="flex items-center gap-4">
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="Официальный сайт KGS-Ural">
-                <img src="https://cdn.poehali.dev/files/17e5a0a3-d28f-4cce-96ae-82d77b4b5623.png" alt="Сайт" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/files/b227954a-44bf-43ae-8dfa-45980f5d47bb.png" alt="Сайт" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="Telegram">
-                <img src="https://cdn.poehali.dev/files/658c51e2-6fad-44fb-9a88-43a6eec83902.png" alt="Telegram" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/files/d0d73cc9-f540-480c-81f8-f58610f61605.png" alt="Telegram" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="ВКонтакте">
-                <img src="https://cdn.poehali.dev/files/e9d00b37-f542-47b6-a913-d92ba39da7a6.png" alt="ВКонтакте" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/files/b36a5444-0dd4-4bdc-8d5b-8ea99da3f364.png" alt="ВКонтакте" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="Rutube">
-                <img src="https://cdn.poehali.dev/files/783bca98-e36a-4f27-8044-f3ca10947daf.png" alt="Rutube" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/files/e8d965c5-2cfa-454a-8e96-588c4960a4ba.png" alt="Rutube" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://max.ru/id6670440671_biz" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:shadow-lg transition-all flex items-center" aria-label="Макс Мессенджер">
-                <img src="https://cdn.poehali.dev/files/e5d8407a-4eee-4370-a7ab-4d93483302c2.png" alt="Макс" style={{width: '48px', height: '48px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/files/43ae850d-8379-44b6-a5e2-6881ec190cc5.png" alt="Макс" style={{width: '48px', height: '48px'}} />
               </a>
             </div>
 
