@@ -452,7 +452,7 @@ const Index = () => {
                 <img src="https://cdn.poehali.dev/files/4fdf768a-bf39-4b40-8167-95bea08f096c.png" alt="Rutube" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
               </a>
               <a href="https://max.ru/id6670440671_biz" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity flex items-center" aria-label="Макс Мессенджер">
-                <img src="https://cdn.poehali.dev/projects/938a0919-e555-433d-8c86-2368777f7c7a/files/b2a48e05-f5b1-427b-b23f-7d83147456c6.jpg" alt="Макс" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
+                <img src="https://cdn.poehali.dev/projects/938a0919-e555-433d-8c86-2368777f7c7a/files/fdff1b2a-eba8-4404-b802-901ce3b96911.jpg" alt="Макс" style={{width: '36px', height: '36px', imageRendering: 'crisp-edges'}} />
               </a>
             </div>
 
