@@ -185,7 +185,7 @@ const Index = () => {
                   8 (343) 346-74-75
                 </a>
               </div>
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Перейти на сайт KGS-Ural">
+              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Официальный сайт KGS" title="Официальный сайт KGS">
                 <Icon name="Globe" size={24} className="text-[#F6A327]" />
               </a>
             </div>
