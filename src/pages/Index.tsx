@@ -434,8 +434,8 @@ const Index = () => {
             </div>
             
             <div className="flex items-center gap-4">
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Официальный сайт KGS-Ural" title="Официальный сайт KGS-Ural">
-                <img src="https://cdn.poehali.dev/files/b227954a-44bf-43ae-8dfa-45980f5d47bb.png" alt="Сайт" title="Официальный сайт KGS-Ural" style={{width: '48px', height: '48px'}} />
+              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Официальный сайт KGS" title="Официальный сайт KGS">
+                <img src="https://cdn.poehali.dev/files/b227954a-44bf-43ae-8dfa-45980f5d47bb.png" alt="Сайт" title="Официальный сайт KGS" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Telegram" title="Telegram">
                 <img src="https://cdn.poehali.dev/files/d0d73cc9-f540-480c-81f8-f58610f61605.png" alt="Telegram" title="Telegram" style={{width: '48px', height: '48px'}} />
@@ -446,8 +446,8 @@ const Index = () => {
               <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Rutube" title="Rutube">
                 <img src="https://cdn.poehali.dev/files/e8d965c5-2cfa-454a-8e96-588c4960a4ba.png" alt="Rutube" title="Rutube" style={{width: '48px', height: '48px'}} />
               </a>
-              <a href="https://max.ru/id6670440671_biz" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Макс Мессенджер" title="Макс Мессенджер">
-                <img src="https://cdn.poehali.dev/files/43ae850d-8379-44b6-a5e2-6881ec190cc5.png" alt="Макс" title="Макс Мессенджер" style={{width: '48px', height: '48px'}} />
+              <a href="https://max.ru/id6670440671_biz" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="MAX" title="MAX">
+                <img src="https://cdn.poehali.dev/files/43ae850d-8379-44b6-a5e2-6881ec190cc5.png" alt="MAX" title="MAX" style={{width: '48px', height: '48px'}} />
               </a>
             </div>
 
