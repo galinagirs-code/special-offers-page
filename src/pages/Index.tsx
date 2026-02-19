@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
+import MessengerWidget from '@/components/MessengerWidget';
 
 const Index = () => {
   const { toast } = useToast();
@@ -526,6 +527,10 @@ const Index = () => {
           <Icon name="ArrowUp" size={24} />
         </button>
       )}
+
+      <div className="hidden md:block">
+        <MessengerWidget />
+      </div>
     </div>
   );
 };
