@@ -10,7 +10,32 @@ const MessengerWidget = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!isVisible || isClosed) return null;
+  if (!isVisible) return null;
+
+  if (isClosed) {
+    return (
+      <div className="fixed left-4 bottom-20 md:bottom-4 z-50 flex flex-col gap-2.5 animate-fade-in">
+        <a
+          href="https://max.ru/u/f9LHodD0cOIP8_25Pol0FgGthbuYFvPpONLlW4R8sdoUUmuprdyzEwbPSy0"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-12 h-12 rounded-full bg-[#F6A327] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          title="MAX"
+        >
+          <Icon name="MessageCircle" size={22} className="text-[#272D49]" />
+        </a>
+        <a
+          href="https://t.me/kgs_ural"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-12 h-12 rounded-full bg-[#26A5E4] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          title="Telegram"
+        >
+          <Icon name="Send" size={22} className="text-white" />
+        </a>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed left-4 bottom-20 md:bottom-4 z-50 animate-fade-in">
