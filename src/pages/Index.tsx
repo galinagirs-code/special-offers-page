@@ -528,9 +528,7 @@ const Index = () => {
         </button>
       )}
 
-      <div className="hidden md:block">
-        <MessengerWidget />
-      </div>
+      <MessengerWidget />
     </div>
   );
 };
