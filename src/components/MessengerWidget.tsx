@@ -33,6 +33,13 @@ const MessengerWidget = () => {
         >
           <Icon name="Send" size={22} className="text-white" />
         </a>
+        <button
+          onClick={() => setIsClosed(false)}
+          className="w-12 h-12 rounded-full bg-[#273369] border border-border/40 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          title="Написать менеджеру"
+        >
+          <Icon name="MessagesSquare" size={22} className="text-[#F6A327]" />
+        </button>
       </div>
     );
   }
