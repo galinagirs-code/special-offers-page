@@ -430,19 +430,19 @@ const Index = () => {
             
             <div className="flex items-center gap-4">
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Официальный сайт KGS" title="Официальный сайт KGS">
-                <img src="/Сaйт.png" alt="Сайт" title="Официальный сайт KGS" style={{width: '48px', height: '48px'}} />
+                <img src="/Website.png" alt="Сайт" title="Официальный сайт KGS" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Telegram" title="Telegram">
                 <img src="/Telegram.png" alt="Telegram" title="Telegram" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="ВКонтакте" title="ВКонтакте">
-                <img src="/ВКонтакт.png" alt="ВКонтакте" title="ВКонтакте" style={{width: '48px', height: '48px'}} />
+                <img src="/VK.png" alt="ВКонтакте" title="ВКонтакте" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Rutube" title="Rutube">
-                <img src="/Рутубе.png" alt="Rutube" title="Rutube" style={{width: '48px', height: '48px'}} />
+                <img src="/Rutube.png" alt="Rutube" title="Rutube" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://max.ru/id6670440671_biz" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="MAX" title="MAX">
-                <img src="/МАКС.png" alt="MAX" title="MAX" style={{width: '48px', height: '48px'}} />
+                <img src="/MAX.png" alt="MAX" title="MAX" style={{width: '48px', height: '48px'}} />
               </a>
             </div>
 
