@@ -430,19 +430,19 @@ const Index = () => {
             
             <div className="flex items-center gap-4">
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Официальный сайт KGS" title="Официальный сайт KGS">
-                <img src="/site_512px.png" alt="Сайт" title="Официальный сайт KGS" style={{width: '48px', height: '48px'}} />
+                <img src="https://cdn.poehali.dev/files/b227954a-44bf-43ae-8dfa-45980f5d47bb.png" alt="Сайт" title="Официальный сайт KGS" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Telegram" title="Telegram">
-                <img src="/telegram_512px.png" alt="Telegram" title="Telegram" style={{width: '48px', height: '48px'}} />
+                <img src="https://cdn.poehali.dev/files/d0d73cc9-f540-480c-81f8-f58610f61605.png" alt="Telegram" title="Telegram" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="ВКонтакте" title="ВКонтакте">
-                <img src="/vk_512px.png" alt="ВКонтакте" title="ВКонтакте" style={{width: '48px', height: '48px'}} />
+                <img src="https://cdn.poehali.dev/files/c3f51f92-1f22-4035-baad-5bd06a20b6b3.png" alt="ВКонтакте" title="ВКонтакте" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Rutube" title="Rutube">
-                <img src="/rutube_512px.png" alt="Rutube" title="Rutube" style={{width: '48px', height: '48px'}} />
+                <img src="https://cdn.poehali.dev/files/e8d965c5-2cfa-454a-8e96-588c4960a4ba.png" alt="Rutube" title="Rutube" style={{width: '48px', height: '48px'}} />
               </a>
               <a href="https://max.ru/id6670440671_biz" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="MAX" title="MAX">
-                <img src="/chat_512px.png" alt="MAX" title="MAX" style={{width: '48px', height: '48px'}} />
+                <img src="https://cdn.poehali.dev/files/43ae850d-8379-44b6-a5e2-6881ec190cc5.png" alt="MAX" title="MAX" style={{width: '48px', height: '48px'}} />
               </a>
             </div>
 
