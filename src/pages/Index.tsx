@@ -227,7 +227,7 @@ const Index = () => {
               <Card className="p-4 md:p-6 bg-card/80 backdrop-blur-sm border-[#F6A327]/20 animate-scale-in">
                 <div className="mb-4 md:mb-6">
                   <div className="flex items-center gap-3 mb-1">
-                    <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#F6A327]">8 000 000 ₽</div>
+                    <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#F6A327]">8 150 000 ₽</div>
                   </div>
                   <div className="text-xs md:text-sm text-muted-foreground">с НДС</div>
                 </div>
