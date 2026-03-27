@@ -127,6 +127,8 @@ const Index = () => {
       const result = await response.json();
 
       if (response.ok) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).ym?.(106468852, 'reachGoal', 'form_submit');
         toast({
           title: 'Заявка отправлена',
           description: 'Мы свяжемся с вами в ближайшее время'
@@ -155,6 +157,8 @@ const Index = () => {
   };
 
   const scrollToForm = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).ym?.(106468852, 'reachGoal', 'click_cta');
     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
