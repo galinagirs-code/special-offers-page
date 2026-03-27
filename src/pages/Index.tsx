@@ -153,6 +153,8 @@ const Index = () => {
   };
 
   const handleCall = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).ym?.(106468852, 'reachGoal', 'click_call');
     window.location.href = 'tel:88006007465';
   };
 
