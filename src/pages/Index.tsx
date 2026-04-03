@@ -304,61 +304,47 @@ const Index = () => {
       {/* Шапка */}
       <header className="border-b border-border/40 bg-[#272D49] sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3 md:py-4">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            {/* Лого + телефоны */}
-            <div className="flex items-center justify-between md:justify-start gap-4 w-full md:w-auto">
-              <div className="flex items-center gap-3 md:gap-4">
-                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer">
-                  <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-9 md:h-11 object-contain hover:opacity-80 transition-opacity" style={{ minWidth: '100px' }} />
-                </a>
-                <div className="hidden md:block md:border-l md:border-border/40 md:pl-4">
-                  <p className="text-sm font-medium text-foreground leading-tight">
-                    Производство и поставка оборудования для<br />строительства свайных фундаментов
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 md:hidden">
-                <div className="flex flex-col gap-0.5 text-right">
-                  <a href="tel:88006007465" className="text-xs font-semibold hover:text-[#F6A327] transition-colors">8 (800) 600-74-65</a>
-                  <a href="tel:+73433467475" className="text-xs font-semibold hover:text-[#F6A327] transition-colors">8 (343) 346-74-75</a>
-                </div>
-                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" aria-label="Сайт KGS">
-                  <Icon name="Globe" size={22} className="text-[#F6A327]" />
-                </a>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 md:gap-4">
+              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer">
+                <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-9 md:h-11 object-contain hover:opacity-80 transition-opacity" style={{ minWidth: '100px' }} />
+              </a>
+              <div className="hidden md:block md:border-l md:border-border/40 md:pl-4">
+                <p className="text-sm font-medium text-foreground leading-tight">
+                  Производство и поставка оборудования для<br />строительства свайных фундаментов
+                </p>
               </div>
             </div>
-
-            {/* Вкладки */}
-            <div className="flex rounded-lg overflow-hidden border border-border/30 self-stretch md:self-auto">
-              <button
-                onClick={() => setActiveTab('spec')}
-                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-all ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369]' : 'bg-[#1e2340] text-muted-foreground hover:text-foreground hover:bg-[#273369]/60'}`}
-              >
-                <Icon name="Star" size={15} />
-                <span>Спецпредложение</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('used')}
-                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-all ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369]' : 'bg-[#1e2340] text-muted-foreground hover:text-foreground hover:bg-[#273369]/60'}`}
-              >
-                <Icon name="Truck" size={15} />
-                <span>Б/у техника от партнёров</span>
-              </button>
-            </div>
-
-            {/* Телефоны десктоп */}
-            <div className="hidden md:flex items-center gap-4">
-              <div className="flex flex-col gap-1">
-                <a href="tel:88006007465" className="text-sm font-semibold hover:text-[#F6A327] transition-colors">8 (800) 600-74-65</a>
-                <a href="tel:+73433467475" className="text-sm font-semibold hover:text-[#F6A327] transition-colors">8 (343) 346-74-75</a>
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col gap-0.5 text-right">
+                <a href="tel:88006007465" className="text-xs md:text-sm font-semibold hover:text-[#F6A327] transition-colors">8 (800) 600-74-65</a>
+                <a href="tel:+73433467475" className="text-xs md:text-sm font-semibold hover:text-[#F6A327] transition-colors">8 (343) 346-74-75</a>
               </div>
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" aria-label="Сайт KGS">
-                <Icon name="Globe" size={24} className="text-[#F6A327]" />
+                <Icon name="Globe" size={22} className="text-[#F6A327]" />
               </a>
             </div>
           </div>
         </div>
       </header>
+
+      {/* Навигационные вкладки — крупные, под шапкой */}
+      <div className="flex w-full sticky top-[61px] md:top-[69px] z-40">
+        <button
+          onClick={() => setActiveTab('spec')}
+          className={`flex-1 flex items-center justify-center gap-2.5 py-4 md:py-5 text-base md:text-lg font-bold transition-all border-b-4 ${activeTab === 'spec' ? 'bg-[#10B981] text-white border-[#0d9268]' : 'bg-[#0d9268]/70 text-white/80 border-transparent hover:bg-[#0d9268]'}`}
+        >
+          <Icon name="Star" size={20} />
+          <span>Спецпредложение</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('used')}
+          className={`flex-1 flex items-center justify-center gap-2.5 py-4 md:py-5 text-base md:text-lg font-bold transition-all border-b-4 ${activeTab === 'used' ? 'bg-[#10B981] text-white border-[#0d9268]' : 'bg-[#0d9268]/70 text-white/80 border-transparent hover:bg-[#0d9268]'}`}
+        >
+          <Icon name="Truck" size={20} />
+          <span>Б/у техника от партнёров</span>
+        </button>
+      </div>
 
       {/* ===== СПЕЦПРЕДЛОЖЕНИЕ ===== */}
       {activeTab === 'spec' && (
@@ -500,7 +486,7 @@ const Index = () => {
       {activeTab === 'used' && (
         <main className="flex-1 flex flex-col bg-[#181c30]">
           {/* Поиск */}
-          <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3 sticky top-[57px] md:top-[73px] z-40">
+          <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3 sticky top-[122px] md:top-[138px] z-30">
             <div className="container mx-auto max-w-5xl">
               <div className="flex items-center gap-3">
                 <div className="relative flex-1">
@@ -529,7 +515,7 @@ const Index = () => {
           <div className="flex-1 overflow-x-auto">
             <div className="container mx-auto px-2 py-4">
               <table className="w-full text-sm border-collapse min-w-[750px]">
-                <thead className="sticky top-[115px] md:top-[131px] z-30">
+                <thead className="sticky top-[175px] md:top-[191px] z-20">
                   <tr className="bg-[#273369] text-[#F6A327]">
                     <th className="border border-border/20 px-3 py-2.5 text-left font-semibold w-10">№</th>
                     <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">Наименование</th>
