@@ -50,6 +50,7 @@ def handler(event: dict, context) -> dict:
     name = body.get('name', '')
     phone = body.get('phone', '')
     email = body.get('email', 'не указан')
+    equipment = body.get('equipment', '')
     
     if not name or not phone:
         return {
@@ -63,15 +64,15 @@ def handler(event: dict, context) -> dict:
     
     # Telegram Bot настройки
     bot_token = '8459653165:AAGtN0j1Yp5pk-RxmJZQsqN-CHw0BVb59TQ'
-    chat_ids = ['1156073481']  # Добавьте сюда ID коллег
+    chat_ids = ['1156073481']
     
     # Формирование сообщения
+    equipment_line = f'\n🔧 Оборудование: {equipment}' if equipment else '\n💰 Предложение: Yongan DZJ-90 - 8 150 000 ₽'
     message = f"""🚜 Новая заявка с сайта KGS-Ural
 
 👤 Имя: {name}
 📞 Телефон: {phone}
-📧 Email: {email}
-💰 Предложение: Yongan DZJ-90 - 8 150 000 ₽"""
+📧 Email: {email}{equipment_line}"""
     
     # Отправка в Telegram всем получателям
     try:

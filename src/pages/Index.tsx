@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -6,7 +6,11 @@ import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import MessengerWidget from '@/components/MessengerWidget';
 
-const usedEquipment = [
+type EquipmentRow = { n: number; name: string; vin: string; loc: string; year: number | null; hours: string; price: string };
+type GroupRow = { group: string };
+type Row = EquipmentRow | GroupRow;
+
+const usedEquipment: Row[] = [
   { group: 'Краны гусеничные тяжелые' },
   { n: 1, name: 'Кран гусеничный Sany SCC2000', vin: 'SYCCH200ACCDZ0005', loc: 'г. Владивосток', year: 2022, hours: '11 739 м/ч', price: '72 050 000' },
   { n: 2, name: 'Кран гусеничный Sany SCC1800А', vin: 'CC0180CB2767/HYCBC180ACCDZ00004', loc: 'п.г.т. Хасан', year: 2022, hours: '19 334 м/ч', price: '53 900 000' },
@@ -108,13 +112,110 @@ const advantages = [
   'Цена до 60% ниже гидравлических вибропогружателей',
 ];
 
+const BACKEND_URL = 'https://functions.poehali.dev/858f33e4-bf36-459f-8130-c16cf2b083ca';
+
+interface ModalFormProps {
+  equipment: string;
+  onClose: () => void;
+}
+
+const ModalForm = ({ equipment, onClose }: ModalFormProps) => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({ name: '', phone: '', email: '', consent: false });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formatPhone = (value: string) => {
+    const cleaned = value.replace(/\D/g, '');
+    const match = cleaned.match(/^(7|8)?(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})$/);
+    if (match) {
+      const parts = ['+7'];
+      if (match[2]) parts.push(` (${match[2]}`);
+      if (match[3]) parts.push(match[2].length === 3 ? `) ${match[3]}` : match[3]);
+      if (match[4]) parts.push(`-${match[4]}`);
+      if (match[5]) parts.push(`-${match[5]}`);
+      return parts.join('');
+    }
+    return value;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.phone) {
+      toast({ title: 'Ошибка', description: 'Заполните все обязательные поля', variant: 'destructive' });
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(BACKEND_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: formData.name, phone: formData.phone, email: formData.email, equipment }),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).ym?.(106468852, 'reachGoal', 'form_submit');
+        toast({ title: 'Заявка отправлена', description: 'Мы свяжемся с вами в ближайшее время' });
+        onClose();
+      } else {
+        toast({ title: 'Ошибка отправки', description: result.error || 'Попробуйте позже', variant: 'destructive' });
+      }
+    } catch {
+      toast({ title: 'Ошибка сети', description: 'Проверьте интернет-соединение', variant: 'destructive' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <Card className="relative z-10 w-full max-w-md p-6 bg-[#1e2340] border-[#F6A327]/20" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors">
+          <Icon name="X" size={20} />
+        </button>
+        <h3 className="text-lg font-bold mb-1">Оставить заявку</h3>
+        <p className="text-sm text-[#F6A327] mb-4 leading-snug">{equipment}</p>
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div>
+            <label className="text-sm font-medium mb-1 block">Ваше имя <span className="text-[#F6A327]">*</span></label>
+            <Input placeholder="Иван Иванов" className="bg-background/50" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1 block">Телефон <span className="text-[#F6A327]">*</span></label>
+            <Input type="tel" placeholder="+7 (___) ___-__-__" className="bg-background/50" value={formData.phone} onChange={e => setFormData({ ...formData, phone: formatPhone(e.target.value) })} required />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1 block">Email</label>
+            <Input type="email" placeholder="example@mail.ru" className="bg-background/50" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+          </div>
+          <div className="flex items-start gap-2">
+            <input type="checkbox" id="modal-consent" checked={formData.consent} onChange={e => setFormData({ ...formData, consent: e.target.checked })} className="mt-1 h-4 w-4 rounded border-border bg-background/50 accent-[#F6A327]" required />
+            <label htmlFor="modal-consent" className="text-xs text-muted-foreground leading-relaxed">
+              Я согласен на обработку персональных данных в соответствии с{' '}
+              <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-[#F6A327] hover:underline">политикой конфиденциальности</a>
+            </label>
+          </div>
+          <Button type="submit" disabled={isSubmitting || !formData.consent} className="w-full bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold disabled:opacity-50">
+            <Icon name="Send" size={16} className="mr-2" />
+            {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+          </Button>
+        </form>
+      </Card>
+    </div>
+  );
+};
+
 const Index = () => {
   const { toast } = useToast();
-  const [openCard, setOpenCard] = useState<null | 'spec' | 'used'>(null);
+  const [activeTab, setActiveTab] = useState<'spec' | 'used'>('spec');
+  const [search, setSearch] = useState('');
+  const [modalEquipment, setModalEquipment] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: '', phone: '', email: '', consent: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMobileCallBtn, setShowMobileCallBtn] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -129,7 +230,13 @@ const Index = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const formatPhoneNumber = (value: string) => {
+  useEffect(() => {
+    if (activeTab === 'used') {
+      setTimeout(() => searchRef.current?.focus(), 100);
+    }
+  }, [activeTab]);
+
+  const formatPhone = (value: string) => {
     const cleaned = value.replace(/\D/g, '');
     const match = cleaned.match(/^(7|8)?(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})$/);
     if (match) {
@@ -143,10 +250,6 @@ const Index = () => {
     return value;
   };
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, phone: formatPhoneNumber(e.target.value) });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) {
@@ -155,7 +258,7 @@ const Index = () => {
     }
     setIsSubmitting(true);
     try {
-      const response = await fetch('https://functions.poehali.dev/858f33e4-bf36-459f-8130-c16cf2b083ca', {
+      const response = await fetch(BACKEND_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: formData.name, phone: formData.phone, email: formData.email }),
@@ -190,35 +293,66 @@ const Index = () => {
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  const toggleCard = (card: 'spec' | 'used') => {
-    setOpenCard(prev => (prev === card ? null : card));
-    setTimeout(() => {
-      document.getElementById(card === 'spec' ? 'card-spec' : 'card-used')
-        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
-  };
+  const filteredRows = search.trim()
+    ? usedEquipment.filter(row => 'name' in row && row.name.toLowerCase().includes(search.toLowerCase()))
+    : usedEquipment;
+
+  const equipmentItems = usedEquipment.filter((r): r is EquipmentRow => 'n' in r);
 
   return (
-    <div className="min-h-screen">
-      <header className="border-b border-border/40 bg-[#272D49] md:sticky md:top-0 z-50">
-        <div className="container mx-auto px-4 py-3 md:py-5">
-          <div className="flex flex-col items-center gap-3 md:flex-row md:justify-between md:gap-4">
-            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 w-full md:w-auto">
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
-                <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-10 md:h-12 object-contain hover:opacity-80 transition-opacity" style={{ minWidth: '120px' }} />
-              </a>
-              <div className="md:border-l md:border-border/40 md:pl-4 text-center md:text-left">
-                <p className="text-sm md:text-base font-medium text-foreground leading-tight">
-                  Производство и поставка оборудования для<br />строительства свайных фундаментов
-                </p>
+    <div className="min-h-screen flex flex-col">
+      {/* Шапка */}
+      <header className="border-b border-border/40 bg-[#272D49] sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            {/* Лого + телефоны */}
+            <div className="flex items-center justify-between md:justify-start gap-4 w-full md:w-auto">
+              <div className="flex items-center gap-3 md:gap-4">
+                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer">
+                  <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-9 md:h-11 object-contain hover:opacity-80 transition-opacity" style={{ minWidth: '100px' }} />
+                </a>
+                <div className="hidden md:block md:border-l md:border-border/40 md:pl-4">
+                  <p className="text-sm font-medium text-foreground leading-tight">
+                    Производство и поставка оборудования для<br />строительства свайных фундаментов
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 md:hidden">
+                <div className="flex flex-col gap-0.5 text-right">
+                  <a href="tel:88006007465" className="text-xs font-semibold hover:text-[#F6A327] transition-colors">8 (800) 600-74-65</a>
+                  <a href="tel:+73433467475" className="text-xs font-semibold hover:text-[#F6A327] transition-colors">8 (343) 346-74-75</a>
+                </div>
+                <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" aria-label="Сайт KGS">
+                  <Icon name="Globe" size={22} className="text-[#F6A327]" />
+                </a>
               </div>
             </div>
-            <div className="flex items-center gap-6">
+
+            {/* Вкладки */}
+            <div className="flex rounded-lg overflow-hidden border border-border/30 self-stretch md:self-auto">
+              <button
+                onClick={() => setActiveTab('spec')}
+                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-all ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369]' : 'bg-[#1e2340] text-muted-foreground hover:text-foreground hover:bg-[#273369]/60'}`}
+              >
+                <Icon name="Star" size={15} />
+                <span>Спецпредложение</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('used')}
+                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-all ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369]' : 'bg-[#1e2340] text-muted-foreground hover:text-foreground hover:bg-[#273369]/60'}`}
+              >
+                <Icon name="Truck" size={15} />
+                <span>Б/у техника от партнёров</span>
+              </button>
+            </div>
+
+            {/* Телефоны десктоп */}
+            <div className="hidden md:flex items-center gap-4">
               <div className="flex flex-col gap-1">
                 <a href="tel:88006007465" className="text-sm font-semibold hover:text-[#F6A327] transition-colors">8 (800) 600-74-65</a>
                 <a href="tel:+73433467475" className="text-sm font-semibold hover:text-[#F6A327] transition-colors">8 (343) 346-74-75</a>
               </div>
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="Официальный сайт KGS">
+              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" aria-label="Сайт KGS">
                 <Icon name="Globe" size={24} className="text-[#F6A327]" />
               </a>
             </div>
@@ -226,307 +360,280 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Две большие карточки */}
-      <section className="py-10 md:py-16" style={{ background: 'linear-gradient(135deg, #273369 0%, #272D49 100%)' }}>
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-
-            {/* Карточка 1 — Спецпредложение */}
-            <div id="card-spec" className="flex flex-col">
-              <Card
-                className="flex flex-col cursor-pointer border-2 border-[#F6A327]/40 hover:border-[#F6A327] transition-all duration-300 overflow-hidden bg-[#1e2340]"
-                onClick={() => toggleCard('spec')}
-              >
-                <div className="relative">
-                  <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 bg-[#F6A327] text-[#273369] font-bold text-xs uppercase tracking-widest rounded px-3 py-1">
-                    <Icon name="Star" size={12} />
-                    Спецпредложение
+      {/* ===== СПЕЦПРЕДЛОЖЕНИЕ ===== */}
+      {activeTab === 'spec' && (
+        <main className="flex-1">
+          <section className="py-12 md:py-20" style={{ background: 'linear-gradient(135deg, #273369 0%, #272D49 100%)' }}>
+            <div className="container mx-auto px-4">
+              <div className="grid md:grid-cols-2 gap-10 items-center max-w-5xl mx-auto">
+                <div className="space-y-5">
+                  <div className="inline-flex items-center gap-2 bg-[#F6A327]/15 border-2 border-[#F6A327]/50 rounded-lg px-5 py-2.5">
+                    <Icon name="Star" size={16} className="text-[#F6A327]" />
+                    <span className="text-base font-bold text-[#F6A327] uppercase tracking-wider">СПЕЦПРЕДЛОЖЕНИЕ</span>
                   </div>
-                  <img
-                    src="https://cdn.poehali.dev/files/Вибрик без фона.png"
-                    alt="Вибропогружатель Yongan DZJ-90"
-                    className="w-full object-contain bg-gradient-to-b from-[#273369]/60 to-[#1e2340]"
-                    style={{ maxHeight: '280px' }}
-                  />
-                </div>
-                <div className="p-5 flex flex-col gap-3 flex-1">
-                  <div>
-                    <p className="text-muted-foreground text-sm mb-0.5">Вибропогружатель электрический крановый</p>
-                    <h2 className="text-2xl font-bold text-[#F6A327]">Yongan DZJ-90</h2>
-                  </div>
-                  <div className="flex gap-2 mt-auto">
-                    <a
-                      href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <Button size="sm" className="bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold">
-                        <Icon name="ExternalLink" size={14} className="mr-1.5" />
-                        Подробнее
-                      </Button>
-                    </a>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-[#F6A327]/40 text-foreground hover:bg-[#F6A327]/10"
-                      onClick={e => { e.stopPropagation(); toggleCard('spec'); }}
-                    >
-                      <Icon name={openCard === 'spec' ? 'ChevronUp' : 'ChevronDown'} size={16} className="mr-1" />
-                      {openCard === 'spec' ? 'Свернуть' : 'Характеристики'}
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-
-              {/* Раскрытый блок — Характеристики */}
-              {openCard === 'spec' && (
-                <Card className="mt-2 p-5 bg-[#181c30] border-[#F6A327]/20 animate-fade-in">
-                  <div className="space-y-6">
+                  <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-opacity">
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+                      Вибропогружатель электрический крановый<br />
+                      <span className="text-[#F6A327]">Yongan DZJ-90</span>
+                    </h1>
+                  </a>
+                  <div className="space-y-2.5">
                     {[
-                      { title: 'Технические характеристики', cat: 'technical' },
-                      { title: 'Габариты и вес', cat: 'dimensions' },
-                      { title: 'Комплектация', cat: 'equipment' },
-                      { title: 'Требования', cat: 'requirements' },
-                    ].map(({ title, cat }) => (
-                      <div key={cat}>
-                        <h3 className="text-base font-bold mb-3 text-[#F6A327]">{title}</h3>
-                        <div className="space-y-1.5">
-                          {specifications.filter(s => s.category === cat).map((spec, i) => (
-                            <div key={i} className="flex justify-between items-center py-1.5 border-b border-border/15 last:border-0 gap-4">
-                              <span className="text-muted-foreground text-sm">{spec.label}</span>
-                              <span className="font-semibold text-sm text-right">{spec.value}</span>
-                            </div>
-                          ))}
+                      { icon: 'MapPin', text: 'В наличии в Екатеринбурге' },
+                      { icon: 'Package', text: 'Полная комплектация: шкаф + зажим + ЗИП' },
+                      { icon: 'Shield', text: 'Гарантия 12 месяцев' },
+                      { icon: 'Truck', text: 'Доставка по России и СНГ' },
+                    ].map((f, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-[#F6A327]/10 border border-[#F6A327]/30 flex items-center justify-center flex-shrink-0">
+                          <Icon name={f.icon} size={18} className="text-[#F6A327]" />
                         </div>
+                        <span className="text-base text-foreground/90">{f.text}</span>
                       </div>
                     ))}
-                    <div>
-                      <h3 className="text-base font-bold mb-3 text-[#F6A327]">Преимущества</h3>
-                      <ul className="space-y-2">
-                        {advantages.map((adv, i) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <Icon name="CheckCircle2" size={16} className="text-[#10B981] flex-shrink-0 mt-0.5" />
-                            <span className="text-sm text-foreground/90">{adv}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="flex gap-3 pt-2">
-                      <Button onClick={scrollToForm} className="bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold">
-                        <Icon name="Send" size={15} className="mr-2" />
-                        Оставить заявку
-                      </Button>
-                      <Button onClick={handleCall} className="bg-[#10B981] hover:bg-[#10B981]/90 text-white font-semibold">
-                        <Icon name="Phone" size={15} className="mr-2" />
-                        Позвонить
-                      </Button>
-                    </div>
                   </div>
-                </Card>
-              )}
-            </div>
-
-            {/* Карточка 2 — Б/у техника */}
-            <div id="card-used" className="flex flex-col">
-              <Card
-                className="flex flex-col cursor-pointer border-2 border-border/30 hover:border-[#F6A327]/50 transition-all duration-300 overflow-hidden bg-[#1e2340]"
-                onClick={() => toggleCard('used')}
-              >
-                <div className="relative flex items-center justify-center bg-gradient-to-b from-[#273369]/80 to-[#1e2340]" style={{ minHeight: '280px' }}>
-                  <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-[#273369] text-[#F6A327] font-bold text-xs uppercase tracking-widest rounded px-3 py-1 border border-[#F6A327]/30">
-                    <Icon name="Truck" size={12} />
-                    Б/у техника
-                  </div>
-                  <div className="text-center px-6">
-                    <Icon name="Package" size={64} className="text-[#F6A327]/30 mx-auto mb-4" />
-                    <p className="text-4xl font-bold text-[#F6A327]">67</p>
-                    <p className="text-muted-foreground text-sm mt-1">позиций в наличии</p>
+                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                    <Button onClick={handleCall} className="flex-1 bg-[#10B981] hover:bg-[#10B981]/90 text-white font-semibold">
+                      <Icon name="Phone" size={18} className="mr-2" />Позвонить
+                    </Button>
+                    <Button onClick={scrollToForm} className="flex-1 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold">
+                      <Icon name="Send" size={18} className="mr-2" />Оставить заявку
+                    </Button>
                   </div>
                 </div>
-                <div className="p-5 flex flex-col gap-3 flex-1">
+                <div className="flex items-center justify-center">
+                  <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" target="_blank" rel="noopener noreferrer" className="group relative">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-[#F6A327]/20 to-transparent rounded-2xl blur-3xl group-hover:blur-2xl transition-all" />
+                    <img src="https://cdn.poehali.dev/files/Вибрик без фона.png" alt="Вибропогружатель Yongan DZJ-90" className="relative w-full max-w-md h-auto drop-shadow-2xl group-hover:scale-105 transition-transform duration-300" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Характеристики */}
+          <section className="py-14 bg-[#1e2340]">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Характеристики Yongan DZJ-90</h2>
+              <Card className="max-w-5xl mx-auto p-5 md:p-8 bg-card/80 border-[#F6A327]/10">
+                <div className="space-y-7">
+                  {[
+                    { title: 'Технические характеристики', cat: 'technical' },
+                    { title: 'Габариты и вес', cat: 'dimensions' },
+                    { title: 'Комплектация', cat: 'equipment' },
+                    { title: 'Требования', cat: 'requirements' },
+                  ].map(({ title, cat }) => (
+                    <div key={cat}>
+                      <h3 className="text-lg font-bold mb-3 text-[#F6A327]">{title}</h3>
+                      <div className="grid md:grid-cols-2 gap-x-8 gap-y-1">
+                        {specifications.filter(s => s.category === cat).map((spec, i) => (
+                          <div key={i} className="flex justify-between items-center py-2 border-b border-border/15 last:border-0 gap-4">
+                            <span className="text-muted-foreground text-sm">{spec.label}</span>
+                            <span className="font-semibold text-sm text-right">{spec.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                   <div>
-                    <h2 className="text-2xl font-bold text-foreground mb-0.5">Б/у техника от партнёров</h2>
-                    <p className="text-muted-foreground text-sm">Большой выбор б/у оборудования с актуальными ценами</p>
-                  </div>
-                  <div className="flex gap-2 mt-auto">
-                    <Button
-                      size="sm"
-                      className="bg-[#273369] hover:bg-[#273369]/80 text-white font-semibold border border-[#F6A327]/30"
-                      onClick={e => { e.stopPropagation(); toggleCard('used'); }}
-                    >
-                      <Icon name="List" size={14} className="mr-1.5" />
-                      Смотреть список
-                    </Button>
+                    <h3 className="text-lg font-bold mb-3 text-[#F6A327]">Преимущества</h3>
+                    <ul className="space-y-2">
+                      {advantages.map((adv, i) => (
+                        <li key={i} className="flex items-start gap-2.5">
+                          <Icon name="CheckCircle2" size={17} className="text-[#10B981] flex-shrink-0 mt-0.5" />
+                          <span className="text-sm text-foreground/90">{adv}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </Card>
+              <div className="text-center mt-6">
+                <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold px-8">
+                    <Icon name="ExternalLink" size={16} className="mr-2" />Подробнее на сайте
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </section>
 
-              {/* Раскрытый блок — Таблица */}
-              {openCard === 'used' && (
-                <Card className="mt-2 p-4 bg-[#181c30] border-border/20 animate-fade-in">
-                  <h3 className="text-base font-bold mb-4 text-[#F6A327]">Перечень свободной техники для реализации</h3>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-xs border-collapse min-w-[600px]">
-                      <thead>
-                        <tr className="bg-[#273369] text-[#F6A327]">
-                          <th className="border border-border/20 px-2 py-2 text-left font-semibold">№</th>
-                          <th className="border border-border/20 px-2 py-2 text-left font-semibold">Наименование</th>
-                          <th className="border border-border/20 px-2 py-2 text-left font-semibold">VIN</th>
-                          <th className="border border-border/20 px-2 py-2 text-left font-semibold">Местонахождение</th>
-                          <th className="border border-border/20 px-2 py-2 text-center font-semibold">Год</th>
-                          <th className="border border-border/20 px-2 py-2 text-left font-semibold">Наработка</th>
-                          <th className="border border-border/20 px-2 py-2 text-right font-semibold">Стоимость (руб)</th>
+          {/* Форма */}
+          <section id="contact-form" className="py-16 bg-[#272D49]">
+            <div className="container mx-auto px-4 max-w-2xl">
+              <p className="text-center text-lg text-muted-foreground mb-8">
+                Для получения консультации оставьте заявку — наши специалисты свяжутся с вами в ближайшее время
+              </p>
+              <Card className="p-8 bg-card/80 border-[#F6A327]/10">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Ваше имя <span className="text-[#F6A327]">*</span></label>
+                    <Input placeholder="Иван Иванов" className="bg-background/50" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Телефон <span className="text-[#F6A327]">*</span></label>
+                    <Input type="tel" placeholder="+7 (___) ___-__-__" className="bg-background/50" value={formData.phone} onChange={e => setFormData({ ...formData, phone: formatPhone(e.target.value) })} required />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Email</label>
+                    <Input type="email" placeholder="example@mail.ru" className="bg-background/50" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <input type="checkbox" id="consent" checked={formData.consent} onChange={e => setFormData({ ...formData, consent: e.target.checked })} className="mt-1 h-4 w-4 rounded border-border bg-background/50 accent-[#F6A327]" required />
+                    <label htmlFor="consent" className="text-xs text-muted-foreground leading-relaxed">
+                      Я согласен на обработку персональных данных в соответствии с{' '}
+                      <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-[#F6A327] hover:underline">политикой конфиденциальности</a>
+                    </label>
+                  </div>
+                  <Button type="submit" disabled={isSubmitting || !formData.consent} className="w-full bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold disabled:opacity-50">
+                    <Icon name="Send" size={18} className="mr-2" />
+                    {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+                  </Button>
+                </form>
+              </Card>
+            </div>
+          </section>
+        </main>
+      )}
+
+      {/* ===== Б/У ТЕХНИКА ===== */}
+      {activeTab === 'used' && (
+        <main className="flex-1 flex flex-col bg-[#181c30]">
+          {/* Поиск */}
+          <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3 sticky top-[57px] md:top-[73px] z-40">
+            <div className="container mx-auto max-w-5xl">
+              <div className="flex items-center gap-3">
+                <div className="relative flex-1">
+                  <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    ref={searchRef}
+                    placeholder="Поиск по названию..."
+                    className="pl-9 bg-background/30 border-border/30"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                  />
+                  {search && (
+                    <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                      <Icon name="X" size={14} />
+                    </button>
+                  )}
+                </div>
+                <span className="text-sm text-muted-foreground whitespace-nowrap">
+                  {search ? `${filteredRows.filter(r => 'n' in r).length} из ${equipmentItems.length}` : `${equipmentItems.length} позиций`}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Таблица */}
+          <div className="flex-1 overflow-x-auto">
+            <div className="container mx-auto px-2 py-4">
+              <table className="w-full text-sm border-collapse min-w-[750px]">
+                <thead className="sticky top-[115px] md:top-[131px] z-30">
+                  <tr className="bg-[#273369] text-[#F6A327]">
+                    <th className="border border-border/20 px-3 py-2.5 text-left font-semibold w-10">№</th>
+                    <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">Наименование</th>
+                    <th className="border border-border/20 px-3 py-2.5 text-left font-semibold hidden lg:table-cell">VIN</th>
+                    <th className="border border-border/20 px-3 py-2.5 text-left font-semibold hidden md:table-cell">Местонахождение</th>
+                    <th className="border border-border/20 px-3 py-2.5 text-center font-semibold w-14">Год</th>
+                    <th className="border border-border/20 px-3 py-2.5 text-left font-semibold hidden md:table-cell">Наработка</th>
+                    <th className="border border-border/20 px-3 py-2.5 text-right font-semibold">Стоимость</th>
+                    <th className="border border-border/20 px-3 py-2.5 text-center font-semibold w-24">Заявка</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredRows.map((row, i) => {
+                    if ('group' in row) {
+                      if (search) return null;
+                      return (
+                        <tr key={i} className="bg-[#273369]/70">
+                          <td colSpan={8} className="border border-border/20 px-3 py-2 font-bold text-[#F6A327] text-xs uppercase tracking-wide">
+                            {row.group}
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {usedEquipment.map((row, i) => {
-                          if ('group' in row) {
-                            return (
-                              <tr key={i} className="bg-[#273369]/60">
-                                <td colSpan={7} className="border border-border/20 px-2 py-1.5 font-bold text-[#F6A327] uppercase tracking-wide text-xs">
-                                  {row.group}
-                                </td>
-                              </tr>
-                            );
-                          }
-                          return (
-                            <tr key={i} className={i % 2 === 0 ? 'bg-card/30' : 'bg-card/10'}>
-                              <td className="border border-border/20 px-2 py-1.5 text-muted-foreground text-center">{row.n}</td>
-                              <td className="border border-border/20 px-2 py-1.5">{row.name}</td>
-                              <td className="border border-border/20 px-2 py-1.5 text-muted-foreground font-mono">{row.vin}</td>
-                              <td className="border border-border/20 px-2 py-1.5 text-muted-foreground">{row.loc}</td>
-                              <td className="border border-border/20 px-2 py-1.5 text-center text-muted-foreground">{row.year || ''}</td>
-                              <td className="border border-border/20 px-2 py-1.5 text-muted-foreground">{row.hours}</td>
-                              <td className={`border border-border/20 px-2 py-1.5 text-right font-semibold ${row.price === 'по запросу' ? 'text-muted-foreground italic' : 'text-[#F6A327]'}`}>
-                                {row.price ? (row.price === 'по запросу' ? 'по запросу' : `${row.price} ₽`) : '—'}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="flex gap-3 pt-4">
-                    <Button onClick={scrollToForm} className="bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold">
-                      <Icon name="Send" size={15} className="mr-2" />
-                      Оставить заявку
-                    </Button>
-                    <Button onClick={handleCall} className="bg-[#10B981] hover:bg-[#10B981]/90 text-white font-semibold">
-                      <Icon name="Phone" size={15} className="mr-2" />
-                      Позвонить
-                    </Button>
-                  </div>
-                </Card>
+                      );
+                    }
+                    return (
+                      <tr key={i} className="hover:bg-[#273369]/20 transition-colors border-b border-border/10">
+                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-center text-xs">{row.n}</td>
+                        <td className="border-x border-border/20 px-3 py-2.5 font-medium">{row.name}</td>
+                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs font-mono hidden lg:table-cell">{row.vin}</td>
+                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs hidden md:table-cell">{row.loc}</td>
+                        <td className="border-x border-border/20 px-3 py-2.5 text-center text-muted-foreground text-xs">{row.year || ''}</td>
+                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs hidden md:table-cell">{row.hours}</td>
+                        <td className={`border-x border-border/20 px-3 py-2.5 text-right text-sm font-semibold whitespace-nowrap ${row.price === 'по запросу' ? 'text-muted-foreground italic text-xs' : row.price ? 'text-[#F6A327]' : 'text-muted-foreground'}`}>
+                          {row.price ? (row.price === 'по запросу' ? 'по запросу' : `${row.price} ₽`) : '—'}
+                        </td>
+                        <td className="border-x border-border/20 px-2 py-2 text-center">
+                          <Button
+                            size="sm"
+                            className="bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] text-xs font-semibold h-7 px-2"
+                            onClick={() => setModalEquipment(`${row.name}${row.vin ? ` (VIN: ${row.vin})` : ''}`)}
+                          >
+                            Заявка
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              {filteredRows.filter(r => 'n' in r).length === 0 && (
+                <div className="text-center py-16 text-muted-foreground">
+                  <Icon name="SearchX" size={40} className="mx-auto mb-3 opacity-30" />
+                  <p>Ничего не найдено по запросу «{search}»</p>
+                </div>
               )}
             </div>
-
           </div>
-        </div>
-      </section>
+        </main>
+      )}
 
-      {/* Форма заявки */}
-      <section id="contact-form" className="py-16 bg-[#272D49]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
-            <p className="text-center text-lg text-muted-foreground mb-8">
-              Для получения консультации оставьте заявку — наши специалисты свяжутся с вами в ближайшее время
-            </p>
-            <Card className="p-8 bg-card/80 backdrop-blur-sm border-[#F6A327]/10">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Ваше имя <span className="text-[#F6A327]">*</span></label>
-                  <Input placeholder="Иван Иванов" className="bg-background/50" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Телефон <span className="text-[#F6A327]">*</span></label>
-                  <Input type="tel" placeholder="+7 (___) ___-__-__" className="bg-background/50" value={formData.phone} onChange={handlePhoneChange} required />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Email</label>
-                  <Input type="email" placeholder="example@mail.ru" className="bg-background/50" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-                </div>
-                <div className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    id="consent"
-                    checked={formData.consent}
-                    onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
-                    className="mt-1 h-4 w-4 rounded border-border bg-background/50 accent-[#F6A327]"
-                    required
-                  />
-                  <label htmlFor="consent" className="text-xs text-muted-foreground leading-relaxed">
-                    Я согласен на обработку персональных данных в соответствии с{' '}
-                    <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-[#F6A327] hover:underline">
-                      политикой конфиденциальности
-                    </a>
-                  </label>
-                </div>
-                <Button type="submit" disabled={isSubmitting || !formData.consent} className="w-full bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
-                  <Icon name="Send" size={18} className="mr-2" />
-                  {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
-                </Button>
-              </form>
-            </Card>
-          </div>
-        </div>
-      </section>
-
+      {/* Footer */}
       <footer className="border-t border-border/40 bg-[#272D49] py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-between lg:items-center">
             <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4">
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer">
                 <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-10 object-contain hover:opacity-80 transition-opacity" style={{ minWidth: '100px' }} />
               </a>
               <span className="text-sm text-muted-foreground text-center md:text-left">© 2016-2026 КоперГруппСервис</span>
             </div>
             <div className="flex items-center gap-4">
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Официальный сайт KGS">
-                <img src="/Website.png" alt="Сайт" style={{ width: '48px', height: '48px' }} />
-              </a>
-              <a href="https://t.me/kgs_ural" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Telegram">
-                <img src="/Telegram.png" alt="Telegram" style={{ width: '48px', height: '48px' }} />
-              </a>
-              <a href="https://vk.com/club187384782" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="ВКонтакте">
-                <img src="/VK.png" alt="ВКонтакте" style={{ width: '48px', height: '48px' }} />
-              </a>
-              <a href="https://rutube.ru/channel/37307143/" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="Rutube">
-                <img src="/Rutube.png" alt="Rutube" style={{ width: '48px', height: '48px' }} />
-              </a>
-              <a href="https://max.ru/id6670440671_biz" target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300 flex items-center" aria-label="MAX">
-                <img src="/MAX.png" alt="MAX" style={{ width: '48px', height: '48px' }} />
-              </a>
+              {[
+                { href: 'https://kgs-ural.ru', src: '/Website.png', alt: 'Сайт' },
+                { href: 'https://t.me/kgs_ural', src: '/Telegram.png', alt: 'Telegram' },
+                { href: 'https://vk.com/club187384782', src: '/VK.png', alt: 'ВКонтакте' },
+                { href: 'https://rutube.ru/channel/37307143/', src: '/Rutube.png', alt: 'Rutube' },
+                { href: 'https://max.ru/id6670440671_biz', src: '/MAX.png', alt: 'MAX' },
+              ].map(({ href, src, alt }) => (
+                <a key={alt} href={href} target="_blank" rel="noopener noreferrer" className="hover:scale-110 hover:rotate-12 hover:shadow-lg transition-all duration-300">
+                  <img src={src} alt={alt} style={{ width: '44px', height: '44px' }} />
+                </a>
+              ))}
             </div>
-            <div className="flex items-center gap-6">
-              <div className="flex flex-col gap-1">
-                <a href="tel:88006007465" className="text-sm hover:text-[#F6A327] transition-colors">8 (800) 600-74-65</a>
-                <a href="tel:+73433467475" className="text-sm hover:text-[#F6A327] transition-colors">8 (343) 346-74-75</a>
-              </div>
+            <div className="flex flex-col gap-1 text-center md:text-right">
+              <a href="tel:88006007465" className="text-sm hover:text-[#F6A327] transition-colors">8 (800) 600-74-65</a>
+              <a href="tel:+73433467475" className="text-sm hover:text-[#F6A327] transition-colors">8 (343) 346-74-75</a>
             </div>
           </div>
           <div className="flex gap-3 justify-center mt-6 pt-4 border-t border-border/40">
-            <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-[#F6A327] transition-colors">
-              Политика конфиденциальности
-            </a>
+            <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-[#F6A327] transition-colors">Политика конфиденциальности</a>
             <span className="text-xs text-muted-foreground">•</span>
-            <a href="https://kgs-ural.ru/cookie/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-[#F6A327] transition-colors">
-              Cookie
-            </a>
+            <a href="https://kgs-ural.ru/cookie/" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-[#F6A327] transition-colors">Cookie</a>
           </div>
         </div>
       </footer>
 
       <section className="sr-only" aria-hidden="true">
         <h1>Вибропогружатель электрический крановый Yongan DZJ-90 купить в Екатеринбурге</h1>
-        <p>Вибропогружатель электрический крановый Yongan DZJ-90 — вибрик 90 кВт в наличии на складе в Екатеринбурге. Полная комплектация: шкаф управления, зажим, ЗИП. Гарантия 12 месяцев. Доставка по России и СНГ.</p>
+        <p>Вибропогружатель электрический крановый Yongan DZJ-90 в наличии в Екатеринбурге. Полная комплектация. Гарантия 12 месяцев. Доставка по России и СНГ.</p>
       </section>
 
       {showMobileCallBtn && (
-        <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 animate-fade-in">
+        <div className="md:hidden fixed bottom-4 left-4 right-4 z-50">
           <Button onClick={handleCall} className="w-full h-14 bg-[#10B981] hover:bg-[#10B981]/90 text-white text-lg font-semibold shadow-2xl">
-            <Icon name="Phone" size={24} className="mr-2" />
-            Позвонить 8 (800) 600-74-65
+            <Icon name="Phone" size={24} className="mr-2" />Позвонить 8 (800) 600-74-65
           </Button>
         </div>
       )}
@@ -534,11 +641,15 @@ const Index = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className={`fixed z-50 w-12 h-12 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 animate-fade-in ${showMobileCallBtn ? 'bottom-20 right-4' : 'bottom-4 right-4'}`}
+          className={`fixed z-50 w-12 h-12 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 ${showMobileCallBtn ? 'bottom-20 right-4' : 'bottom-4 right-4'}`}
           aria-label="Прокрутить наверх"
         >
           <Icon name="ArrowUp" size={24} />
         </button>
+      )}
+
+      {modalEquipment && (
+        <ModalForm equipment={modalEquipment} onClose={() => setModalEquipment(null)} />
       )}
 
       <MessengerWidget />
