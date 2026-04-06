@@ -106,14 +106,13 @@
 @layer utilities {
   .th-sticky {
     position: sticky;
-    top: 174px;
+    top: var(--table-head-top, 160px);
     z-index: 20;
   }
-  @media (min-width: 768px) {
-    .th-sticky {
-      top: 190px;
-    }
-  }
+}
+
+html {
+  scroll-padding-top: var(--tabs-bottom, 100px);
 }
 
 @layer base {

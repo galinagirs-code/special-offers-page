@@ -218,16 +218,22 @@ const Index = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
 
-  // Устанавливаем CSS-переменную = высота шапки + вкладок (для sticky поиска+заголовка)
+  // Устанавливаем CSS-переменные высот для sticky-элементов
   useEffect(() => {
     const setTabsBottom = () => {
       const els = document.querySelectorAll<HTMLElement>('[data-top-sticky]');
       let h = 0;
       els.forEach(el => { h += el.offsetHeight; });
-      if (h > 0) document.documentElement.style.setProperty('--tabs-bottom', `${h}px`);
+      if (h > 0) {
+        document.documentElement.style.setProperty('--tabs-bottom', `${h}px`);
+      }
+      // --table-head-top = шапка + вкладки + блок поиска (если есть)
+      const searchBlock = document.querySelector<HTMLElement>('[data-search-sticky]');
+      const searchH = searchBlock ? searchBlock.offsetHeight : 0;
+      document.documentElement.style.setProperty('--table-head-top', `${h + searchH}px`);
     };
     const t1 = setTimeout(setTabsBottom, 30);
-    const t2 = setTimeout(setTabsBottom, 200);
+    const t2 = setTimeout(setTabsBottom, 300);
     window.addEventListener('resize', setTabsBottom);
     return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener('resize', setTabsBottom); };
   }, [activeTab]);
@@ -537,7 +543,7 @@ const Index = () => {
       {activeTab === 'used' && (
         <main className="bg-[#181c30]" style={{ flex: '1 1 auto' }}>
           {/* Поиск + заголовок таблицы — единый sticky-блок */}
-          <div className="sticky z-30 bg-[#181c30]" style={{ top: 'var(--tabs-bottom, 98px)' }}>
+          <div className="sticky z-30 bg-[#181c30]" style={{ top: 'var(--tabs-bottom, 98px)' }} data-search-sticky>
             {/* Строка поиска */}
             <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3">
               <div className="flex items-center gap-3 max-w-5xl mx-auto">
