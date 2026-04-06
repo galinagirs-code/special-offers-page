@@ -216,14 +216,6 @@ const Index = () => {
   const [showMobileCallBtn, setShowMobileCallBtn] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
-  const tableBodyRef = useRef<HTMLDivElement>(null);
-  const tableHeadRef = useRef<HTMLDivElement>(null);
-
-  const syncScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    if (tableHeadRef.current) {
-      tableHeadRef.current.scrollLeft = (e.target as HTMLDivElement).scrollLeft;
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -519,42 +511,31 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Заголовок таблицы sticky — синхронизируется с телом через onScroll */}
-          <div
-            ref={tableHeadRef}
-            className="sticky top-[175px] md:top-[191px] z-20 bg-[#181c30] overflow-x-hidden"
-            style={{ scrollbarWidth: 'none' }}
-          >
-            <table className="w-full text-sm border-collapse min-w-[750px]">
-              <thead>
-                <tr className="bg-[#273369] text-[#F6A327]">
-                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold w-10">№</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">Наименование</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">VIN</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">Местонахождение</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-center font-semibold w-14">Год</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">Наработка</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-right font-semibold">Стоимость</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-center font-semibold w-24">Заявка</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
-
-          {/* Тело таблицы с горизонтальным скроллом */}
-          <div className="flex-1 overflow-x-auto" ref={tableBodyRef} onScroll={syncScroll}>
-            <div className="container mx-auto px-2 pb-4">
-              <table className="w-full text-sm border-collapse min-w-[750px]">
-                <colgroup>
-                  <col className="w-10" />
-                  <col />
-                  <col />
-                  <col />
-                  <col className="w-14" />
-                  <col />
-                  <col />
-                  <col className="w-24" />
-                </colgroup>
+          {/* Таблица — один overflow-x-auto контейнер, th sticky по вертикали */}
+          <div className="flex-1 overflow-x-auto">
+            <div className="px-2 pb-4" style={{ minWidth: '900px' }}>
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-[#273369] text-[#F6A327]">
+                    {[
+                      { label: '№', cls: 'w-10 text-left' },
+                      { label: 'Наименование', cls: 'text-left min-w-[200px]' },
+                      { label: 'VIN', cls: 'text-left min-w-[160px]' },
+                      { label: 'Местонахождение', cls: 'text-left min-w-[130px]' },
+                      { label: 'Год', cls: 'w-12 text-center' },
+                      { label: 'Наработка', cls: 'text-left min-w-[100px]' },
+                      { label: 'Стоимость', cls: 'text-right min-w-[130px]' },
+                      { label: 'Заявка', cls: 'w-20 text-center' },
+                    ].map(({ label, cls }) => (
+                      <th
+                        key={label}
+                        className={`table-th-sticky border border-border/20 px-3 py-2.5 font-semibold bg-[#273369] ${cls}`}
+                      >
+                        {label}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
                 <tbody>
                   {filteredRows.map((row, i) => {
                     if ('group' in row) {
