@@ -126,10 +126,10 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
                   <td style={td({ color: 'rgba(255,255,255,0.6)' })}>{row.hours}</td>
                   <td style={td({
                     textAlign: 'right', fontWeight: 600, wordBreak: 'keep-all',
-                    color: row.price && row.price !== 'по запросу' ? '#F6A327' : 'rgba(255,255,255,0.45)',
-                    fontStyle: row.price === 'по запросу' ? 'italic' : 'normal',
+                    color: row.price && row.price !== 'по запросу' ? '#F6A327' : 'rgba(255,255,255,0.5)',
+                    fontStyle: !row.price || row.price === 'по запросу' ? 'italic' : 'normal',
                   })}>
-                    {row.price ? (row.price === 'по запросу' ? 'по запросу' : `${row.price} ₽`) : '—'}
+                    {row.price ? (row.price === 'по запросу' ? 'по запросу' : `${row.price} ₽`) : 'по запросу'}
                   </td>
                   <td style={td({ textAlign: 'center', padding: '5px' })}>
                     <Button
