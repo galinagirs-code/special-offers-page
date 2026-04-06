@@ -484,146 +484,128 @@ const Index = () => {
 
       {/* ===== Б/У ТЕХНИКА ===== */}
       {activeTab === 'used' && (
-        <main className="flex-1 flex flex-col bg-[#181c30]">
-          {/* Sticky блок: поиск + заголовок таблицы — единое целое */}
-          <div className="sticky top-[122px] md:top-[138px] z-30 bg-[#181c30]">
-            {/* Поиск */}
-            <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3">
-              <div className="flex items-center gap-3">
-                <div className="relative flex-1">
-                  <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    ref={searchRef}
-                    placeholder="Поиск по названию..."
-                    className="pl-9 bg-background/30 border-border/30"
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                  />
-                  {search && (
-                    <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                      <Icon name="X" size={14} />
-                    </button>
-                  )}
-                </div>
-                <span className="text-sm text-muted-foreground whitespace-nowrap">
-                  {search ? `${filteredRows.filter(r => 'n' in r).length} из ${equipmentItems.length}` : `${equipmentItems.length} позиций`}
-                </span>
+        <main className="flex-1 bg-[#181c30]">
+          {/* Поиск — sticky */}
+          <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3 sticky top-[122px] md:top-[138px] z-30">
+            <div className="flex items-center gap-3 max-w-5xl mx-auto">
+              <div className="relative flex-1">
+                <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  ref={searchRef}
+                  placeholder="Поиск по названию..."
+                  className="pl-9 bg-background/30 border-border/30"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                />
+                {search && (
+                  <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                    <Icon name="X" size={14} />
+                  </button>
+                )}
               </div>
-            </div>
-            {/* Заголовок таблицы — сразу под поиском, прокрутка горизонтальная скрыта */}
-            <div className="overflow-x-hidden" style={{ scrollbarWidth: 'none' }}>
-              <table className="w-full text-sm border-collapse" style={{ minWidth: 900 }}>
-                <thead>
-                  <tr className="bg-[#273369] text-[#F6A327]">
-                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-center w-10">п/п</th>
-                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-left" style={{ minWidth: 200 }}>Наименование</th>
-                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-left" style={{ minWidth: 160 }}>VIN номер</th>
-                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-left" style={{ minWidth: 130 }}>Местонахождение</th>
-                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-center w-20">Год выпуска</th>
-                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-left" style={{ minWidth: 140 }}>Наработка / пробег (м/ч, км)</th>
-                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-right" style={{ minWidth: 130 }}>Стоимость (руб)</th>
-                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-center w-20">Заявка</th>
-                  </tr>
-                </thead>
-              </table>
+              <span className="text-sm text-muted-foreground whitespace-nowrap">
+                {search ? `${filteredRows.filter(r => 'n' in r).length} из ${equipmentItems.length}` : `${equipmentItems.length} позиций`}
+              </span>
             </div>
           </div>
 
-          {/* Тело таблицы — скроллится горизонтально, синхронно с заголовком через JS */}
-          <div className="flex-1 overflow-x-auto" onScroll={e => {
-            const header = e.currentTarget.previousElementSibling?.querySelector('div[style]') as HTMLElement | null;
-            if (header) header.scrollLeft = e.currentTarget.scrollLeft;
-          }}>
-            <div className="px-0 pb-4" style={{ minWidth: 900 }}>
-              <table className="w-full text-sm border-collapse" style={{ minWidth: 900 }}>
-                <colgroup>
-                  <col style={{ width: 40 }} />
-                  <col style={{ minWidth: 200 }} />
-                  <col style={{ minWidth: 160 }} />
-                  <col style={{ minWidth: 130 }} />
-                  <col style={{ width: 80 }} />
-                  <col style={{ minWidth: 140 }} />
-                  <col style={{ minWidth: 130 }} />
-                  <col style={{ width: 80 }} />
-                </colgroup>
-                <tbody>
-                  {filteredRows.map((row, i) => {
-                    if ('group' in row) {
-                      if (search) return null;
-                      return (
-                        <tr key={i} className="bg-[#273369]/70">
-                          <td colSpan={8} className="border border-border/20 px-3 py-2 font-bold text-[#F6A327] text-xs uppercase tracking-wide">
-                            {row.group}
-                          </td>
-                        </tr>
-                      );
-                    }
+          {/* Таблица: ОДНА таблица, thead sticky через position:sticky на tr */}
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ minWidth: 900, width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
+              <thead>
+                <tr
+                  className="bg-[#273369] text-[#F6A327]"
+                  style={{ position: 'sticky', top: 174, zIndex: 20 }}
+                >
+                  <th style={{ width: 36, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', background: '#273369', fontWeight: 600 }}>п/п</th>
+                  <th style={{ minWidth: 220, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left', background: '#273369', fontWeight: 600 }}>Наименование</th>
+                  <th className="hidden md:table-cell" style={{ minWidth: 155, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left', background: '#273369', fontWeight: 600 }}>VIN номер</th>
+                  <th style={{ minWidth: 110, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left', background: '#273369', fontWeight: 600 }}>Местонахождение</th>
+                  <th style={{ width: 64, padding: '8px 6px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', background: '#273369', fontWeight: 600 }}>Год выпуска</th>
+                  <th style={{ minWidth: 110, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left', background: '#273369', fontWeight: 600 }}>Наработка / пробег (м/ч, км)</th>
+                  <th style={{ minWidth: 120, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'right', background: '#273369', fontWeight: 600 }}>Стоимость (руб)</th>
+                  <th style={{ width: 76, padding: '8px 6px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', background: '#273369', fontWeight: 600 }}>Заявка</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredRows.map((row, i) => {
+                  if ('group' in row) {
+                    if (search) return null;
                     return (
-                      <tr key={i} className="hover:bg-[#273369]/20 transition-colors border-b border-border/10">
-                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-center text-xs">{row.n}</td>
-                        <td className="border-x border-border/20 px-3 py-2.5 font-medium">{row.name}</td>
-                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs font-mono">{row.vin}</td>
-                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs">{row.loc}</td>
-                        <td className="border-x border-border/20 px-3 py-2.5 text-center text-muted-foreground text-xs">{row.year || ''}</td>
-                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs">{row.hours}</td>
-                        <td className={`border-x border-border/20 px-3 py-2.5 text-right text-sm font-semibold whitespace-nowrap ${row.price === 'по запросу' ? 'text-muted-foreground italic text-xs' : row.price ? 'text-[#F6A327]' : 'text-muted-foreground'}`}>
-                          {row.price ? (row.price === 'по запросу' ? 'по запросу' : `${row.price} ₽`) : '—'}
-                        </td>
-                        <td className="border-x border-border/20 px-2 py-2 text-center">
-                          <Button
-                            size="sm"
-                            className="bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] text-xs font-semibold h-7 px-2"
-                            onClick={() => setModalEquipment(`${row.name}${row.vin ? ` (VIN: ${row.vin})` : ''}`)}
-                          >
-                            Заявка
-                          </Button>
+                      <tr key={i} style={{ background: 'rgba(39,51,105,0.6)' }}>
+                        <td colSpan={8} style={{ padding: '6px 10px', border: '1px solid rgba(255,255,255,0.1)', color: '#F6A327', fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          {row.group}
                         </td>
                       </tr>
                     );
-                  })}
-                </tbody>
-              </table>
-              {filteredRows.filter(r => 'n' in r).length === 0 && (
-                <div className="text-center py-16 text-muted-foreground">
-                  <Icon name="SearchX" size={40} className="mx-auto mb-3 opacity-30" />
-                  <p>Ничего не найдено по запросу «{search}»</p>
-                </div>
-              )}
-            </div>
+                  }
+                  return (
+                    <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                      className="hover:bg-[#273369]/20 transition-colors">
+                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{row.n}</td>
+                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', fontWeight: 500 }}>{row.name}</td>
+                      <td className="hidden md:table-cell" style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.5)', fontSize: 11, fontFamily: 'monospace' }}>{row.vin}</td>
+                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>{row.loc}</td>
+                      <td style={{ padding: '8px 6px', border: '1px solid rgba(255,255,255,0.07)', textAlign: 'center', color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>{row.year || ''}</td>
+                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>{row.hours}</td>
+                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', textAlign: 'right', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', color: row.price && row.price !== 'по запросу' ? '#F6A327' : 'rgba(255,255,255,0.5)' }}>
+                        {row.price ? (row.price === 'по запросу' ? 'по запросу' : `${row.price} ₽`) : '—'}
+                      </td>
+                      <td style={{ padding: '6px', border: '1px solid rgba(255,255,255,0.07)', textAlign: 'center' }}>
+                        <Button
+                          size="sm"
+                          className="bg-[#10B981] hover:bg-[#10B981]/90 text-white text-xs font-semibold h-7 px-2"
+                          onClick={() => setModalEquipment(`${row.name}${row.vin ? ` (VIN: ${row.vin})` : ''}`)}
+                        >
+                          Заявка
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
 
-            {/* Форма заявки в конце списка */}
-            <div className="container mx-auto px-4 py-10 max-w-2xl">
-              <p className="text-center text-lg text-muted-foreground mb-6">
-                Для получения консультации оставьте заявку — наши специалисты свяжутся с вами в ближайшее время
-              </p>
-              <Card className="p-8 bg-card/80 border-[#F6A327]/10">
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Ваше имя <span className="text-[#F6A327]">*</span></label>
-                    <Input placeholder="Иван Иванов" className="bg-background/50" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Телефон <span className="text-[#F6A327]">*</span></label>
-                    <Input type="tel" placeholder="+7 (___) ___-__-__" className="bg-background/50" value={formData.phone} onChange={e => setFormData({ ...formData, phone: formatPhone(e.target.value) })} required />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Email</label>
-                    <Input type="email" placeholder="example@mail.ru" className="bg-background/50" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <input type="checkbox" id="used-consent" checked={formData.consent} onChange={e => setFormData({ ...formData, consent: e.target.checked })} className="mt-1 h-4 w-4 rounded border-border bg-background/50 accent-[#F6A327]" required />
-                    <label htmlFor="used-consent" className="text-xs text-muted-foreground leading-relaxed">
-                      Я согласен на обработку персональных данных в соответствии с{' '}
-                      <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-[#F6A327] hover:underline">политикой конфиденциальности</a>
-                    </label>
-                  </div>
-                  <Button type="submit" disabled={isSubmitting || !formData.consent} className="w-full bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold disabled:opacity-50">
-                    <Icon name="Send" size={18} className="mr-2" />
-                    {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
-                  </Button>
-                </form>
-              </Card>
-            </div>
+            {filteredRows.filter(r => 'n' in r).length === 0 && (
+              <div className="text-center py-16 text-muted-foreground">
+                <Icon name="SearchX" size={40} className="mx-auto mb-3 opacity-30" />
+                <p>Ничего не найдено по запросу «{search}»</p>
+              </div>
+            )}
+          </div>
+
+          {/* Форма заявки в конце списка */}
+          <div className="container mx-auto px-4 py-10 max-w-2xl">
+            <p className="text-center text-lg text-muted-foreground mb-6">
+              Для получения консультации оставьте заявку — наши специалисты свяжутся с вами в ближайшее время
+            </p>
+            <Card className="p-8 bg-card/80 border-[#F6A327]/10">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Ваше имя <span className="text-[#F6A327]">*</span></label>
+                  <Input placeholder="Иван Иванов" className="bg-background/50" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Телефон <span className="text-[#F6A327]">*</span></label>
+                  <Input type="tel" placeholder="+7 (___) ___-__-__" className="bg-background/50" value={formData.phone} onChange={e => setFormData({ ...formData, phone: formatPhone(e.target.value) })} required />
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Email</label>
+                  <Input type="email" placeholder="example@mail.ru" className="bg-background/50" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                </div>
+                <div className="flex items-start gap-2">
+                  <input type="checkbox" id="used-consent" checked={formData.consent} onChange={e => setFormData({ ...formData, consent: e.target.checked })} className="mt-1 h-4 w-4 rounded border-border bg-background/50 accent-[#F6A327]" required />
+                  <label htmlFor="used-consent" className="text-xs text-muted-foreground leading-relaxed">
+                    Я согласен на обработку персональных данных в соответствии с{' '}
+                    <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-[#F6A327] hover:underline">политикой конфиденциальности</a>
+                  </label>
+                </div>
+                <Button type="submit" disabled={isSubmitting || !formData.consent} className="w-full bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold disabled:opacity-50">
+                  <Icon name="Send" size={18} className="mr-2" />
+                  {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+                </Button>
+              </form>
+            </Card>
           </div>
         </main>
       )}
