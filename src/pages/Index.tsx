@@ -375,25 +375,28 @@ const Index = () => {
       <div className="flex w-full sticky top-[52px] md:top-[60px] z-40 bg-[#1a2455]" data-top-sticky>
         <button
           onClick={() => setActiveTab('used')}
-          className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 md:py-5 border-b-4 transition-all cursor-pointer ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#1a2455] text-white border-transparent hover:bg-[#273369] animate-pulse'}`}
+          className={`flex-1 min-w-0 flex flex-col items-center justify-center gap-1 py-3 md:py-5 border-b-4 transition-all cursor-pointer px-2 ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#1a2455] text-white border-transparent hover:bg-[#273369] animate-pulse'}`}
         >
-          <div className="flex items-center gap-2">
-            <Icon name="Truck" size={20} className="flex-shrink-0" />
-            <span className="font-bold text-sm md:text-xl whitespace-nowrap">Б/у техника</span>
+          <div className="flex items-center gap-1.5 min-w-0">
+            <Icon name="Truck" size={18} className="flex-shrink-0" />
+            <span className="font-bold text-sm md:text-xl leading-tight">Б/у техника</span>
           </div>
-          <span className={`text-[11px] md:text-sm font-normal whitespace-nowrap ${activeTab === 'used' ? 'text-[#273369]/80' : 'text-white/60'}`}>Каталог техники → нажмите</span>
+          <span className={`text-[10px] md:text-sm font-normal text-center leading-tight ${activeTab === 'used' ? 'text-[#273369]/80' : 'text-white/60'}`}>Каталог техники</span>
         </button>
         <div className="w-px bg-[#273369]/40 flex-shrink-0" />
         <button
           onClick={() => setActiveTab('spec')}
-          className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 md:py-5 border-b-4 transition-all cursor-pointer ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#1a2455] text-white border-transparent hover:bg-[#273369] animate-pulse'}`}
+          className={`flex-1 min-w-0 flex flex-col items-center justify-center gap-1 py-3 md:py-5 border-b-4 transition-all cursor-pointer px-2 ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#1a2455] text-white border-transparent hover:bg-[#273369] animate-pulse'}`}
         >
-          <div className="flex items-center gap-2">
-            <Icon name="Star" size={20} className="flex-shrink-0" />
-            <span className="font-bold text-sm md:text-xl whitespace-nowrap">Спецпредложение</span>
-            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${activeTab === 'spec' ? 'bg-[#273369]/25 text-[#273369]' : 'bg-[#F6A327] text-[#273369]'}`}>NEW</span>
+          <div className="flex items-center gap-1.5 min-w-0">
+            <Icon name="Star" size={18} className="flex-shrink-0" />
+            <span className="font-bold text-sm md:text-xl leading-tight">Спецпредложение</span>
+            <span className={`hidden md:inline text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${activeTab === 'spec' ? 'bg-[#273369]/25 text-[#273369]' : 'bg-[#F6A327] text-[#273369]'}`}>NEW</span>
           </div>
-          <span className={`text-[11px] md:text-sm font-normal whitespace-nowrap ${activeTab === 'spec' ? 'text-[#273369]/80' : 'text-white/60'}`}>Новая техника и акции → нажмите</span>
+          <span className={`text-[10px] md:text-sm font-normal text-center leading-tight ${activeTab === 'spec' ? 'text-[#273369]/80' : 'text-white/60'}`}>
+            <span className="hidden md:inline">Новая техника и акции</span>
+            <span className="md:hidden">Новая техника</span>
+          </span>
         </button>
       </div>
 
