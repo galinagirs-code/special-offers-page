@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import MessengerWidget from '@/components/MessengerWidget';
+import UsedTable from '@/components/UsedTable';
 
 type EquipmentRow = { n: number; name: string; vin: string; loc: string; year: number | null; hours: string; price: string };
 type GroupRow = { group: string };
@@ -302,7 +303,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Шапка */}
-      <header className="border-b border-border/40 bg-[#272D49] sticky top-0 z-50">
+      <header className="border-b border-border/40 bg-[#272D49] sticky top-0 z-50" data-sticky-header>
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 md:gap-4">
@@ -329,7 +330,7 @@ const Index = () => {
       </header>
 
       {/* Навигационные вкладки — крупные, под шапкой */}
-      <div className="flex w-full sticky top-[61px] md:top-[69px] z-40">
+      <div className="flex w-full sticky top-[61px] md:top-[69px] z-40" data-sticky-header>
         <button
           onClick={() => setActiveTab('spec')}
           className={`flex-1 flex items-center justify-center gap-2.5 py-4 md:py-5 text-base md:text-lg font-bold transition-all border-b-4 ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
@@ -486,7 +487,7 @@ const Index = () => {
       {activeTab === 'used' && (
         <main className="flex-1 bg-[#181c30]">
           {/* Поиск — sticky */}
-          <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3 sticky top-[122px] md:top-[138px] z-30">
+          <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3 sticky top-[122px] md:top-[138px] z-30" data-sticky-header>
             <div className="flex items-center gap-3 max-w-5xl mx-auto">
               <div className="relative flex-1">
                 <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -509,84 +510,12 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Таблица: одна таблица, sticky на каждом th (единственный рабочий способ) */}
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ minWidth: 820, width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
-              <thead>
-                <tr className="text-[#F6A327]">
-                  {[
-                    { label: 'п/п',                            w: { width: 36 },      align: 'center' as const },
-                    { label: 'Наименование',                   w: { minWidth: 220 },  align: 'left'   as const },
-                    { label: 'VIN номер',                      w: { minWidth: 100 },  align: 'left'   as const, hideMobile: true },
-                    { label: 'Местонахождение',                w: { minWidth: 110 },  align: 'left'   as const },
-                    { label: 'Год выпуска',                    w: { width: 60 },      align: 'center' as const },
-                    { label: 'Наработка / пробег (м/ч, км)',   w: { minWidth: 105 },  align: 'left'   as const },
-                    { label: 'Стоимость (руб)',                w: { minWidth: 120 },  align: 'right'  as const },
-                    { label: 'Заявка',                         w: { width: 72 },      align: 'center' as const },
-                  ].map(({ label, w, align, hideMobile }) => (
-                    <th
-                      key={label}
-                      className={`th-sticky ${hideMobile ? 'hidden md:table-cell' : ''}`}
-                      style={{
-                        ...w,
-                        background: '#273369',
-                        fontWeight: 600,
-                        textAlign: align,
-                        padding: '8px',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                      }}
-                    >
-                      {label}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredRows.map((row, i) => {
-                  if ('group' in row) {
-                    if (search) return null;
-                    return (
-                      <tr key={i} style={{ background: 'rgba(39,51,105,0.6)' }}>
-                        <td colSpan={8} style={{ padding: '6px 10px', border: '1px solid rgba(255,255,255,0.1)', color: '#F6A327', fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          {row.group}
-                        </td>
-                      </tr>
-                    );
-                  }
-                  return (
-                    <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-                      className="hover:bg-[#273369]/20 transition-colors">
-                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{row.n}</td>
-                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', fontWeight: 500 }}>{row.name}</td>
-                      <td className="hidden md:table-cell" style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.5)', fontSize: 11, fontFamily: 'monospace' }}>{row.vin}</td>
-                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>{row.loc}</td>
-                      <td style={{ padding: '8px 6px', border: '1px solid rgba(255,255,255,0.07)', textAlign: 'center', color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>{row.year || ''}</td>
-                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>{row.hours}</td>
-                      <td style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.07)', textAlign: 'right', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', color: row.price && row.price !== 'по запросу' ? '#F6A327' : 'rgba(255,255,255,0.5)' }}>
-                        {row.price ? (row.price === 'по запросу' ? 'по запросу' : `${row.price} ₽`) : '—'}
-                      </td>
-                      <td style={{ padding: '6px', border: '1px solid rgba(255,255,255,0.07)', textAlign: 'center' }}>
-                        <Button
-                          size="sm"
-                          className="bg-[#10B981] hover:bg-[#10B981]/90 text-white text-xs font-semibold h-7 px-2"
-                          onClick={() => setModalEquipment(`${row.name}${row.vin ? ` (VIN: ${row.vin})` : ''}`)}
-                        >
-                          Заявка
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-
-            {filteredRows.filter(r => 'n' in r).length === 0 && (
-              <div className="text-center py-16 text-muted-foreground">
-                <Icon name="SearchX" size={40} className="mx-auto mb-3 opacity-30" />
-                <p>Ничего не найдено по запросу «{search}»</p>
-              </div>
-            )}
-          </div>
+          {/* Таблица: table-layout fixed, без overflow на родителе → sticky thead работает */}
+          <UsedTable
+            filteredRows={filteredRows}
+            search={search}
+            onRequest={(name, vin) => setModalEquipment(`${name}${vin ? ` (VIN: ${vin})` : ''}`)}
+          />
 
           {/* Форма заявки в конце списка */}
           <div className="container mx-auto px-4 py-10 max-w-2xl">
