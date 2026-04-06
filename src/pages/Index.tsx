@@ -220,22 +220,21 @@ const Index = () => {
 
   // Устанавливаем CSS-переменные высот для sticky-элементов
   useEffect(() => {
-    const setTabsBottom = () => {
-      const els = document.querySelectorAll<HTMLElement>('[data-top-sticky]');
-      let h = 0;
-      els.forEach(el => { h += el.offsetHeight; });
-      if (h > 0) {
-        document.documentElement.style.setProperty('--tabs-bottom', `${h}px`);
-      }
-      // --table-head-top = шапка + вкладки + блок поиска (если есть)
+    const calc = () => {
+      const header = document.querySelector<HTMLElement>('[data-header]');
+      const tabs = document.querySelector<HTMLElement>('[data-tabs]');
+      const headerH = header?.offsetHeight ?? 0;
+      const tabsH = tabs?.offsetHeight ?? 0;
+      document.documentElement.style.setProperty('--header-h', `${headerH}px`);
+      document.documentElement.style.setProperty('--tabs-bottom', `${headerH + tabsH}px`);
       const searchBlock = document.querySelector<HTMLElement>('[data-search-sticky]');
-      const searchH = searchBlock ? searchBlock.offsetHeight : 0;
-      document.documentElement.style.setProperty('--table-head-top', `${h + searchH}px`);
+      const searchH = searchBlock?.offsetHeight ?? 0;
+      document.documentElement.style.setProperty('--table-head-top', `${headerH + tabsH + searchH}px`);
     };
-    const t1 = setTimeout(setTabsBottom, 30);
-    const t2 = setTimeout(setTabsBottom, 300);
-    window.addEventListener('resize', setTabsBottom);
-    return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener('resize', setTabsBottom); };
+    const t1 = setTimeout(calc, 30);
+    const t2 = setTimeout(calc, 300);
+    window.addEventListener('resize', calc);
+    return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener('resize', calc); };
   }, [activeTab]);
 
   useEffect(() => {
@@ -323,7 +322,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden">
       {/* Шапка */}
-      <header className="border-b border-border/40 sticky top-0 z-50" style={{ background: 'linear-gradient(90deg, #1e2340 0%, #272D49 60%, #1e2340 100%)' }} data-top-sticky>
+      <header className="border-b border-border/40 sticky top-0 z-50" style={{ background: 'linear-gradient(90deg, #1e2340 0%, #272D49 60%, #1e2340 100%)' }} data-header>
         <div className="mx-auto px-3 md:px-6 py-2 md:py-3">
           <div className="flex items-center justify-between gap-2">
             {/* Лого */}
@@ -372,7 +371,7 @@ const Index = () => {
       </header>
 
       {/* Навигационные вкладки */}
-      <div className="flex w-full sticky top-[52px] md:top-[60px] z-40 bg-[#1a2455]" data-top-sticky>
+      <div className="flex w-full sticky z-40 bg-[#1a2455]" style={{ top: 'var(--header-h, 52px)' }} data-tabs>
         <button
           onClick={() => setActiveTab('used')}
           className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 md:py-3.5 border-b-4 transition-all cursor-pointer ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#1a2455] text-white border-transparent hover:bg-[#273369] animate-pulse'}`}
@@ -541,7 +540,7 @@ const Index = () => {
 
       {/* ===== Б/У ТЕХНИКА ===== */}
       {activeTab === 'used' && (
-        <main className="bg-[#181c30]" style={{ flex: '1 1 auto' }}>
+        <main className="bg-[#181c30] relative" style={{ flex: '1 1 auto' }}>
           {/* Поиск + заголовок таблицы — единый sticky-блок */}
           <div className="sticky z-30 bg-[#181c30]" style={{ top: 'var(--tabs-bottom, 98px)' }} data-search-sticky>
             {/* Строка поиска */}
