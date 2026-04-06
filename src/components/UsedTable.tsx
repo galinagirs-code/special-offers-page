@@ -50,6 +50,7 @@ const TOTAL_W = COLS.reduce((s, c) => s + c.w, 0); // 834px
 
 export default function UsedTable({ filteredRows, search, onRequest }: Props) {
   const headWrapRef = useRef<HTMLDivElement>(null);
+  const headTableRef = useRef<HTMLTableElement>(null);
   const bodyScrollRef = useRef<HTMLDivElement>(null);
   const [stickyTop, setStickyTop] = useState(160);
 
@@ -66,6 +67,20 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
     const t2 = setTimeout(calc, 300);
     window.addEventListener('resize', calc);
     return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener('resize', calc); };
+  }, []);
+
+  // Синхронизируем ширину таблицы-заголовка с шириной таблицы-тела через ResizeObserver
+  useEffect(() => {
+    if (!bodyScrollRef.current || !headTableRef.current) return;
+    const bodyTable = bodyScrollRef.current.querySelector('table');
+    if (!bodyTable) return;
+    const ro = new ResizeObserver(() => {
+      if (headTableRef.current && bodyTable) {
+        headTableRef.current.style.width = `${bodyTable.offsetWidth}px`;
+      }
+    });
+    ro.observe(bodyTable);
+    return () => ro.disconnect();
   }, []);
 
   // Синхронизация горизонтального скролла: тело → заголовок
@@ -91,7 +106,7 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
           background: BG_H,
         }}
       >
-        <table style={{ width: '100%', minWidth: TOTAL_W, borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+        <table ref={headTableRef} style={{ width: '100%', minWidth: TOTAL_W, borderCollapse: 'collapse', tableLayout: 'fixed' }}>
           <colgroup>
             {COLS.map(c => <col key={c.label} style={{ width: c.w }} />)}
           </colgroup>
