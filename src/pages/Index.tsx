@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import MessengerWidget from '@/components/MessengerWidget';
-import UsedTable from '@/components/UsedTable';
+import UsedTable, { UsedTableHead } from '@/components/UsedTable';
 
 type EquipmentRow = { n: number; name: string; vin: string; loc: string; year: number | null; hours: string; price: string };
 type GroupRow = { group: string };
@@ -217,6 +217,21 @@ const Index = () => {
   const [showMobileCallBtn, setShowMobileCallBtn] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
+
+  // Устанавливаем CSS-переменную = высота шапки + вкладок (для позиционирования sticky-поиска)
+  useEffect(() => {
+    const setTabsBottom = () => {
+      // data-sticky-header: header + tabs div
+      const els = document.querySelectorAll<HTMLElement>('[data-sticky-header]');
+      let h = 0;
+      els.forEach(el => { h += el.offsetHeight; });
+      if (h > 0) document.documentElement.style.setProperty('--tabs-bottom', `${h}px`);
+    };
+    const t1 = setTimeout(setTabsBottom, 30);
+    const t2 = setTimeout(setTabsBottom, 200);
+    window.addEventListener('resize', setTabsBottom);
+    return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener('resize', setTabsBottom); };
+  }, [activeTab]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -517,31 +532,36 @@ const Index = () => {
       {/* ===== Б/У ТЕХНИКА ===== */}
       {activeTab === 'used' && (
         <main className="flex-1 bg-[#181c30]">
-          {/* Поиск — sticky */}
-          <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3 sticky top-[122px] md:top-[138px] z-30" data-sticky-header>
-            <div className="flex items-center gap-3 max-w-5xl mx-auto">
-              <div className="relative flex-1">
-                <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  ref={searchRef}
-                  placeholder="Поиск по названию..."
-                  className="pl-9 bg-background/30 border-border/30"
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                />
-                {search && (
-                  <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                    <Icon name="X" size={14} />
-                  </button>
-                )}
+          {/* Поиск + заголовок таблицы — единый sticky-блок, не разрываем */}
+          <div className="sticky z-30 bg-[#181c30]" style={{ top: 'var(--tabs-bottom, 98px)' }} data-sticky-header>
+            {/* Строка поиска */}
+            <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3">
+              <div className="flex items-center gap-3 max-w-5xl mx-auto">
+                <div className="relative flex-1">
+                  <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    ref={searchRef}
+                    placeholder="Поиск по названию..."
+                    className="pl-9 bg-background/30 border-border/30"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                  />
+                  {search && (
+                    <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                      <Icon name="X" size={14} />
+                    </button>
+                  )}
+                </div>
+                <span className="text-sm text-muted-foreground whitespace-nowrap">
+                  {search ? `${filteredRows.filter(r => 'n' in r).length} из ${equipmentItems.length}` : `${equipmentItems.length} позиций`}
+                </span>
               </div>
-              <span className="text-sm text-muted-foreground whitespace-nowrap">
-                {search ? `${filteredRows.filter(r => 'n' in r).length} из ${equipmentItems.length}` : `${equipmentItems.length} позиций`}
-              </span>
             </div>
+            {/* Заголовок таблицы — вынесен сюда, прилипает вместе с поиском */}
+            <UsedTableHead />
           </div>
 
-          {/* Таблица: table-layout fixed, без overflow на родителе → sticky thead работает */}
+          {/* Только тело таблицы */}
           <UsedTable
             filteredRows={filteredRows}
             search={search}
