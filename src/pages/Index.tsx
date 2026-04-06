@@ -216,6 +216,14 @@ const Index = () => {
   const [showMobileCallBtn, setShowMobileCallBtn] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const tableBodyRef = useRef<HTMLDivElement>(null);
+  const tableHeadRef = useRef<HTMLDivElement>(null);
+
+  const syncScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (tableHeadRef.current) {
+      tableHeadRef.current.scrollLeft = (e.target as HTMLDivElement).scrollLeft;
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -511,17 +519,21 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Заголовок таблицы — sticky, отдельно от overflow-x-auto */}
-          <div className="sticky top-[175px] md:top-[191px] z-20 bg-[#181c30] overflow-x-auto">
+          {/* Заголовок таблицы sticky — синхронизируется с телом через onScroll */}
+          <div
+            ref={tableHeadRef}
+            className="sticky top-[175px] md:top-[191px] z-20 bg-[#181c30] overflow-x-hidden"
+            style={{ scrollbarWidth: 'none' }}
+          >
             <table className="w-full text-sm border-collapse min-w-[750px]">
               <thead>
                 <tr className="bg-[#273369] text-[#F6A327]">
                   <th className="border border-border/20 px-3 py-2.5 text-left font-semibold w-10">№</th>
                   <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">Наименование</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold hidden lg:table-cell">VIN</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold hidden md:table-cell">Местонахождение</th>
+                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">VIN</th>
+                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">Местонахождение</th>
                   <th className="border border-border/20 px-3 py-2.5 text-center font-semibold w-14">Год</th>
-                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold hidden md:table-cell">Наработка</th>
+                  <th className="border border-border/20 px-3 py-2.5 text-left font-semibold">Наработка</th>
                   <th className="border border-border/20 px-3 py-2.5 text-right font-semibold">Стоимость</th>
                   <th className="border border-border/20 px-3 py-2.5 text-center font-semibold w-24">Заявка</th>
                 </tr>
@@ -529,10 +541,20 @@ const Index = () => {
             </table>
           </div>
 
-          {/* Таблица */}
-          <div className="flex-1 overflow-x-auto">
+          {/* Тело таблицы с горизонтальным скроллом */}
+          <div className="flex-1 overflow-x-auto" ref={tableBodyRef} onScroll={syncScroll}>
             <div className="container mx-auto px-2 pb-4">
               <table className="w-full text-sm border-collapse min-w-[750px]">
+                <colgroup>
+                  <col className="w-10" />
+                  <col />
+                  <col />
+                  <col />
+                  <col className="w-14" />
+                  <col />
+                  <col />
+                  <col className="w-24" />
+                </colgroup>
                 <tbody>
                   {filteredRows.map((row, i) => {
                     if ('group' in row) {
@@ -549,10 +571,10 @@ const Index = () => {
                       <tr key={i} className="hover:bg-[#273369]/20 transition-colors border-b border-border/10">
                         <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-center text-xs">{row.n}</td>
                         <td className="border-x border-border/20 px-3 py-2.5 font-medium">{row.name}</td>
-                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs font-mono hidden lg:table-cell">{row.vin}</td>
-                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs hidden md:table-cell">{row.loc}</td>
+                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs font-mono">{row.vin}</td>
+                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs">{row.loc}</td>
                         <td className="border-x border-border/20 px-3 py-2.5 text-center text-muted-foreground text-xs">{row.year || ''}</td>
-                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs hidden md:table-cell">{row.hours}</td>
+                        <td className="border-x border-border/20 px-3 py-2.5 text-muted-foreground text-xs">{row.hours}</td>
                         <td className={`border-x border-border/20 px-3 py-2.5 text-right text-sm font-semibold whitespace-nowrap ${row.price === 'по запросу' ? 'text-muted-foreground italic text-xs' : row.price ? 'text-[#F6A327]' : 'text-muted-foreground'}`}>
                           {row.price ? (row.price === 'по запросу' ? 'по запросу' : `${row.price} ₽`) : '—'}
                         </td>
