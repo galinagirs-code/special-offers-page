@@ -58,19 +58,19 @@ export function UsedTableHead() {
       <div className="md:hidden" style={{ background: '#1e2a5e', borderBottom: '1px solid rgba(246,163,39,0.2)' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
           <colgroup>
-            <col style={{ width: '42%' }} />
-            <col style={{ width: '14%' }} />
-            <col style={{ width: '26%' }} />
-            <col style={{ width: '11%' }} />
+            <col style={{ width: '36%' }} />
+            <col style={{ width: '13%' }} />
+            <col style={{ width: '24%' }} />
+            <col style={{ width: '20%' }} />
             <col style={{ width: '7%' }} />
           </colgroup>
           <thead>
             <tr>
               {['Наименование', 'Год', 'Стоимость', 'Заявка', ''].map(h => (
                 <th key={h} style={{
-                  padding: '9px 6px', background: '#1e2a5e', color: '#F6A327',
+                  padding: '9px 3px', background: '#1e2a5e', color: '#F6A327',
                   fontWeight: 700, fontSize: 11, textAlign: h === 'Год' ? 'center' : h === 'Стоимость' ? 'right' : h === 'Заявка' ? 'center' : 'left',
-                  border: '1px solid rgba(246,163,39,0.2)', lineHeight: 1.2,
+                  border: '1px solid rgba(246,163,39,0.2)', lineHeight: 1.2, whiteSpace: 'nowrap',
                 }}>
                   {h}
                 </th>
@@ -115,7 +115,7 @@ function MobileRow({ row, even, onRequest }: { row: EquipmentRow; even: boolean;
         {/* Кнопка заявки */}
         <td style={{ padding: '5px 4px', textAlign: 'center', border, verticalAlign: 'middle' }}>
           <button
-            style={{ background: 'linear-gradient(135deg,#10B981,#0d9268)', color: '#fff', fontWeight: 700, fontSize: 10, borderRadius: 5, padding: '5px 4px', border: 'none', cursor: 'pointer', lineHeight: 1.2, width: '100%', boxShadow: '0 1px 6px rgba(16,185,129,0.35)' }}
+            style={{ background: 'linear-gradient(135deg,#10B981,#0d9268)', color: '#fff', fontWeight: 700, fontSize: 10, borderRadius: 5, padding: '6px 2px', border: 'none', cursor: 'pointer', lineHeight: 1.2, width: '100%', boxShadow: '0 1px 6px rgba(16,185,129,0.35)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}
             onClick={e => { e.stopPropagation(); onRequest(row.name, row.vin); }}
           >
             Заявка
@@ -232,10 +232,10 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
       <div className="md:hidden">
         <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
           <colgroup>
-            <col style={{ width: '42%' }} />
-            <col style={{ width: '14%' }} />
-            <col style={{ width: '26%' }} />
-            <col style={{ width: '11%' }} />
+            <col style={{ width: '36%' }} />
+            <col style={{ width: '13%' }} />
+            <col style={{ width: '24%' }} />
+            <col style={{ width: '20%' }} />
             <col style={{ width: '7%' }} />
           </colgroup>
           <tbody>
