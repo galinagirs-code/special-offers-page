@@ -518,13 +518,13 @@ const Index = () => {
                 <thead>
                   <tr className="bg-[#273369] text-[#F6A327]">
                     {[
-                      { label: '№', cls: 'w-10 text-left' },
+                      { label: 'п/п', cls: 'w-10 text-center' },
                       { label: 'Наименование', cls: 'text-left min-w-[200px]' },
-                      { label: 'VIN', cls: 'text-left min-w-[160px]' },
+                      { label: 'VIN номер', cls: 'text-left min-w-[160px]' },
                       { label: 'Местонахождение', cls: 'text-left min-w-[130px]' },
-                      { label: 'Год', cls: 'w-12 text-center' },
-                      { label: 'Наработка', cls: 'text-left min-w-[100px]' },
-                      { label: 'Стоимость', cls: 'text-right min-w-[130px]' },
+                      { label: 'Год выпуска', cls: 'w-20 text-center' },
+                      { label: 'Наработка / пробег (м/ч, км)', cls: 'text-left min-w-[120px]' },
+                      { label: 'Стоимость (руб)', cls: 'text-right min-w-[130px]' },
                       { label: 'Заявка', cls: 'w-20 text-center' },
                     ].map(({ label, cls }) => (
                       <th
