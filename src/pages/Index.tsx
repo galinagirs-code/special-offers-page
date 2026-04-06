@@ -304,71 +304,71 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       {/* Шапка */}
       <header className="border-b border-border/40 sticky top-0 z-50" style={{ background: 'linear-gradient(90deg, #1e2340 0%, #272D49 60%, #1e2340 100%)' }} data-sticky-header>
-        <div className="container mx-auto px-4 py-2 md:py-3">
-          <div className="flex items-center justify-between gap-3">
+        <div className="mx-auto px-3 md:px-6 py-2 md:py-3">
+          <div className="flex items-center justify-between gap-2">
             {/* Лого */}
-            <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer">
-                <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-8 md:h-10 object-contain hover:opacity-80 transition-opacity" style={{ minWidth: '90px' }} />
-              </a>
-              <div className="hidden lg:block border-l border-border/40 pl-4">
-                <p className="text-xs font-medium text-foreground/80 leading-tight">
-                  Производство и поставка оборудования<br />для строительства свайных фундаментов
-                </p>
-              </div>
+            <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+              <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-8 md:h-10 object-contain hover:opacity-80 transition-opacity" style={{ width: 'auto', minWidth: 70, maxWidth: 110 }} />
+            </a>
+
+            {/* Слоган — только десктоп */}
+            <div className="hidden lg:block border-l border-white/20 pl-4 flex-1">
+              <p className="text-xs text-white/70 leading-tight">
+                Производство и поставка оборудования<br />для строительства свайных фундаментов
+              </p>
             </div>
 
             {/* Правая часть */}
-            <div className="flex items-center gap-3 md:gap-4">
+            <div className="flex items-center gap-2 md:gap-4">
               {/* Телефоны */}
-              <div className="flex flex-col gap-0.5 text-right">
-                <a href="tel:88006007465" className="text-xs md:text-sm font-bold hover:text-[#F6A327] transition-colors whitespace-nowrap">8 (800) 600-74-65</a>
-                <a href="tel:+73433467475" className="text-xs md:text-sm font-bold hover:text-[#F6A327] transition-colors whitespace-nowrap">8 (343) 346-74-75</a>
+              <div className="flex flex-col gap-0 text-right">
+                <a href="tel:88006007465" className="text-[10px] md:text-sm font-bold hover:text-[#F6A327] transition-colors whitespace-nowrap leading-snug">8 (800) 600-74-65</a>
+                <a href="tel:+73433467475" className="text-[10px] md:text-sm font-bold hover:text-[#F6A327] transition-colors whitespace-nowrap leading-snug">8 (343) 346-74-75</a>
               </div>
 
-              {/* Иконки соцсетей и мессенджеров */}
-              <div className="flex items-center gap-1.5">
+              {/* Иконки соцсетей — только на md+ */}
+              <div className="hidden md:flex items-center gap-1.5">
                 {[
-                  { href: 'https://kgs-ural.ru', src: '/Website.png', alt: 'Сайт', title: 'Официальный сайт' },
-                  { href: 'https://t.me/kgs_ural', src: '/Telegram.png', alt: 'Telegram', title: 'Telegram' },
-                  { href: 'https://vk.com/club187384782', src: '/VK.png', alt: 'ВКонтакте', title: 'ВКонтакте' },
-                  { href: 'https://rutube.ru/channel/37307143/', src: '/Rutube.png', alt: 'Rutube', title: 'Rutube' },
-                  { href: 'https://max.ru/id6670440671_biz', src: '/MAX.png', alt: 'MAX', title: 'MAX' },
-                ].map(({ href, src, alt, title }) => (
-                  <a
-                    key={alt}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={title}
-                    className="hover:scale-110 transition-transform duration-200 opacity-85 hover:opacity-100"
-                  >
-                    <img src={src} alt={alt} style={{ width: 30, height: 30 }} />
+                  { href: 'https://kgs-ural.ru', src: '/Website.png', alt: 'Сайт' },
+                  { href: 'https://t.me/kgs_ural', src: '/Telegram.png', alt: 'Telegram' },
+                  { href: 'https://vk.com/club187384782', src: '/VK.png', alt: 'ВКонтакте' },
+                  { href: 'https://rutube.ru/channel/37307143/', src: '/Rutube.png', alt: 'Rutube' },
+                  { href: 'https://max.ru/id6670440671_biz', src: '/MAX.png', alt: 'MAX' },
+                ].map(({ href, src, alt }) => (
+                  <a key={alt} href={href} target="_blank" rel="noopener noreferrer" title={alt}
+                    className="flex-shrink-0 hover:scale-110 transition-transform duration-200 opacity-80 hover:opacity-100">
+                    <img src={src} alt={alt} width={30} height={30} style={{ display: 'block', width: 30, height: 30 }} />
                   </a>
                 ))}
               </div>
+
+              {/* На мобильном — только иконка сайта */}
+              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" className="md:hidden flex-shrink-0">
+                <img src="/Website.png" alt="Сайт" width={28} height={28} style={{ display: 'block', width: 28, height: 28 }} />
+              </a>
             </div>
           </div>
         </div>
       </header>
 
       {/* Навигационные вкладки */}
-      <div className="flex w-full sticky top-[56px] md:top-[64px] z-40" data-sticky-header>
+      <div className="flex w-full sticky top-[52px] md:top-[60px] z-40" data-sticky-header>
         <button
           onClick={() => setActiveTab('spec')}
-          className={`flex-1 flex items-center justify-center gap-2 md:gap-2.5 py-3 md:py-4 text-sm md:text-base font-bold transition-all border-b-4 ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-4 border-b-4 transition-all ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
         >
-          <Icon name="Star" size={18} />
-          <span>Спецпредложение</span>
-          <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${activeTab === 'spec' ? 'bg-[#273369]/20' : 'bg-[#273369]/30'}`}>NEW</span>
+          <Icon name="Star" size={16} className="flex-shrink-0" />
+          <span className="font-bold text-xs md:text-base whitespace-nowrap">Спецпредложение</span>
+          <span className="hidden md:inline text-xs font-bold px-1.5 py-0.5 rounded-full bg-[#273369]/25">NEW</span>
         </button>
+        <div className="w-px bg-[#273369]/40 flex-shrink-0" />
         <button
           onClick={() => setActiveTab('used')}
-          className={`flex-1 flex items-center justify-center gap-2 md:gap-2.5 py-3 md:py-4 text-sm md:text-base font-bold transition-all border-b-4 ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-4 border-b-4 transition-all ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
         >
-          <Icon name="Truck" size={18} />
-          <span>Б/у техника от партнёров</span>
-          <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${activeTab === 'used' ? 'bg-[#273369]/20' : 'bg-[#273369]/30'}`}>{equipmentItems.length}</span>
+          <Icon name="Truck" size={16} className="flex-shrink-0" />
+          <span className="font-bold text-xs md:text-base whitespace-nowrap">Б/у техника</span>
+          <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-[#273369]/25 flex-shrink-0">{equipmentItems.length}</span>
         </button>
       </div>
 

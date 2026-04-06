@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 
@@ -12,101 +12,104 @@ interface Props {
   onRequest: (name: string, vin: string) => void;
 }
 
-const B = '1px solid rgba(255,255,255,0.08)';
 const BG_H = '#1e2a5e';
 const BG_G = 'rgba(39,51,105,0.65)';
-const BG_EVEN = 'rgba(255,255,255,0.02)';
-const BG_ODD = 'rgba(0,0,0,0.0)';
 
-function td(extra: React.CSSProperties = {}): React.CSSProperties {
-  return { padding: '9px 8px', border: B, fontSize: 13, verticalAlign: 'middle', ...extra };
+function th(align: 'left' | 'center' | 'right' = 'left'): React.CSSProperties {
+  return {
+    padding: '10px 8px',
+    background: BG_H,
+    color: '#F6A327',
+    fontWeight: 800,
+    fontSize: 12,
+    textAlign: align,
+    lineHeight: 1.35,
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
+    border: '1px solid rgba(246,163,39,0.2)',
+    whiteSpace: 'normal',
+  };
 }
 
-export default function UsedTable({ filteredRows, search, onRequest }: Props) {
-  const theadRef = useRef<HTMLTableSectionElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+function td(extra: React.CSSProperties = {}): React.CSSProperties {
+  return { padding: '9px 8px', border: '1px solid rgba(255,255,255,0.07)', fontSize: 13, verticalAlign: 'middle', ...extra };
+}
 
-  // Синхронизируем горизонтальный скролл заголовка с телом
-  const handleBodyScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    if (theadRef.current) {
-      theadRef.current.style.transform = `translateX(-${e.currentTarget.scrollLeft}px)`;
+// Колонки с фиксированными px-значениями — одинаковые для заголовка и тела
+const COLS = [
+  { label: 'п/п',                          align: 'center' as const, w: 38 },
+  { label: 'Наименование',                  align: 'left'   as const, w: 210 },
+  { label: 'VIN номер',                     align: 'left'   as const, w: 105 },
+  { label: 'Местонахождение',               align: 'left'   as const, w: 115 },
+  { label: 'Год выпуска',                   align: 'center' as const, w: 60 },
+  { label: 'Наработка / пробег (м/ч, км)',  align: 'left'   as const, w: 110 },
+  { label: 'Стоимость (руб)',               align: 'right'  as const, w: 120 },
+  { label: 'Заявка',                        align: 'center' as const, w: 76 },
+];
+const TOTAL_W = COLS.reduce((s, c) => s + c.w, 0); // 834px
+
+export default function UsedTable({ filteredRows, search, onRequest }: Props) {
+  const headWrapRef = useRef<HTMLDivElement>(null);
+  const bodyScrollRef = useRef<HTMLDivElement>(null);
+  const [stickyTop, setStickyTop] = useState(160);
+
+  // Считаем точную высоту всех sticky-блоков над таблицей
+  useEffect(() => {
+    const calc = () => {
+      const headers = document.querySelectorAll<HTMLElement>('[data-sticky-header]');
+      let h = 0;
+      headers.forEach(el => { h += el.offsetHeight; });
+      if (h > 0) setStickyTop(h);
+    };
+    // Даём DOM отрисоваться
+    const t1 = setTimeout(calc, 50);
+    const t2 = setTimeout(calc, 300);
+    window.addEventListener('resize', calc);
+    return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener('resize', calc); };
+  }, []);
+
+  // Синхронизация горизонтального скролла: тело → заголовок
+  const onBodyScroll = () => {
+    if (headWrapRef.current && bodyScrollRef.current) {
+      headWrapRef.current.scrollLeft = bodyScrollRef.current.scrollLeft;
     }
   };
 
-  // Вычисляем высоту sticky-блоков над таблицей
-  useEffect(() => {
-    const calcTop = () => {
-      const els = document.querySelectorAll('[data-sticky-header]');
-      let h = 0;
-      els.forEach(el => { h += (el as HTMLElement).offsetHeight; });
-      if (containerRef.current && h > 0) {
-        containerRef.current.style.setProperty('--thead-top', `${h}px`);
-      }
-    };
-    const t = setTimeout(calcTop, 80);
-    window.addEventListener('resize', calcTop);
-    return () => { clearTimeout(t); window.removeEventListener('resize', calcTop); };
-  }, []);
-
   const count = filteredRows.filter(r => 'n' in r).length;
 
-  const cols = [
-    { label: 'п/п', w: 36, align: 'center' as const },
-    { label: 'Наименование', w: 220, align: 'left' as const },
-    { label: 'VIN номер', w: 95, align: 'left' as const },
-    { label: 'Местонахождение', w: 110, align: 'left' as const },
-    { label: 'Год выпуска', w: 62, align: 'center' as const },
-    { label: 'Наработка / пробег (м/ч, км)', w: 115, align: 'left' as const },
-    { label: 'Стоимость (руб)', w: 120, align: 'right' as const },
-    { label: 'Заявка', w: 72, align: 'center' as const },
-  ];
-  const totalW = cols.reduce((s, c) => s + c.w, 0);
-
   return (
-    <div ref={containerRef} style={{ width: '100%' }}>
+    <div style={{ width: '100%' }}>
 
-      {/* Sticky заголовок — отдельный div, overflow hidden, translateX синхронизируется */}
+      {/* Sticky заголовок — overflow-x hidden, двигается через scrollLeft */}
       <div
+        ref={headWrapRef}
         style={{
           position: 'sticky',
-          top: 'var(--thead-top, 174px)',
+          top: stickyTop,
           zIndex: 20,
           overflowX: 'hidden',
           background: BG_H,
         }}
       >
-        <table style={{ minWidth: totalW, width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+        <table style={{ width: TOTAL_W, borderCollapse: 'collapse', tableLayout: 'fixed' }}>
           <colgroup>
-            {cols.map(c => <col key={c.label} style={{ width: c.w }} />)}
+            {COLS.map(c => <col key={c.label} style={{ width: c.w }} />)}
           </colgroup>
-          <thead ref={theadRef} style={{ display: 'table-header-group' }}>
+          <thead>
             <tr>
-              {cols.map(c => (
-                <th key={c.label} style={{
-                  padding: '10px 8px',
-                  border: '1px solid rgba(246,163,39,0.2)',
-                  background: BG_H,
-                  color: '#F6A327',
-                  fontWeight: 800,
-                  fontSize: 12,
-                  textAlign: c.align,
-                  lineHeight: 1.3,
-                  letterSpacing: '0.02em',
-                  textTransform: 'uppercase' as const,
-                }}>
-                  {c.label}
-                </th>
+              {COLS.map(c => (
+                <th key={c.label} style={th(c.align)}>{c.label}</th>
               ))}
             </tr>
           </thead>
         </table>
       </div>
 
-      {/* Тело таблицы — горизонтальный скролл синхронизирует заголовок */}
-      <div style={{ overflowX: 'auto' }} onScroll={handleBodyScroll}>
-        <table style={{ minWidth: totalW, width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+      {/* Тело таблицы — скроллится горизонтально, двигает заголовок */}
+      <div ref={bodyScrollRef} style={{ overflowX: 'auto' }} onScroll={onBodyScroll}>
+        <table style={{ width: TOTAL_W, borderCollapse: 'collapse', tableLayout: 'fixed' }}>
           <colgroup>
-            {cols.map(c => <col key={c.label} style={{ width: c.w }} />)}
+            {COLS.map(c => <col key={c.label} style={{ width: c.w }} />)}
           </colgroup>
           <tbody>
             {(() => {
@@ -122,21 +125,22 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
                     </tr>
                   );
                 }
-                const isEven = rowIdx++ % 2 === 0;
+                const even = rowIdx++ % 2 === 0;
                 return (
                   <tr
                     key={i}
-                    style={{ background: isEven ? BG_ODD : BG_EVEN, transition: 'background 0.15s' }}
+                    style={{ background: even ? 'transparent' : 'rgba(255,255,255,0.025)', transition: 'background 0.12s' }}
                     className="hover:bg-[#273369]/30"
                   >
                     <td style={td({ textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 12 })}>{row.n}</td>
-                    <td style={td({ fontWeight: 600, fontSize: 13 })}>{row.name}</td>
+                    <td style={td({ fontWeight: 600 })}>{row.name}</td>
                     <td style={td({ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontFamily: 'monospace', wordBreak: 'break-all' })}>{row.vin}</td>
                     <td style={td({ color: 'rgba(255,255,255,0.65)', fontSize: 12 })}>{row.loc}</td>
                     <td style={td({ textAlign: 'center', color: 'rgba(255,255,255,0.65)', fontSize: 12 })}>{row.year || ''}</td>
                     <td style={td({ color: 'rgba(255,255,255,0.65)', fontSize: 12 })}>{row.hours}</td>
                     <td style={td({
-                      textAlign: 'right', fontWeight: 700, fontSize: 13,
+                      textAlign: 'right',
+                      fontWeight: 700,
                       color: row.price && row.price !== 'по запросу' ? '#F6A327' : 'rgba(255,255,255,0.45)',
                       fontStyle: !row.price || row.price === 'по запросу' ? 'italic' : 'normal',
                     })}>
