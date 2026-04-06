@@ -87,69 +87,74 @@ export function UsedTableHead() {
 function MobileRow({ row, even, onRequest }: { row: EquipmentRow; even: boolean; onRequest: (n: string, v: string) => void }) {
   const [open, setOpen] = useState(false);
   const hasDetails = row.vin || row.loc || row.hours;
+  const bg = even ? 'transparent' : 'rgba(255,255,255,0.03)';
+  const border = '1px solid rgba(255,255,255,0.06)';
 
   return (
     <>
-      <tr style={{ background: even ? 'transparent' : 'rgba(255,255,255,0.025)' }}>
+      <tr style={{ background: bg }} onClick={() => hasDetails && setOpen(o => !o)}>
         {/* Название */}
-        <td style={{ padding: '8px 6px', fontSize: 12, fontWeight: 600, border: '1px solid rgba(255,255,255,0.07)', verticalAlign: 'middle', lineHeight: 1.3 }}>
+        <td style={{ padding: '6px 7px', fontSize: 12, fontWeight: 600, border, verticalAlign: 'top', lineHeight: 1.35, paddingTop: 8 }}>
           {row.name}
         </td>
         {/* Год */}
-        <td style={{ padding: '8px 4px', fontSize: 12, textAlign: 'center', color: 'rgba(255,255,255,0.65)', border: '1px solid rgba(255,255,255,0.07)', verticalAlign: 'middle' }}>
+        <td style={{ padding: '6px 4px', fontSize: 12, textAlign: 'center', color: 'rgba(255,255,255,0.6)', border, verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
           {row.year || '—'}
         </td>
         {/* Цена */}
         <td style={{
-          padding: '8px 6px', fontSize: 11, textAlign: 'right', fontWeight: 700,
-          color: row.price && row.price !== 'по запросу' ? '#F6A327' : 'rgba(255,255,255,0.4)',
+          padding: '6px 5px', fontSize: 11, textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap',
+          color: row.price && row.price !== 'по запросу' ? '#F6A327' : 'rgba(255,255,255,0.35)',
           fontStyle: !row.price || row.price === 'по запросу' ? 'italic' : 'normal',
-          border: '1px solid rgba(255,255,255,0.07)', verticalAlign: 'middle', lineHeight: 1.2,
+          border, verticalAlign: 'middle', lineHeight: 1.25,
         }}>
-          {row.price && row.price !== 'по запросу' ? `${row.price} ₽` : 'по запросу'}
+          {row.price && row.price !== 'по запросу'
+            ? <>{row.price}<br /><span style={{ fontSize: 10, fontWeight: 400, opacity: 0.7 }}>руб</span></>
+            : 'по запросу'}
         </td>
         {/* Кнопка заявки */}
-        <td style={{ padding: '4px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.07)', verticalAlign: 'middle' }}>
+        <td style={{ padding: '5px 4px', textAlign: 'center', border, verticalAlign: 'middle' }}>
           <button
-            style={{ background: 'linear-gradient(135deg,#10B981,#0d9268)', color: '#fff', fontWeight: 700, fontSize: 10, borderRadius: 4, padding: '4px 5px', border: 'none', cursor: 'pointer', lineHeight: 1.2, width: '100%' }}
-            onClick={() => onRequest(row.name, row.vin)}
+            style={{ background: 'linear-gradient(135deg,#10B981,#0d9268)', color: '#fff', fontWeight: 700, fontSize: 10, borderRadius: 5, padding: '5px 4px', border: 'none', cursor: 'pointer', lineHeight: 1.2, width: '100%', boxShadow: '0 1px 6px rgba(16,185,129,0.35)' }}
+            onClick={e => { e.stopPropagation(); onRequest(row.name, row.vin); }}
           >
             Заявка
           </button>
         </td>
         {/* Стрелка раскрытия */}
-        <td style={{ padding: '4px 2px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.07)', verticalAlign: 'middle' }}>
+        <td style={{ padding: '4px 2px', textAlign: 'center', border, verticalAlign: 'middle' }}>
           {hasDetails && (
-            <button onClick={() => setOpen(o => !o)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'rgba(255,255,255,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto', transition: 'transform 0.2s', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}>
-              <Icon name="ChevronDown" size={14} />
-            </button>
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 20, height: 20, borderRadius: '50%',
+              background: open ? 'rgba(246,163,39,0.2)' : 'rgba(255,255,255,0.08)',
+              transition: 'transform 0.2s, background 0.2s',
+              transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+              color: open ? '#F6A327' : 'rgba(255,255,255,0.5)',
+            }}>
+              <Icon name="ChevronDown" size={13} />
+            </span>
           )}
         </td>
       </tr>
 
       {/* Детали — раскрываются по тапу */}
       {open && (
-        <tr style={{ background: 'rgba(39,51,105,0.4)' }}>
-          <td colSpan={5} style={{ padding: '8px 10px', border: '1px solid rgba(255,255,255,0.07)', fontSize: 11 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              {row.vin && (
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <span style={{ color: '#F6A327', fontWeight: 600, minWidth: 80 }}>VIN:</span>
-                  <span style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'monospace', wordBreak: 'break-all' }}>{row.vin}</span>
-                </div>
-              )}
-              {row.loc && (
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <span style={{ color: '#F6A327', fontWeight: 600, minWidth: 80 }}>Место:</span>
-                  <span style={{ color: 'rgba(255,255,255,0.6)' }}>{row.loc}</span>
-                </div>
-              )}
-              {row.hours && (
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <span style={{ color: '#F6A327', fontWeight: 600, minWidth: 80 }}>Наработка:</span>
-                  <span style={{ color: 'rgba(255,255,255,0.6)' }}>{row.hours}</span>
-                </div>
-              )}
+        <tr style={{ background: 'rgba(30,42,94,0.6)' }}>
+          <td colSpan={5} style={{ padding: '7px 10px 9px', border, fontSize: 11, borderTop: '1px solid rgba(246,163,39,0.15)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '4px 8px', alignItems: 'start' }}>
+              {row.vin && (<>
+                <span style={{ color: '#F6A327', fontWeight: 600, whiteSpace: 'nowrap' }}>VIN</span>
+                <span style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'monospace', wordBreak: 'break-all' }}>{row.vin}</span>
+              </>)}
+              {row.loc && (<>
+                <span style={{ color: '#F6A327', fontWeight: 600, whiteSpace: 'nowrap' }}>Место</span>
+                <span style={{ color: 'rgba(255,255,255,0.65)' }}>{row.loc}</span>
+              </>)}
+              {row.hours && (<>
+                <span style={{ color: '#F6A327', fontWeight: 600, whiteSpace: 'nowrap' }}>Наработка</span>
+                <span style={{ color: 'rgba(255,255,255,0.65)' }}>{row.hours}</span>
+              </>)}
             </div>
           </td>
         </tr>
