@@ -303,65 +303,96 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Шапка */}
-      <header className="border-b border-border/40 bg-[#272D49] sticky top-0 z-50" data-sticky-header>
-        <div className="container mx-auto px-4 py-3 md:py-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3 md:gap-4">
+      <header className="border-b border-border/40 sticky top-0 z-50" style={{ background: 'linear-gradient(90deg, #1e2340 0%, #272D49 60%, #1e2340 100%)' }} data-sticky-header>
+        <div className="container mx-auto px-4 py-2 md:py-3">
+          <div className="flex items-center justify-between gap-3">
+            {/* Лого */}
+            <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
               <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer">
-                <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-9 md:h-11 object-contain hover:opacity-80 transition-opacity" style={{ minWidth: '100px' }} />
+                <img src="https://cdn.poehali.dev/files/KGS_logo_white_yellow.png" alt="KGS" className="h-8 md:h-10 object-contain hover:opacity-80 transition-opacity" style={{ minWidth: '90px' }} />
               </a>
-              <div className="hidden md:block md:border-l md:border-border/40 md:pl-4">
-                <p className="text-sm font-medium text-foreground leading-tight">
-                  Производство и поставка оборудования для<br />строительства свайных фундаментов
+              <div className="hidden lg:block border-l border-border/40 pl-4">
+                <p className="text-xs font-medium text-foreground/80 leading-tight">
+                  Производство и поставка оборудования<br />для строительства свайных фундаментов
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+
+            {/* Правая часть */}
+            <div className="flex items-center gap-3 md:gap-4">
+              {/* Телефоны */}
               <div className="flex flex-col gap-0.5 text-right">
-                <a href="tel:88006007465" className="text-xs md:text-sm font-semibold hover:text-[#F6A327] transition-colors">8 (800) 600-74-65</a>
-                <a href="tel:+73433467475" className="text-xs md:text-sm font-semibold hover:text-[#F6A327] transition-colors">8 (343) 346-74-75</a>
+                <a href="tel:88006007465" className="text-xs md:text-sm font-bold hover:text-[#F6A327] transition-colors whitespace-nowrap">8 (800) 600-74-65</a>
+                <a href="tel:+73433467475" className="text-xs md:text-sm font-bold hover:text-[#F6A327] transition-colors whitespace-nowrap">8 (343) 346-74-75</a>
               </div>
-              <a href="https://kgs-ural.ru" target="_blank" rel="noopener noreferrer" aria-label="Сайт KGS">
-                <Icon name="Globe" size={22} className="text-[#F6A327]" />
-              </a>
+
+              {/* Иконки соцсетей и мессенджеров */}
+              <div className="flex items-center gap-1.5">
+                {[
+                  { href: 'https://kgs-ural.ru', src: '/Website.png', alt: 'Сайт', title: 'Официальный сайт' },
+                  { href: 'https://t.me/kgs_ural', src: '/Telegram.png', alt: 'Telegram', title: 'Telegram' },
+                  { href: 'https://vk.com/club187384782', src: '/VK.png', alt: 'ВКонтакте', title: 'ВКонтакте' },
+                  { href: 'https://rutube.ru/channel/37307143/', src: '/Rutube.png', alt: 'Rutube', title: 'Rutube' },
+                  { href: 'https://max.ru/id6670440671_biz', src: '/MAX.png', alt: 'MAX', title: 'MAX' },
+                ].map(({ href, src, alt, title }) => (
+                  <a
+                    key={alt}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={title}
+                    className="hover:scale-110 transition-transform duration-200 opacity-85 hover:opacity-100"
+                  >
+                    <img src={src} alt={alt} style={{ width: 30, height: 30 }} />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Навигационные вкладки — крупные, под шапкой */}
-      <div className="flex w-full sticky top-[61px] md:top-[69px] z-40" data-sticky-header>
+      {/* Навигационные вкладки */}
+      <div className="flex w-full sticky top-[56px] md:top-[64px] z-40" data-sticky-header>
         <button
           onClick={() => setActiveTab('spec')}
-          className={`flex-1 flex items-center justify-center gap-2.5 py-4 md:py-5 text-base md:text-lg font-bold transition-all border-b-4 ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
+          className={`flex-1 flex items-center justify-center gap-2 md:gap-2.5 py-3 md:py-4 text-sm md:text-base font-bold transition-all border-b-4 ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
         >
-          <Icon name="Star" size={20} />
+          <Icon name="Star" size={18} />
           <span>Спецпредложение</span>
+          <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${activeTab === 'spec' ? 'bg-[#273369]/20' : 'bg-[#273369]/30'}`}>NEW</span>
         </button>
         <button
           onClick={() => setActiveTab('used')}
-          className={`flex-1 flex items-center justify-center gap-2.5 py-4 md:py-5 text-base md:text-lg font-bold transition-all border-b-4 ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
+          className={`flex-1 flex items-center justify-center gap-2 md:gap-2.5 py-3 md:py-4 text-sm md:text-base font-bold transition-all border-b-4 ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
         >
-          <Icon name="Truck" size={20} />
+          <Icon name="Truck" size={18} />
           <span>Б/у техника от партнёров</span>
+          <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${activeTab === 'used' ? 'bg-[#273369]/20' : 'bg-[#273369]/30'}`}>{equipmentItems.length}</span>
         </button>
       </div>
 
       {/* ===== СПЕЦПРЕДЛОЖЕНИЕ ===== */}
       {activeTab === 'spec' && (
         <main className="flex-1">
-          <section className="py-12 md:py-20" style={{ background: 'linear-gradient(135deg, #273369 0%, #272D49 100%)' }}>
+          <section className="py-10 md:py-16" style={{ background: 'linear-gradient(135deg, #0f1529 0%, #1e2340 40%, #273369 100%)' }}>
             <div className="container mx-auto px-4">
               <div className="grid md:grid-cols-2 gap-10 items-center max-w-5xl mx-auto">
                 <div className="space-y-5">
-                  <div className="inline-flex items-center gap-2 bg-[#F6A327]/15 border-2 border-[#F6A327]/50 rounded-lg px-5 py-2.5">
-                    <Icon name="Star" size={16} className="text-[#F6A327]" />
-                    <span className="text-base font-bold text-[#F6A327] uppercase tracking-wider">СПЕЦПРЕДЛОЖЕНИЕ</span>
+                  <div className="flex flex-wrap gap-2">
+                    <div className="inline-flex items-center gap-2 bg-[#F6A327]/15 border-2 border-[#F6A327]/50 rounded-lg px-4 py-2">
+                      <Icon name="Star" size={15} className="text-[#F6A327]" />
+                      <span className="text-sm font-bold text-[#F6A327] uppercase tracking-wider">Спецпредложение</span>
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 bg-[#10B981]/20 border-2 border-[#10B981]/60 rounded-lg px-4 py-2">
+                      <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse flex-shrink-0" />
+                      <span className="text-sm font-bold text-[#10B981]">В наличии</span>
+                    </div>
                   </div>
                   <a href="https://kgs-ural.ru/catalog/vibropogruzhateli-kranovie/seriya-dzj/yongan-dzj-90/" target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-opacity">
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-                      Вибропогружатель электрический крановый<br />
-                      <span className="text-[#F6A327]">Yongan DZJ-90</span>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight" style={{ letterSpacing: '-0.01em' }}>
+                      Вибропогружатель<br />электрический крановый<br />
+                      <span className="text-[#F6A327]" style={{ textShadow: '0 0 40px rgba(246,163,39,0.3)' }}>Yongan DZJ-90</span>
                     </h1>
                   </a>
                   <div className="space-y-2.5">
@@ -372,7 +403,7 @@ const Index = () => {
                       { icon: 'Truck', text: 'Доставка по России и СНГ' },
                     ].map((f, i) => (
                       <div key={i} className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-[#F6A327]/10 border border-[#F6A327]/30 flex items-center justify-center flex-shrink-0">
+                        <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(246,163,39,0.12)', border: '1px solid rgba(246,163,39,0.35)' }}>
                           <Icon name={f.icon} size={18} className="text-[#F6A327]" />
                         </div>
                         <span className="text-base text-foreground/90">{f.text}</span>
@@ -380,10 +411,10 @@ const Index = () => {
                     ))}
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                    <Button onClick={handleCall} className="flex-1 bg-[#10B981] hover:bg-[#10B981]/90 text-white font-semibold">
+                    <Button onClick={handleCall} className="flex-1 font-bold text-base" style={{ background: 'linear-gradient(135deg,#10B981,#0d9268)', boxShadow: '0 4px 20px rgba(16,185,129,0.35)' }}>
                       <Icon name="Phone" size={18} className="mr-2" />Позвонить
                     </Button>
-                    <Button onClick={scrollToForm} className="flex-1 bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold">
+                    <Button onClick={scrollToForm} className="flex-1 font-bold text-base text-[#1e2340]" style={{ background: 'linear-gradient(135deg,#F6A327,#f0891a)', boxShadow: '0 4px 20px rgba(246,163,39,0.35)' }}>
                       <Icon name="Send" size={18} className="mr-2" />Оставить заявку
                     </Button>
                   </div>
@@ -399,7 +430,7 @@ const Index = () => {
           </section>
 
           {/* Характеристики */}
-          <section className="py-14 bg-[#1e2340]">
+          <section className="py-14" style={{ background: 'linear-gradient(180deg, #131829 0%, #1a2038 100%)' }}>
             <div className="container mx-auto px-4">
               <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Характеристики Yongan DZJ-90</h2>
               <Card className="max-w-5xl mx-auto p-5 md:p-8 bg-card/80 border-[#F6A327]/10">
