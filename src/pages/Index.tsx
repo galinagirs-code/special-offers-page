@@ -369,20 +369,26 @@ const Index = () => {
       <div className="flex w-full sticky top-[52px] md:top-[60px] z-40" data-top-sticky>
         <button
           onClick={() => setActiveTab('spec')}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-4 border-b-4 transition-all ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
+          className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 md:py-3.5 border-b-4 transition-all cursor-pointer ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#1a2455] text-white border-transparent hover:bg-[#273369]'}`}
         >
-          <Icon name="Star" size={16} className="flex-shrink-0" />
-          <span className="font-bold text-xs md:text-base whitespace-nowrap">Спецпредложение</span>
-          <span className="hidden md:inline text-xs font-bold px-1.5 py-0.5 rounded-full bg-[#273369]/25">NEW</span>
+          <div className="flex items-center gap-1.5">
+            <Icon name="Star" size={16} className="flex-shrink-0" />
+            <span className="font-bold text-xs md:text-base whitespace-nowrap">Спецпредложение</span>
+            <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${activeTab === 'spec' ? 'bg-[#273369]/25 text-[#273369]' : 'bg-[#F6A327] text-[#273369]'}`}>NEW</span>
+          </div>
+          <span className={`text-[10px] md:text-xs font-normal opacity-80 whitespace-nowrap ${activeTab === 'spec' ? 'text-[#273369]' : 'text-white/70'}`}>Новая техника и акции → нажмите</span>
         </button>
         <div className="w-px bg-[#273369]/40 flex-shrink-0" />
         <button
           onClick={() => setActiveTab('used')}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-4 border-b-4 transition-all ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
+          className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 md:py-3.5 border-b-4 transition-all cursor-pointer ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#1a2455] text-white border-transparent hover:bg-[#273369]'}`}
         >
-          <Icon name="Truck" size={16} className="flex-shrink-0" />
-          <span className="font-bold text-xs md:text-base whitespace-nowrap">Б/у техника</span>
-          <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-[#273369]/25 flex-shrink-0">{equipmentItems.length}</span>
+          <div className="flex items-center gap-1.5">
+            <Icon name="Truck" size={16} className="flex-shrink-0" />
+            <span className="font-bold text-xs md:text-base whitespace-nowrap">Б/у техника</span>
+            <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 ${activeTab === 'used' ? 'bg-[#273369]/25 text-[#273369]' : 'bg-white/20 text-white'}`}>{equipmentItems.length}</span>
+          </div>
+          <span className={`text-[10px] md:text-xs font-normal opacity-80 whitespace-nowrap ${activeTab === 'used' ? 'text-[#273369]' : 'text-white/70'}`}>Каталог техники в продаже → нажмите</span>
         </button>
       </div>
 
