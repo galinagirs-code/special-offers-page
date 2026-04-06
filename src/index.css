@@ -101,7 +101,22 @@
     @apply bg-background text-foreground;
     font-family: "Open Sans", sans-serif;
   }
+}
 
+@layer utilities {
+  .th-sticky {
+    position: sticky;
+    top: 174px;
+    z-index: 20;
+  }
+  @media (min-width: 768px) {
+    .th-sticky {
+      top: 190px;
+    }
+  }
+}
+
+@layer base {
   h1,
   h2,
   h3,

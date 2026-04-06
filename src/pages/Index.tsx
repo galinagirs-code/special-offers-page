@@ -509,22 +509,36 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Таблица: ОДНА таблица, thead sticky через position:sticky на tr */}
+          {/* Таблица: одна таблица, sticky на каждом th (единственный рабочий способ) */}
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ minWidth: 900, width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
+            <table style={{ minWidth: 820, width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
               <thead>
-                <tr
-                  className="bg-[#273369] text-[#F6A327]"
-                  style={{ position: 'sticky', top: 174, zIndex: 20 }}
-                >
-                  <th style={{ width: 36, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', background: '#273369', fontWeight: 600 }}>п/п</th>
-                  <th style={{ minWidth: 220, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left', background: '#273369', fontWeight: 600 }}>Наименование</th>
-                  <th className="hidden md:table-cell" style={{ minWidth: 155, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left', background: '#273369', fontWeight: 600 }}>VIN номер</th>
-                  <th style={{ minWidth: 110, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left', background: '#273369', fontWeight: 600 }}>Местонахождение</th>
-                  <th style={{ width: 64, padding: '8px 6px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', background: '#273369', fontWeight: 600 }}>Год выпуска</th>
-                  <th style={{ minWidth: 110, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left', background: '#273369', fontWeight: 600 }}>Наработка / пробег (м/ч, км)</th>
-                  <th style={{ minWidth: 120, padding: '8px 8px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'right', background: '#273369', fontWeight: 600 }}>Стоимость (руб)</th>
-                  <th style={{ width: 76, padding: '8px 6px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', background: '#273369', fontWeight: 600 }}>Заявка</th>
+                <tr className="text-[#F6A327]">
+                  {[
+                    { label: 'п/п',                            w: { width: 36 },      align: 'center' as const },
+                    { label: 'Наименование',                   w: { minWidth: 220 },  align: 'left'   as const },
+                    { label: 'VIN номер',                      w: { minWidth: 100 },  align: 'left'   as const, hideMobile: true },
+                    { label: 'Местонахождение',                w: { minWidth: 110 },  align: 'left'   as const },
+                    { label: 'Год выпуска',                    w: { width: 60 },      align: 'center' as const },
+                    { label: 'Наработка / пробег (м/ч, км)',   w: { minWidth: 105 },  align: 'left'   as const },
+                    { label: 'Стоимость (руб)',                w: { minWidth: 120 },  align: 'right'  as const },
+                    { label: 'Заявка',                         w: { width: 72 },      align: 'center' as const },
+                  ].map(({ label, w, align, hideMobile }) => (
+                    <th
+                      key={label}
+                      className={`th-sticky ${hideMobile ? 'hidden md:table-cell' : ''}`}
+                      style={{
+                        ...w,
+                        background: '#273369',
+                        fontWeight: 600,
+                        textAlign: align,
+                        padding: '8px',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                      }}
+                    >
+                      {label}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
