@@ -332,14 +332,14 @@ const Index = () => {
       <div className="flex w-full sticky top-[61px] md:top-[69px] z-40">
         <button
           onClick={() => setActiveTab('spec')}
-          className={`flex-1 flex items-center justify-center gap-2.5 py-4 md:py-5 text-base md:text-lg font-bold transition-all border-b-4 ${activeTab === 'spec' ? 'bg-[#10B981] text-white border-[#0d9268]' : 'bg-[#0d9268]/70 text-white/80 border-transparent hover:bg-[#0d9268]'}`}
+          className={`flex-1 flex items-center justify-center gap-2.5 py-4 md:py-5 text-base md:text-lg font-bold transition-all border-b-4 ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
         >
           <Icon name="Star" size={20} />
           <span>Спецпредложение</span>
         </button>
         <button
           onClick={() => setActiveTab('used')}
-          className={`flex-1 flex items-center justify-center gap-2.5 py-4 md:py-5 text-base md:text-lg font-bold transition-all border-b-4 ${activeTab === 'used' ? 'bg-[#10B981] text-white border-[#0d9268]' : 'bg-[#0d9268]/70 text-white/80 border-transparent hover:bg-[#0d9268]'}`}
+          className={`flex-1 flex items-center justify-center gap-2.5 py-4 md:py-5 text-base md:text-lg font-bold transition-all border-b-4 ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
         >
           <Icon name="Truck" size={20} />
           <span>Б/у техника от партнёров</span>
@@ -570,6 +570,40 @@ const Index = () => {
                   <p>Ничего не найдено по запросу «{search}»</p>
                 </div>
               )}
+            </div>
+
+            {/* Форма заявки в конце списка */}
+            <div className="container mx-auto px-4 py-10 max-w-2xl">
+              <p className="text-center text-lg text-muted-foreground mb-6">
+                Для получения консультации оставьте заявку — наши специалисты свяжутся с вами в ближайшее время
+              </p>
+              <Card className="p-8 bg-card/80 border-[#F6A327]/10">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Ваше имя <span className="text-[#F6A327]">*</span></label>
+                    <Input placeholder="Иван Иванов" className="bg-background/50" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Телефон <span className="text-[#F6A327]">*</span></label>
+                    <Input type="tel" placeholder="+7 (___) ___-__-__" className="bg-background/50" value={formData.phone} onChange={e => setFormData({ ...formData, phone: formatPhone(e.target.value) })} required />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Email</label>
+                    <Input type="email" placeholder="example@mail.ru" className="bg-background/50" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <input type="checkbox" id="used-consent" checked={formData.consent} onChange={e => setFormData({ ...formData, consent: e.target.checked })} className="mt-1 h-4 w-4 rounded border-border bg-background/50 accent-[#F6A327]" required />
+                    <label htmlFor="used-consent" className="text-xs text-muted-foreground leading-relaxed">
+                      Я согласен на обработку персональных данных в соответствии с{' '}
+                      <a href="https://kgs-ural.ru/politika-konfidencialnosti/" target="_blank" rel="noopener noreferrer" className="text-[#F6A327] hover:underline">политикой конфиденциальности</a>
+                    </label>
+                  </div>
+                  <Button type="submit" disabled={isSubmitting || !formData.consent} className="w-full bg-[#F6A327] hover:bg-[#F6A327]/90 text-[#273369] font-semibold disabled:opacity-50">
+                    <Icon name="Send" size={18} className="mr-2" />
+                    {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+                  </Button>
+                </form>
+              </Card>
             </div>
           </div>
         </main>
