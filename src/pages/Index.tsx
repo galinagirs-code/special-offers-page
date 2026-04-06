@@ -531,6 +531,35 @@ const Index = () => {
       {/* ===== Б/У ТЕХНИКА ===== */}
       {activeTab === 'used' && (
         <main className="bg-[#181c30]" style={{ flex: '1 1 auto' }}>
+          {/* SEO-текст перед таблицей */}
+          <div className="px-4 py-4 border-b border-border/10" style={{ background: 'rgba(30,35,64,0.6)' }}>
+            <div className="max-w-5xl mx-auto">
+              <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+                В продаже представлен актуальный перечень б/у строительной техники, доступной для реализации. В наличии <strong className="text-foreground/70">гусеничные краны, автокраны, буровые установки, вибропогружатели, гидромолоты, экскаваторы, бульдозеры, дробильные установки</strong> и другая спецтехника.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+                Вся техника находится на площадках во <strong className="text-foreground/70">Владивостоке, Хабаровске, Екатеринбурге</strong> и других регионах. Указаны VIN номера, год выпуска, наработка и стоимость.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Предлагаем выгодные условия продажи, оперативную отгрузку техники с пробегом от ведущих производителей <strong className="text-foreground/70">Sany, Zoomlion, Hyundai, Shantui</strong>.
+              </p>
+            </div>
+          </div>
+
+          {/* SEO-текст перед таблицей */}
+          <div className="px-4 py-4 max-w-5xl mx-auto">
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              В продаже представлен актуальный перечень б/у строительной техники, доступной для реализации. В наличии{' '}
+              <span className="text-foreground/80">гусеничные краны, автокраны, буровые установки, вибропогружатели, гидромолоты, экскаваторы, бульдозеры, дробильные установки</span>{' '}
+              и другая спецтехника.
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+              Вся техника находится на площадках во <span className="text-foreground/80">Владивостоке, Хабаровске, Екатериновке</span> и других регионах.
+              Указаны VIN номера, год выпуска, наработка и стоимость.
+              Предлагаем выгодные условия продажи, оперативную отгрузку техники с пробегом от ведущих производителей.
+            </p>
+          </div>
+
           {/* Поиск + заголовок таблицы — единый sticky-блок */}
           <div className="sticky z-30 bg-[#181c30]" style={{ top: 'var(--tabs-bottom, 98px)' }}>
             {/* Строка поиска */}
@@ -566,6 +595,29 @@ const Index = () => {
             search={search}
             onRequest={(name, vin) => setModalEquipment(`${name}${vin ? ` (VIN: ${vin})` : ''}`)}
           />
+
+          {/* Скрытый SEO-текст */}
+          <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap' }}>
+            <h2>Продажа б/у строительной техники по России</h2>
+            <p>Перечень свободной спецтехники в наличии. Купить б/у краны, буровые установки, экскаваторы. Каталог спецтехники с пробегом и наработкой. Тяжёлая строительная техника: продажа из наличия.</p>
+            <ul>
+              <li>б/у спецтехника в наличии</li>
+              <li>продажа строительной техники с пробегом</li>
+              <li>купить гусеничный кран б/у</li>
+              <li>автокраны с наработкой в продаже</li>
+              <li>буровые установки б/у цена</li>
+              <li>вибропогружатели и гидромолоты купить</li>
+              <li>экскаваторы Hyundai б/у</li>
+              <li>техника Sany, Zoomlion, Shantui в наличии</li>
+              <li>продажа техники во Владивостоке, Хабаровске, Приморском крае</li>
+              <li>спецтехника с документами и VIN номером</li>
+              <li>тяжелая техника для строительства и свайных работ</li>
+              <li>спецтехника Владивосток купить</li>
+              <li>спецтехника Хабаровск в наличии</li>
+              <li>продажа техники Приморский край</li>
+              <li>строительная техника Дальний Восток</li>
+            </ul>
+          </div>
 
           {/* Форма заявки в конце списка */}
           <div className="container mx-auto px-4 py-10 max-w-2xl">
