@@ -218,11 +218,10 @@ const Index = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
 
-  // Устанавливаем CSS-переменную = высота шапки + вкладок (для позиционирования sticky-поиска)
+  // Устанавливаем CSS-переменную = высота шапки + вкладок (для sticky поиска+заголовка)
   useEffect(() => {
     const setTabsBottom = () => {
-      // data-sticky-header: header + tabs div
-      const els = document.querySelectorAll<HTMLElement>('[data-sticky-header]');
+      const els = document.querySelectorAll<HTMLElement>('[data-top-sticky]');
       let h = 0;
       els.forEach(el => { h += el.offsetHeight; });
       if (h > 0) document.documentElement.style.setProperty('--tabs-bottom', `${h}px`);
@@ -318,7 +317,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Шапка */}
-      <header className="border-b border-border/40 sticky top-0 z-50" style={{ background: 'linear-gradient(90deg, #1e2340 0%, #272D49 60%, #1e2340 100%)' }} data-sticky-header>
+      <header className="border-b border-border/40 sticky top-0 z-50" style={{ background: 'linear-gradient(90deg, #1e2340 0%, #272D49 60%, #1e2340 100%)' }} data-top-sticky>
         <div className="mx-auto px-3 md:px-6 py-2 md:py-3">
           <div className="flex items-center justify-between gap-2">
             {/* Лого */}
@@ -367,7 +366,7 @@ const Index = () => {
       </header>
 
       {/* Навигационные вкладки */}
-      <div className="flex w-full sticky top-[52px] md:top-[60px] z-40" data-sticky-header>
+      <div className="flex w-full sticky top-[52px] md:top-[60px] z-40" data-top-sticky>
         <button
           onClick={() => setActiveTab('spec')}
           className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-4 border-b-4 transition-all ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#c4821a]/80 text-[#273369]/80 border-transparent hover:bg-[#F6A327]/80'}`}
@@ -531,9 +530,9 @@ const Index = () => {
 
       {/* ===== Б/У ТЕХНИКА ===== */}
       {activeTab === 'used' && (
-        <main className="flex-1 bg-[#181c30]">
-          {/* Поиск + заголовок таблицы — единый sticky-блок, не разрываем */}
-          <div className="sticky z-30 bg-[#181c30]" style={{ top: 'var(--tabs-bottom, 98px)' }} data-sticky-header>
+        <main className="bg-[#181c30]" style={{ flex: '1 1 auto' }}>
+          {/* Поиск + заголовок таблицы — единый sticky-блок */}
+          <div className="sticky z-30 bg-[#181c30]" style={{ top: 'var(--tabs-bottom, 98px)' }}>
             {/* Строка поиска */}
             <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3">
               <div className="flex items-center gap-3 max-w-5xl mx-auto">
