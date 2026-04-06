@@ -1,8 +1,26 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 
+const MESSENGERS = [
+  {
+    href: 'https://max.ru/u/f9LHodD0cOIP8_25Pol0FgGthbuYFvPpONLlW4R8sdoUUmuprdyzEwbPSy0',
+    bg: '#F6A327',
+    icon: 'MessageCircle' as const,
+    iconColor: '#272D49',
+    label: 'MAX',
+  },
+  {
+    href: 'https://t.me/kgs_ural',
+    bg: '#26A5E4',
+    icon: 'Send' as const,
+    iconColor: '#fff',
+    label: 'Telegram',
+  },
+];
+
 const MessengerWidget = () => {
   const [isClosed, setIsClosed] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -12,33 +30,34 @@ const MessengerWidget = () => {
 
   if (!isVisible) return null;
 
+  // Свёрнутое состояние: одна кнопка, по клику раскрывает иконки
   if (isClosed) {
     return (
-      <div className="fixed left-4 bottom-20 md:bottom-4 z-50 flex flex-col gap-2.5 animate-fade-in">
-        <a
-          href="https://max.ru/u/f9LHodD0cOIP8_25Pol0FgGthbuYFvPpONLlW4R8sdoUUmuprdyzEwbPSy0"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-12 h-12 rounded-full bg-[#F6A327] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-          title="MAX"
-        >
-          <Icon name="MessageCircle" size={22} className="text-[#272D49]" />
-        </a>
-        <a
-          href="https://t.me/kgs_ural"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-12 h-12 rounded-full bg-[#26A5E4] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-          title="Telegram"
-        >
-          <Icon name="Send" size={22} className="text-white" />
-        </a>
+      <div className="fixed left-4 bottom-20 md:bottom-4 z-50 flex flex-col items-center gap-2.5">
+        {expanded && (
+          <>
+            {MESSENGERS.map(m => (
+              <a
+                key={m.label}
+                href={m.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={m.label}
+                className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform animate-fade-in"
+                style={{ background: m.bg }}
+              >
+                <Icon name={m.icon} size={22} style={{ color: m.iconColor }} />
+              </a>
+            ))}
+          </>
+        )}
         <button
-          onClick={() => setIsClosed(false)}
-          className="w-12 h-12 rounded-full bg-[#273369] border border-border/40 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          onClick={() => setExpanded(v => !v)}
+          className="w-13 h-13 w-[52px] h-[52px] rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
+          style={{ background: expanded ? '#273369' : '#F6A327' }}
           title="Написать менеджеру"
         >
-          <Icon name="MessagesSquare" size={22} className="text-[#F6A327]" />
+          <Icon name={expanded ? 'X' : 'MessagesSquare'} size={24} style={{ color: expanded ? '#F6A327' : '#272D49' }} />
         </button>
       </div>
     );

@@ -17,17 +17,16 @@ const BG_G = 'rgba(39,51,105,0.65)';
 
 function th(align: 'left' | 'center' | 'right' = 'left'): React.CSSProperties {
   return {
-    padding: '10px 8px',
+    padding: '11px 10px',
     background: BG_H,
     color: '#F6A327',
-    fontWeight: 800,
-    fontSize: 12,
+    fontWeight: 700,
+    fontSize: 13,
     textAlign: align,
-    lineHeight: 1.35,
-    textTransform: 'uppercase',
-    letterSpacing: '0.03em',
+    lineHeight: 1.3,
     border: '1px solid rgba(246,163,39,0.2)',
     whiteSpace: 'normal',
+    wordBreak: 'break-word',
   };
 }
 
@@ -37,16 +36,16 @@ function td(extra: React.CSSProperties = {}): React.CSSProperties {
 
 // Колонки с фиксированными px-значениями — одинаковые для заголовка и тела
 const COLS = [
-  { label: 'п/п',                          align: 'center' as const, w: 38 },
-  { label: 'Наименование',                  align: 'left'   as const, w: 210 },
-  { label: 'VIN номер',                     align: 'left'   as const, w: 105 },
-  { label: 'Местонахождение',               align: 'left'   as const, w: 115 },
-  { label: 'Год выпуска',                   align: 'center' as const, w: 60 },
-  { label: 'Наработка / пробег (м/ч, км)',  align: 'left'   as const, w: 110 },
-  { label: 'Стоимость (руб)',               align: 'right'  as const, w: 120 },
-  { label: 'Заявка',                        align: 'center' as const, w: 76 },
+  { label: 'п/п',                          align: 'center' as const, w: 44 },
+  { label: 'Наименование',                  align: 'left'   as const, w: 260 },
+  { label: 'VIN номер',                     align: 'left'   as const, w: 130 },
+  { label: 'Местонахождение',               align: 'left'   as const, w: 140 },
+  { label: 'Год выпуска',                   align: 'center' as const, w: 72 },
+  { label: 'Наработка / пробег (м/ч, км)',  align: 'left'   as const, w: 140 },
+  { label: 'Стоимость (руб)',               align: 'right'  as const, w: 145 },
+  { label: 'Заявка',                        align: 'center' as const, w: 85 },
 ];
-const TOTAL_W = COLS.reduce((s, c) => s + c.w, 0); // 834px
+const TOTAL_W = COLS.reduce((s, c) => s + c.w, 0); // 1016px
 
 export default function UsedTable({ filteredRows, search, onRequest }: Props) {
   const headWrapRef = useRef<HTMLDivElement>(null);
