@@ -485,9 +485,10 @@ const Index = () => {
       {/* ===== Б/У ТЕХНИКА ===== */}
       {activeTab === 'used' && (
         <main className="flex-1 flex flex-col bg-[#181c30]">
-          {/* Поиск */}
-          <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3 sticky top-[122px] md:top-[138px] z-30">
-            <div className="container mx-auto max-w-5xl">
+          {/* Sticky блок: поиск + заголовок таблицы — единое целое */}
+          <div className="sticky top-[122px] md:top-[138px] z-30 bg-[#181c30]">
+            {/* Поиск */}
+            <div className="bg-[#1e2340] border-b border-border/20 px-4 py-3">
               <div className="flex items-center gap-3">
                 <div className="relative flex-1">
                   <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -509,33 +510,42 @@ const Index = () => {
                 </span>
               </div>
             </div>
-          </div>
-
-          {/* Таблица — один overflow-x-auto контейнер, th sticky по вертикали */}
-          <div className="flex-1 overflow-x-auto">
-            <div className="px-2 pb-4" style={{ minWidth: '900px' }}>
-              <table className="w-full text-sm border-collapse">
+            {/* Заголовок таблицы — сразу под поиском, прокрутка горизонтальная скрыта */}
+            <div className="overflow-x-hidden" style={{ scrollbarWidth: 'none' }}>
+              <table className="w-full text-sm border-collapse" style={{ minWidth: 900 }}>
                 <thead>
                   <tr className="bg-[#273369] text-[#F6A327]">
-                    {[
-                      { label: 'п/п', cls: 'w-10 text-center' },
-                      { label: 'Наименование', cls: 'text-left min-w-[200px]' },
-                      { label: 'VIN номер', cls: 'text-left min-w-[160px]' },
-                      { label: 'Местонахождение', cls: 'text-left min-w-[130px]' },
-                      { label: 'Год выпуска', cls: 'w-20 text-center' },
-                      { label: 'Наработка / пробег (м/ч, км)', cls: 'text-left min-w-[120px]' },
-                      { label: 'Стоимость (руб)', cls: 'text-right min-w-[130px]' },
-                      { label: 'Заявка', cls: 'w-20 text-center' },
-                    ].map(({ label, cls }) => (
-                      <th
-                        key={label}
-                        className={`table-th-sticky border border-border/20 px-3 py-2.5 font-semibold bg-[#273369] ${cls}`}
-                      >
-                        {label}
-                      </th>
-                    ))}
+                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-center w-10">п/п</th>
+                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-left" style={{ minWidth: 200 }}>Наименование</th>
+                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-left" style={{ minWidth: 160 }}>VIN номер</th>
+                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-left" style={{ minWidth: 130 }}>Местонахождение</th>
+                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-center w-20">Год выпуска</th>
+                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-left" style={{ minWidth: 140 }}>Наработка / пробег (м/ч, км)</th>
+                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-right" style={{ minWidth: 130 }}>Стоимость (руб)</th>
+                    <th className="border border-border/20 px-3 py-2.5 font-semibold text-center w-20">Заявка</th>
                   </tr>
                 </thead>
+              </table>
+            </div>
+          </div>
+
+          {/* Тело таблицы — скроллится горизонтально, синхронно с заголовком через JS */}
+          <div className="flex-1 overflow-x-auto" onScroll={e => {
+            const header = e.currentTarget.previousElementSibling?.querySelector('div[style]') as HTMLElement | null;
+            if (header) header.scrollLeft = e.currentTarget.scrollLeft;
+          }}>
+            <div className="px-0 pb-4" style={{ minWidth: 900 }}>
+              <table className="w-full text-sm border-collapse" style={{ minWidth: 900 }}>
+                <colgroup>
+                  <col style={{ width: 40 }} />
+                  <col style={{ minWidth: 200 }} />
+                  <col style={{ minWidth: 160 }} />
+                  <col style={{ minWidth: 130 }} />
+                  <col style={{ width: 80 }} />
+                  <col style={{ minWidth: 140 }} />
+                  <col style={{ minWidth: 130 }} />
+                  <col style={{ width: 80 }} />
+                </colgroup>
                 <tbody>
                   {filteredRows.map((row, i) => {
                     if ('group' in row) {
