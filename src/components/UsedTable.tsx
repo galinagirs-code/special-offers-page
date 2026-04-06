@@ -91,7 +91,7 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
           background: BG_H,
         }}
       >
-        <table style={{ width: TOTAL_W, borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+        <table style={{ width: '100%', minWidth: TOTAL_W, borderCollapse: 'collapse', tableLayout: 'fixed' }}>
           <colgroup>
             {COLS.map(c => <col key={c.label} style={{ width: c.w }} />)}
           </colgroup>
@@ -107,7 +107,7 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
 
       {/* Тело таблицы — скроллится горизонтально, двигает заголовок */}
       <div ref={bodyScrollRef} style={{ overflowX: 'auto' }} onScroll={onBodyScroll}>
-        <table style={{ width: TOTAL_W, borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+        <table style={{ width: '100%', minWidth: TOTAL_W, borderCollapse: 'collapse', tableLayout: 'fixed' }}>
           <colgroup>
             {COLS.map(c => <col key={c.label} style={{ width: c.w }} />)}
           </colgroup>
