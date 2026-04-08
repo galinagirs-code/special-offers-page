@@ -86,13 +86,20 @@ export function UsedTableHead() {
 // ─── Строка с раскрывалкой (мобильная) ───────────────────────────────────────
 function MobileRow({ row, even, onRequest }: { row: EquipmentRow; even: boolean; onRequest: (n: string, v: string) => void }) {
   const [open, setOpen] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const hasDetails = row.vin || row.loc || row.hours;
-  const bg = even ? 'transparent' : 'rgba(255,255,255,0.03)';
-  const border = '1px solid rgba(255,255,255,0.06)';
+  const bg = hovered ? 'rgba(39,51,105,0.55)' : even ? 'transparent' : 'rgba(255,255,255,0.03)';
+  const border = hovered ? '1px solid rgba(246,163,39,0.22)' : '1px solid rgba(255,255,255,0.06)';
+  const boxShadow = hovered ? '0 0 14px 1px rgba(246,163,39,0.13)' : 'none';
 
   return (
     <>
-      <tr style={{ background: bg }} onClick={() => hasDetails && setOpen(o => !o)}>
+      <tr
+        style={{ background: bg, transition: 'background 0.18s, box-shadow 0.18s', boxShadow }}
+        onClick={() => hasDetails && setOpen(o => !o)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
         {/* Название */}
         <td style={{ padding: '6px 7px', fontSize: 12, fontWeight: 600, border, verticalAlign: 'top', lineHeight: 1.35, paddingTop: 8 }}>
           {row.name}
@@ -196,7 +203,7 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
                 }
                 const even = rowIdx++ % 2 === 0;
                 return (
-                  <tr key={i} style={{ background: even ? 'transparent' : 'rgba(255,255,255,0.025)' }} className="hover:bg-[#273369]/30">
+                  <tr key={i} style={{ background: even ? 'transparent' : 'rgba(255,255,255,0.025)', transition: 'background 0.18s, box-shadow 0.18s' }} className="hover:bg-[#273369]/40 hover:shadow-[0_0_18px_2px_rgba(246,163,39,0.18)] cursor-pointer group">
                     <td style={td({ textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 12 })}>{row.n}</td>
                     <td style={td({ fontWeight: 600 })}>{row.name}</td>
                     <td style={td({ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontFamily: 'monospace', wordBreak: 'break-all' })}>{row.vin}</td>
