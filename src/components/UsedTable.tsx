@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 
-type EquipmentRow = { n: number; name: string; vin: string; loc: string; year: number | null; hours: string; price: string };
+export type EquipmentRow = { n: number; name: string; vin: string; loc: string; year: number | null; hours: string; price: string };
 type GroupRow = { group: string };
 type Row = EquipmentRow | GroupRow;
 
@@ -10,6 +10,7 @@ interface Props {
   filteredRows: Row[];
   search: string;
   onRequest: (name: string, vin: string) => void;
+  onCardOpen: (row: EquipmentRow) => void;
 }
 
 const BG_G = 'rgba(39,51,105,0.65)';
@@ -84,10 +85,8 @@ export function UsedTableHead() {
 }
 
 // ─── Строка с раскрывалкой (мобильная) ───────────────────────────────────────
-function MobileRow({ row, even, onRequest }: { row: EquipmentRow; even: boolean; onRequest: (n: string, v: string) => void }) {
-  const [open, setOpen] = useState(false);
+function MobileRow({ row, even, onRequest, onCardOpen }: { row: EquipmentRow; even: boolean; onRequest: (n: string, v: string) => void; onCardOpen: (row: EquipmentRow) => void }) {
   const [hovered, setHovered] = useState(false);
-  const hasDetails = row.vin || row.loc || row.hours;
   const bg = hovered ? 'rgba(39,51,105,0.55)' : even ? 'transparent' : 'rgba(255,255,255,0.03)';
   const border = hovered ? '1px solid rgba(246,163,39,0.22)' : '1px solid rgba(255,255,255,0.06)';
   const boxShadow = hovered ? '0 0 14px 1px rgba(246,163,39,0.13)' : 'none';
@@ -95,8 +94,8 @@ function MobileRow({ row, even, onRequest }: { row: EquipmentRow; even: boolean;
   return (
     <>
       <tr
-        style={{ background: bg, transition: 'background 0.18s, box-shadow 0.18s', boxShadow }}
-        onClick={() => hasDetails && setOpen(o => !o)}
+        style={{ background: bg, transition: 'background 0.18s, box-shadow 0.18s', boxShadow, cursor: 'pointer' }}
+        onClick={() => onCardOpen(row)}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -128,50 +127,25 @@ function MobileRow({ row, even, onRequest }: { row: EquipmentRow; even: boolean;
             Заявка
           </button>
         </td>
-        {/* Стрелка раскрытия */}
+        {/* Стрелка — подсказка что кликабельно */}
         <td style={{ padding: '4px 2px', textAlign: 'center', border, verticalAlign: 'middle' }}>
-          {hasDetails && (
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: 20, height: 20, borderRadius: '50%',
-              background: open ? 'rgba(246,163,39,0.2)' : 'rgba(255,255,255,0.08)',
-              transition: 'transform 0.2s, background 0.2s',
-              transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-              color: open ? '#F6A327' : 'rgba(255,255,255,0.5)',
-            }}>
-              <Icon name="ChevronDown" size={13} />
-            </span>
-          )}
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            width: 20, height: 20, borderRadius: '50%',
+            background: hovered ? 'rgba(246,163,39,0.2)' : 'rgba(255,255,255,0.08)',
+            color: hovered ? '#F6A327' : 'rgba(255,255,255,0.4)',
+            transition: 'background 0.18s, color 0.18s',
+          }}>
+            <Icon name="ChevronRight" size={13} />
+          </span>
         </td>
       </tr>
-
-      {/* Детали — раскрываются по тапу */}
-      {open && (
-        <tr style={{ background: 'rgba(30,42,94,0.6)' }}>
-          <td colSpan={5} style={{ padding: '7px 10px 9px', border, fontSize: 11, borderTop: '1px solid rgba(246,163,39,0.15)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '4px 8px', alignItems: 'start' }}>
-              {row.vin && (<>
-                <span style={{ color: '#F6A327', fontWeight: 600, whiteSpace: 'nowrap' }}>VIN</span>
-                <span style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'monospace', wordBreak: 'break-all' }}>{row.vin}</span>
-              </>)}
-              {row.loc && (<>
-                <span style={{ color: '#F6A327', fontWeight: 600, whiteSpace: 'nowrap' }}>Место</span>
-                <span style={{ color: 'rgba(255,255,255,0.65)' }}>{row.loc}</span>
-              </>)}
-              {row.hours && (<>
-                <span style={{ color: '#F6A327', fontWeight: 600, whiteSpace: 'nowrap' }}>Наработка</span>
-                <span style={{ color: 'rgba(255,255,255,0.65)' }}>{row.hours}</span>
-              </>)}
-            </div>
-          </td>
-        </tr>
-      )}
     </>
   );
 }
 
 // ─── Основной компонент ───────────────────────────────────────────────────────
-export default function UsedTable({ filteredRows, search, onRequest }: Props) {
+export default function UsedTable({ filteredRows, search, onRequest, onCardOpen }: Props) {
   const bodyRef = useRef<HTMLDivElement>(null);
 
   const onBodyScroll = () => {
@@ -203,7 +177,7 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
                 }
                 const even = rowIdx++ % 2 === 0;
                 return (
-                  <tr key={i} style={{ background: even ? 'transparent' : 'rgba(255,255,255,0.025)', transition: 'background 0.18s, box-shadow 0.18s' }} className="hover:bg-[#273369]/40 hover:shadow-[0_0_18px_2px_rgba(246,163,39,0.18)] cursor-pointer group">
+                  <tr key={i} style={{ background: even ? 'transparent' : 'rgba(255,255,255,0.025)', transition: 'background 0.18s, box-shadow 0.18s' }} className="hover:bg-[#273369]/40 hover:shadow-[0_0_18px_2px_rgba(246,163,39,0.18)] cursor-pointer group" onClick={() => onCardOpen(row)}>
                     <td style={td({ textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 12 })}>{row.n}</td>
                     <td style={td({ fontWeight: 600 })}>{row.name}</td>
                     <td style={td({ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontFamily: 'monospace', wordBreak: 'break-all' })}>{row.vin}</td>
@@ -222,7 +196,7 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
                         size="sm"
                         style={{ background: 'linear-gradient(135deg,#10B981,#0d9268)', boxShadow: '0 2px 8px rgba(16,185,129,0.3)' }}
                         className="text-white text-xs font-bold h-7 px-2.5 hover:opacity-90 transition-opacity"
-                        onClick={() => onRequest(row.name, row.vin)}
+                        onClick={e => { e.stopPropagation(); onRequest(row.name, row.vin); }}
                       >
                         Заявка
                       </Button>
@@ -260,7 +234,7 @@ export default function UsedTable({ filteredRows, search, onRequest }: Props) {
                   );
                 }
                 const even = rowIdx++ % 2 === 0;
-                return <MobileRow key={i} row={row} even={even} onRequest={onRequest} />;
+                return <MobileRow key={i} row={row} even={even} onRequest={onRequest} onCardOpen={onCardOpen} />;
               });
             })()}
           </tbody>

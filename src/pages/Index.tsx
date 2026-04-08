@@ -5,9 +5,9 @@ import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import MessengerWidget from '@/components/MessengerWidget';
-import UsedTable, { UsedTableHead } from '@/components/UsedTable';
+import UsedTable, { UsedTableHead, type EquipmentRow } from '@/components/UsedTable';
+import EquipmentCard from '@/components/EquipmentCard';
 
-type EquipmentRow = { n: number; name: string; vin: string; loc: string; year: number | null; hours: string; price: string };
 type GroupRow = { group: string };
 type Row = EquipmentRow | GroupRow;
 
@@ -212,6 +212,7 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState<'spec' | 'used'>('used');
   const [search, setSearch] = useState('');
   const [modalEquipment, setModalEquipment] = useState<string | null>(null);
+  const [cardRow, setCardRow] = useState<EquipmentRow | null>(null);
   const [formData, setFormData] = useState({ name: '', phone: '', email: '', consent: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMobileCallBtn, setShowMobileCallBtn] = useState(false);
@@ -579,6 +580,7 @@ const Index = () => {
             filteredRows={filteredRows}
             search={search}
             onRequest={(name, vin) => setModalEquipment(`${name}${vin ? ` (VIN: ${vin})` : ''}`)}
+            onCardOpen={row => setCardRow(row)}
           />
 
           {/* Форма заявки в конце списка */}
@@ -678,6 +680,14 @@ const Index = () => {
 
       {modalEquipment && (
         <ModalForm equipment={modalEquipment} onClose={() => setModalEquipment(null)} />
+      )}
+
+      {cardRow && (
+        <EquipmentCard
+          row={cardRow}
+          onClose={() => setCardRow(null)}
+          onRequest={(name, vin) => { setCardRow(null); setModalEquipment(`${name}${vin ? ` (VIN: ${vin})` : ''}`); }}
+        />
       )}
 
       <MessengerWidget />
