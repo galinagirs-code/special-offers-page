@@ -67,7 +67,7 @@ def handler(event: dict, context) -> dict:
     chat_ids = ['1156073481']
     
     # Формирование сообщения
-    equipment_line = f'\n🔧 Оборудование: {equipment}' if equipment else '\n💰 Предложение: Yongan DZJ-90 - 8 150 000 ₽'
+    equipment_line = f'\n🔧 Техника: {equipment}' if equipment else '\n📋 Заявка с сайта: Б/у техника и спецпредложение'
     message = f"""🚜 Новая заявка с сайта KGS-Ural
 
 👤 Имя: {name}
