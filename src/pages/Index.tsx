@@ -283,7 +283,7 @@ const Index = () => {
       const response = await fetch(BACKEND_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: formData.name, phone: formData.phone, email: formData.email }),
+        body: JSON.stringify({ name: formData.name, phone: formData.phone, email: formData.email, equipment: activeTab === 'spec' ? 'Вибропогружатель электрический крановый Yongan DZJ-90' : '' }),
       });
       const result = await response.json();
       if (response.ok) {
