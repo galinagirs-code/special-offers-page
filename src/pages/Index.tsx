@@ -209,7 +209,12 @@ const ModalForm = ({ equipment, onClose }: ModalFormProps) => {
 
 const Index = () => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<'spec' | 'used'>('used');
+  const getInitialTab = (): 'spec' | 'used' => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    return tab === 'spec' ? 'spec' : 'used';
+  };
+  const [activeTab, setActiveTab] = useState<'spec' | 'used'>(getInitialTab);
   const [search, setSearch] = useState('');
   const [modalEquipment, setModalEquipment] = useState<string | null>(null);
   const [cardRow, setCardRow] = useState<EquipmentRow | null>(null);
@@ -375,7 +380,7 @@ const Index = () => {
       {/* Навигационные вкладки */}
       <div className="flex w-full sticky top-[52px] md:top-[60px] z-40 bg-[#1a2455]" data-top-sticky>
         <button
-          onClick={() => setActiveTab('used')}
+          onClick={() => { setActiveTab('used'); window.history.replaceState(null, '', '?tab=used'); }}
           className={`flex-1 min-w-0 flex flex-col items-center justify-center gap-1 py-3 md:py-5 border-b-4 transition-all cursor-pointer px-2 ${activeTab === 'used' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#1a2455] text-white border-transparent hover:bg-[#273369] animate-pulse'}`}
         >
           <div className="flex items-center gap-1.5 min-w-0">
@@ -386,7 +391,7 @@ const Index = () => {
         </button>
         <div className="w-px bg-[#273369]/40 flex-shrink-0" />
         <button
-          onClick={() => setActiveTab('spec')}
+          onClick={() => { setActiveTab('spec'); window.history.replaceState(null, '', '?tab=spec'); }}
           className={`flex-1 min-w-0 flex flex-col items-center justify-center gap-1 py-3 md:py-5 border-b-4 transition-all cursor-pointer px-2 ${activeTab === 'spec' ? 'bg-[#F6A327] text-[#273369] border-[#d4861a]' : 'bg-[#1a2455] text-white border-transparent hover:bg-[#273369] animate-pulse'}`}
         >
           <div className="flex items-center gap-1.5 min-w-0">
