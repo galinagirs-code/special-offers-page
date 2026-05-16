@@ -3,7 +3,7 @@ import Icon from '@/components/ui/icon';
 
 const MESSENGERS = [
   {
-    href: 'https://max.ru/u/f9LHodD0cOIP8_25Pol0FgGthbuYFvPpONLlW4R8sdoUUmuprdyzEwbPSy0',
+    href: 'https://max.ru/u/f9LHodD0cOImsRskfVjR-3fuhH-tMqVWkaos4x89XKkeNa_qRtxwq750FKU',
     bg: '#F6A327',
     icon: 'MessageCircle' as const,
     iconColor: '#272D49',
@@ -86,7 +86,7 @@ const MessengerWidget = () => {
 
         <div className="flex flex-col gap-2.5">
           <a
-            href="https://max.ru/u/f9LHodD0cOIP8_25Pol0FgGthbuYFvPpONLlW4R8sdoUUmuprdyzEwbPSy0"
+            href="https://max.ru/u/f9LHodD0cOImsRskfVjR-3fuhH-tMqVWkaos4x89XKkeNa_qRtxwq750FKU"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 bg-[#1E2440] hover:bg-[#273369] rounded-xl px-4 py-3 transition-colors group"
